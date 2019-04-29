@@ -1,0 +1,46 @@
+.main-panel .content-wrapper {
+    -webkit-box-shadow: inset 1px 1px 7px 0px rgba(0, 0, 0, 0.21);
+    -moz-box-shadow: inset 1px 1px 7px 0px rgba(0, 0, 0, 0.21);
+    box-shadow: inset 1px 1px 7px 0px rgba(0, 0, 0, 0.21);
+}
+
+.card {
+    -webkit-box-shadow: 0.5px 1px 5px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0.5px 1px 5px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 0.5px 1px 5px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+}
+
+.navbar.default-layout {
+    background: linear-gradient(to right, rgba(136, 84, 208, 1) 0%, rgba(75, 123, 236, 1) 100%) !important;
+}
+
+small.badge {
+    font-size: 13px;
+}
+
+hr {
+    background-color: rgba(189, 195, 199, 0.45);
+}
+
+.img-properti {
+    width: 100px;
+}
+
+.form-check.form-check-flat label .input-helper:before {
+    border: 2px solid #7f8c8d;
+}
+
+.form-radio label input:disabled+.input-helper:before {
+    border-color: #bdc3c7;
+    background-color: rgb(233, 236, 239);
+}
+
+.form-control {
+    border: 1px solid rgba(189, 195, 199, 0.7);
+    color: rgba(33, 37, 41, 1);
+}
+
+.mt-34 {
+    margin-top: 34px;
+}
