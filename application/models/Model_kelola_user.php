@@ -54,9 +54,9 @@ class Model_kelola_user extends CI_Model {
     }
     public function insertUser($input)
     {
-        if ($input['img'] = "") {
-            $data = ['nama_lengkap'=>$input['nama'],'jenis_kelamin'=>];
-        }
+        // if ($input['img'] = "") {
+        //     $data = ['nama_lengkap'=>$input['nama'],'jenis_kelamin'=>];
+        // }
     }
 }
 
