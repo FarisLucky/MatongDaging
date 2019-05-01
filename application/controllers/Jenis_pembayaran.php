@@ -9,33 +9,27 @@ class Jenis_pembayaran extends CI_Controller
         $this->load->model("M_jenis_pembayaran");
     }
 
-    public function tampil()
+    public function index()
     {
-        $data['jenispembayaran'] = $this->M_jenis_pembayaran->ambildata()->result(); //barang itu bukan db melainkan array 
-        $this->load->view('v_jenis_pembayaran', $data);
+        $active = 'Jenis Pembayaran';
+        $data['title'] = 'Jenis Pembayaran';
+        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['jenispembayaran'] = $this->M_jenis_pembayaran->ambildata()->result();
+        $this->load->view('partials/part_navbar', $data);
+        $this->load->view('partials/part_sidebar', $data);
+        $this->load->view('jenis_pembayaran/v_jenis_pembayaran', $data);
+        $this->load->view('partials/part_footer', $data);
     }
 
-    public function edit()
+    public function edit($id) //id itu terserah cuma deklarasi
     {
-        $this->load->view('v_edit_jenispembayaran');
+        $active = 'Edit Jenis Pembayaran';
+        $data['title'] = 'Edit Jenis Pembayaran';
+        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['jenispembayaran'] = $this->M_jenis_pembayaran->getSelectionData(['id_jenis', $id]); //id_jenis itu field databasenya trus $id itu yang di deket edit itu, trus jenis_pembayaran itu variabel yang harus sama kaya isi value yang di view
+        $this->load->view('partials/part_navbar', $data);
+        $this->load->view('partials/part_sidebar', $data);
+        $this->load->view('jenis_pembayaran/v_edit_jenispembayaran', $data);
+        $this->load->view('partials/part_footer', $data);
     }
-    /*public function edit($id_jns = '')
-    {
-        $value = ['id_jenis' => $id_jns];
-        $data['select_barang'] = $this->m_jenis_pembayaran->getSelectionData($value);
-        $this->load->view('v_edit_jenispembayaran', $data);
-    }
-    public function corePerbarui()
-    {
-        $post = [
-            'kode_barang' => $this->input->post('edit_kd_barang', true), //edit_kode_barang itu name di view editnya
-            'id_jenis' => $this->input->post('edit_nama_barang', true),
-            'jenis_pembayaran' => $this->input->post('edit_deskripsi_barang', true),
-            'stok_barang' => $this->input->post('edit_stok_barang', true),
-            'harga_barang' => $this->input->post('edit_harga_barang', true),
-        ];
-        $this->Barang_model->updateDataProduk($post);
-        $this->session->set_flashdata('success', '<div class="alert alert-success" style="margin-bottom:0px" role="alert">Data berhasil diubah :)</div>');
-        redirect('admin/barang/tampil');
-    }*/
 }
