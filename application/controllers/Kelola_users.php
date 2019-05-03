@@ -9,7 +9,7 @@ class Kelola_users extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('Model_kelola_user','Muser');
-        
+        checkSession();
     }
     
     public function index()
@@ -19,6 +19,7 @@ class Kelola_users extends CI_Controller {
         $data['menus'] = $this->rolemenu->getMenus($active);
         $data['js'] = $this->rolemenu->getJavascript(4); //Jangan DIUbah !!
         $data['user'] = $this->Muser->getUser();
+        $data['img'] = getCompanyLogo();
         $this->load->view('partials/part_navbar',$data);
         $this->load->view('partials/part_sidebar',$data);
         $this->load->view('kelola_user/view_kelola_user',$data);
@@ -48,9 +49,10 @@ class Kelola_users extends CI_Controller {
         $this->form_validation->set_rules('txt_nama_user','Nama','trim|required');
         $this->form_validation->set_rules('txt_alamat_user','Alamat','trim|required');
         $this->form_validation->set_rules('txt_akses_user','Hak Akses','trim|required');
-        $this->form_validation->set_rules('txt_email_user','Email','trim|required|valid_email');
-        $this->form_validation->set_rules('txt_telp_user','Telp','trim|required');
-        $this->form_validation->set_rules('txt_username_user','Username','trim|required');
+        $this->form_validation->set_rules('txt_email_user','Email','trim|required|valid_email|is_unique[user.Email]');
+        $this->form_validation->set_rules('txt_telp_user','Telp','trim|required|is_unique[user.no_hp]');
+        $this->form_validation->set_rules('txt_username_user','Username','trim|required|is_unique[user.username]');
+        $this->form_validation->set_rules('txt_status_user','Status','trim|required');
         $this->form_validation->set_rules('txt_password_user','Password','trim|required');
         $this->form_validation->set_rules('txt_retype_password','Password','trim|required|matches[txt_password_user]');
         $this->form_validation->set_error_delimiters('<div class="invalid-feedback">','</div>');
@@ -79,6 +81,7 @@ class Kelola_users extends CI_Controller {
                         'telp'=>$this->input->post('txt_telp_user',true),
                         'jk'=>$this->input->post('radio_jk',true),
                         'username'=>$this->input->post('txt_username_user',true),
+                        'status'=>$this->input->post('txt_status_user',true),
                         'password'=>$password,
                         'img' => $img['file_name']
                     ];
@@ -97,12 +100,21 @@ class Kelola_users extends CI_Controller {
                     'akses'=>$this->input->post('txt_akses_user',true),
                     'email'=>$this->input->post('txt_email_user',true),
                     'telp'=>$this->input->post('txt_telp_user',true),
+                    'jk'=>$this->input->post('radio_jk',true),
                     'username'=>$this->input->post('txt_username_user',true),
+                    'status'=>$this->input->post('txt_status_user',true),
                     'password'=>$password,
-                    'img' => $img['file_name']
+                    'img' => ""
                 ];
-                $this->Muser->insertUser($input);
-                $data['success'] = true;
+                $act = $this->Muser->insertUser($input);
+                if ($act) {
+                    $data['success'] = true;
+                    $data['act'] = $act;
+                }
+                else{
+                    $data['success'] = false;
+                    $data['act'] = $act;
+                }
             }
         }
         return $this->output->set_output(json_encode($data));
@@ -121,10 +133,10 @@ class Kelola_users extends CI_Controller {
         foreach ($fetch_values as $value) {
             if ($value->akses != 'owner') {
                 if ($value->status_user == 'aktif') {
-                    $this->status = '<a href="'.base_url().'setting/detailuser/'.$value->id_user.'" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="'.$value->id_user.'">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="nonaktif_data_user" data-id="'.$value->id_user.'">Nonaktif</button>';
+                    $this->status = '<a href="'.base_url().'kelola_users/detailuser/'.$value->id_user.'" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="'.$value->id_user.'">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="nonaktif_data_user" data-id="'.$value->id_user.'">Nonaktif</button>';
                 }
                 else{
-                    $this->status = '<a href="'.base_url().'setting/detailuser/'.$value->id_user.'" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="'.$value->id_user.'">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="aktif_data_user" data-id="'.$value->id_user.'">Aktifkan</button>';
+                    $this->status = '<a href="'.base_url().'kelola_users/detailuser/'.$value->id_user.'" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="'.$value->id_user.'">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="aktif_data_user" data-id="'.$value->id_user.'">Aktifkan</button>';
                 }
             }else{
                 $this->status = '-';
@@ -175,6 +187,7 @@ class Kelola_users extends CI_Controller {
         $data['users'] = $this->Muser->getUserWhereId($id);
         $data['properti'] = $this->Muser->getProperti($id);
         $data['user_properti'] = $this->Muser->getUserProperti($id);
+        $data['img'] = getCompanyLogo();
         $this->load->view('partials/part_navbar',$data);
         $this->load->view('partials/part_sidebar',$data);
         $this->load->view('kelola_user/view_detail_user',$data);

@@ -17,6 +17,7 @@
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
 <!-- plugins:js -->
 <script src="<?= base_url() ?>assets/vendors/js/vendor.bundle.base.js"></script>
 <script src="<?= base_url() ?>assets/vendors/js/vendor.bundle.addons.js"></script>
@@ -33,6 +34,9 @@
 <script src="<?= base_url() ?>assets/custom/sweetalert/sweetalert2.all.min.js"></script>
 <!-- Toastr -->
 <script src="<?= base_url() ?>assets/custom/toastr/toastr.min.js"></script>
+<!-- CKEditor -->
+<script src="<?= base_url() ?>assets/custom/ckeditor/ckeditor.js"></script>
+<!-- <script src="<?= base_url() ?>assets/custom/ckeditor/config.js"></script> -->
 <!-- endinject -->
 <!-- End custom js for this page-->
 <script src="<?= base_url().'assets/custom/js/'.$js[0]['javascript'].'.js' ?>"></script>

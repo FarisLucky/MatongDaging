@@ -44,3 +44,18 @@ hr {
 .mt-34 {
     margin-top: 34px;
 }
+
+/* table.dataTable tbody td {
+    width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+table {
+    margin: 0 auto;
+    width: 100%;
+    clear: both;
+    border-collapse: collapse;
+    table-layout: fixed;
+    word-wrap: break-word;
+} */

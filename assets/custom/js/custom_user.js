@@ -69,10 +69,13 @@ $(document).ready(function () {
     const user = $('#tbl_users').DataTable({
         "processing": true,
         "responsive": true,
+        "scrollX": true,
+        "fixColumns": false,
+        "autoWidth": false,
         "serverSide": true,
         "order": [],
         "ajax": {
-            url: 'datauser',
+            url: 'kelola_users/datausers',
             type: "POST"
         },
         "columnDefs": [{
@@ -81,11 +84,12 @@ $(document).ready(function () {
         }],
         "bDestroy": true
     });
+
     $("table#tbl_users").on("click", "#aktif_data_user", function (e) {
         e.preventDefault();
         let id = $(this).attr("data-id");
         let btn_status = "aktif";
-        let ajax = ['userstatus', 'post'];
+        let ajax = ['kelola_users/userstatus', 'post'];
         swallQuestion("Yakin ?", "Apakah ingin di Aktifkan ?", "question", 'Aktifkan', function () {
             setDataMethod("", ajax, {
                 id_user: id,
@@ -99,11 +103,12 @@ $(document).ready(function () {
             })
         })
     });
+
     $("table#tbl_users").on("click", "#nonaktif_data_user", function (e) {
         e.preventDefault();
         let id = $(this).attr("data-id");
         let status = "nonaktif";
-        let ajax = ['userstatus', 'post'];
+        let ajax = ['kelola_users/userstatus', 'post'];
         swallQuestion("Yakin ?", "Apakah ingin Nonaktifkan ?", "question", 'Nonaktifkan', function () {
             setDataMethod("", ajax, {
                 id_user: id,
@@ -148,7 +153,7 @@ $(document).ready(function () {
     $("table#tbl_users").on("click", "#hapus_data_user", function (e) {
         e.preventDefault();
         let id = $(this).attr("data-id");
-        let ajax = ['hapus/', 'get'];
+        let ajax = ['kelola_users/hapus/', 'get'];
         swallQuestion("Yakin ?", "Apakah ingin di hapus ?", "question", 'Hapus', function () {
             setDataMethod(id, ajax, null, function (Parameters) {
                 if (Parameters.success == true) {
@@ -163,14 +168,15 @@ $(document).ready(function () {
     $("#form_user").submit(function (e) {
         e.preventDefault();
         let form = new FormData($(this)[0]);
-        if ($("input[name='radio_jk']:checked").val() == "") {
+        let batal = $("#batal").attr("href");
+        if ($("input[name='radio_jk']:checked").length == 0) {
             toastr.remove();
             notifToastr("error", "Pilih Jenis Kelamin");
             return;
         }
         $.ajax({
             type: "post",
-            url: "coretambah",
+            url: "core_tambah",
             data: form,
             dataType: "JSON",
             processData: false,
@@ -180,7 +186,9 @@ $(document).ready(function () {
                 if (success.success === true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid')
                         .next().remove();
-                    swallSuccess("Berhasil", "Data Disimpan", "success");
+                    swallSuccess("Berhasil", "Data Disimpan", "success", function () {
+                        window.location.href = batal;
+                    });
                 } else {
                     $.each(success.msg, function (key, val) {
                         let el = $('#' + key)
@@ -194,4 +202,20 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#show_pw").click(function (e) {
+        if ($(this).is(":checked")) {
+            $("#txt_password_user").attr("type", "text");
+        } else {
+            $("#txt_password_user").attr("type", "password");
+        }
+    });
+    $("#show_pw2").click(function (e) {
+        if ($(this).is(":checked")) {
+            $("#txt_retype_password").attr("type", "text");
+        } else {
+            $("#txt_retype_password").attr("type", "password");
+        }
+    });
+
 });

@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Kelola User</h4>
-                                <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
+                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>
@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block">Detail User</h5>
-                                <div class="badge badge-primary float-right">Marketing</div>
+                                <div class="badge badge-primary float-right"><?php echo $users->akses ?></div>
                             </div>
                         </div>
                         <hr>
@@ -80,7 +80,12 @@
                             </div>
                         </div>
                         <hr>
-                        <form id="form_user_properti" action="<?= base_url() ?>setting/userproperti" method="post" >
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h6>Silahkan Atur Properti yang akan di gunakan oleh User</h6>
+                            </div>
+                        </div>
+                        <form id="form_user_properti" action="<?= base_url() ?>kelola_users/userproperti" method="post" >
                         <input type="hidden" name="txt_id" id="hidden_user" value="<?= $users->id_user ?>">
                         <div class="row">
                             <?php foreach ($properti as $key => $value) : ?>
@@ -100,8 +105,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <button class="btn btn-sm btn-primary mr-2">Simpan</button>
-                                <a href="<?= base_url() ?>setting/user" class="btn btn-sm btn-dark">Back</a>
+                                <button type="submit" class="btn btn-sm btn-primary mr-2">Simpan</button>
+                                <a href="<?= base_url() ?>kelola_users" class="btn btn-sm btn-dark">Back</a>
                             </div>  
                         </div>
                         </form>

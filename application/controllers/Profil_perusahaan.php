@@ -8,7 +8,7 @@ class Profil_perusahaan extends CI_Controller
         parent::__construct();
         $this->load->library('encryption');
         $this->load->model('Model_profil_perusahaan','Mperusahaan');
-        
+        checkSession();
     }
     
     public function index()
@@ -18,6 +18,7 @@ class Profil_perusahaan extends CI_Controller
         $data['menus'] = $this->rolemenu->getMenus($active);
         $data['js'] = $this->rolemenu->getJavascript(2);
         $data['perusahaan'] = $this->Mperusahaan->getPerusahaan();
+        $data['img'] = getCompanyLogo();
         $this->load->view('partials/part_navbar',$data);
         $this->load->view('partials/part_sidebar',$data);
         $this->load->view('profil_perusahaan/view_profil',$data);

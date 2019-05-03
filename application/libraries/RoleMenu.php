@@ -10,7 +10,9 @@ class RoleMenu
     }
     public function getMenus($active_menu = null,$active_sub_menu = null)
     {
-        $val = $this->CI->db->get('user_menu')->result();
+        $sql = "select * from tbl_role_menu where id_akses = ?";
+        $session = $this->CI->session->userdata('id_akses');
+        $val = $this->CI->db->query($sql,$session)->result();
         $html='';
         foreach ($val as $key => $value) {
             $active = ($active_menu == $value->menu) ? $active_menu="active" : $active_menu="";
@@ -35,15 +37,14 @@ class RoleMenu
             $collap =' data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic"';
             $li = '<i class="menu-arrow"></i>';
             $html = '';
+            $rows = $val->result();
             $html .= '<div class="collapse" id="'.ltrim($url_menu,"#").'">
             <ul class="nav flex-column sub-menu">';
-            $rows = $val->result();
             foreach ($rows as $key => $value) {
-                $active_sub = ($value->nama_sub == $active_menu) ? $active_menu = 'active':$active_menu='';
-                $html .= '<li class="nav-item">
-                        <a class="nav-link '.$active_sub.'" href="'.base_url($value->sub_url).'"> '.$value->nama_sub.' </a>
+                $active_sub = ($value->nama_sub == $active_menu) ? $active_menu = 'active': $active_menu='';
+                $html .= '<li class="nav-item"><a class="nav-link '.$active_sub.'" href="'.base_url($value->sub_url).'"> '.$value->nama_sub.' </a>
                     </li>';
-                }
+            }
             $html .= '</ul>
             </div>';
         }
@@ -65,22 +66,4 @@ class RoleMenu
         $hasil = $this->CI->db->get_where('user_menu',["id_menu"=>$id]);
         return $hasil->result_array();
     }
-    // public function getMenu()
-    // {
-    //     $val['menu'] = $this->CI->db->get('user_menu')->result();
-    //     foreach ($val['menu'] as $key => $value) {
-    //         $val['sub_menu'] = [$this->getSubMenu($value->id_menu)];
-    //     }
-    //     // $last=['menu'=>$val,'sub_menu'=>$hey];
-    //     return $val;
-    // }
-    // public function getSubMenu($id)
-    // {
-    //     $val = $this->CI->db->get_where('user_sub_menu',['id_menu'=>$id]);
-    //     $last=[];
-    //     if ($val->num_rows() > 0) {
-    //         $last = $val->result();
-    //     }
-    //     return $last;
-    // }
 }
