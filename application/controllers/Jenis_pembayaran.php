@@ -6,7 +6,7 @@ class Jenis_pembayaran extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model("M_jenis_pembayaran");
+        $this->load->model('M_jenis_pembayaran');
     }
 
     public function index()
