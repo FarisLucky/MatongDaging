@@ -72,12 +72,21 @@
                                                 <input type="text" name='txt_email_user' class="form-control" id="txt_email_user">
                                             </div>
                                             <div class="form-group mt-34">
-                                                <label for="txt_akses_user">Pilih Akses</label>
+                                                <label for="txt_akses_user">Akses</label>
                                                 <select name="txt_akses_user" id="txt_akses_user" class="form-control">
                                                     <option value="">-- Pilih Akses --</option>
                                                     <?php foreach ($akses as $key => $value) : ?>
                                                         <option value="<?= $value->id_akses ?>"><?= $value->akses ?></option>
                                                     <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group mt-34">
+                                                <label for="txt_status_user">Status</label>
+                                                <select name="txt_status_user" id="txt_status_user" class="form-control">
+                                                    <option value="">-- Pilih Status --</option>
+                                                    <option value="aktif">Aktif</option>
+                                                    <option value="nonaktif">Nonaktif</option>
+                                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -88,18 +97,19 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="txt_username_user">Password</label>
-                                                <input type="text" name="txt_password_user" class="form-control" id="txt_password_user">
+                                                <input type="password" name="txt_password_user" class="form-control" id="txt_password_user"><div class="mt-1"></div><div class="d-flex flex-row"><input type="checkbox" class="float-left mt-1 mr-1" name="show_pw" id="show_pw"><small>show Password</small></div>
                                             </div>
                                             <div class="form-group mt-34">
                                                 <label for="txt_username_user">Retype Password</label>
-                                                <input type="text" name="txt_retype_password" class="form-control" id="txt_retype_password">
+                                                <input type="password" name="txt_retype_password" class="form-control" id="txt_retype_password"><div class="mt-1"></div><div class="d-flex flex-row"><input type="checkbox" class="float-left mt-1 mr-1" name="show_pw2" id="show_pw2"><small>show Password</small></div>
                                             </div>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <button type="submit" class="btn btn-sm btn-success float-right">Simpan</button>
+                                            <a href="<?= base_url() ?>kelola_users" id="batal" class="btn btn-sm btn-dark float-right">Batal</a>
+                                            <button type="submit" class="btn btn-sm btn-success float-right mr-2">Simpan</button>
                                         </div>
                                     </div>
                                 </form>                                  

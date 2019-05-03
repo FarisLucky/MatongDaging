@@ -19,13 +19,7 @@
   <!-- Custom css -->
   <link rel="stylesheet" href="<?= base_url() ?>assets/custom/css/custom_css.css">
 <!-- Custom Css DataTables-->
-<!-- https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css
-https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.bootstrap.min.css
-https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css
-<link rel="stylesheet" href="<?= base_url() ?>assets/custom/DataTables/datatables.min.css"> -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+<link rel="stylesheet" href="<?= base_url() ?>assets/custom/DataTables/datatables.min.css">
 <!-- Toastr Css -->
 <link rel="stylesheet" href="<?= base_url() ?>assets/custom/toastr/toastr.min.css">
   <!-- endinject -->
@@ -201,7 +195,7 @@ https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css
               <a class="dropdown-item">
                 Check Inbox
               </a>
-              <a class="dropdown-item">
+              <a href="<?= base_url() ?>auth/logout" class="dropdown-item">
                 Sign Out
               </a>
             </div>

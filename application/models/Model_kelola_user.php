@@ -54,9 +54,11 @@ class Model_kelola_user extends CI_Model {
     }
     public function insertUser($input)
     {
-        // if ($input['img'] = "") {
-        //     $data = ['nama_lengkap'=>$input['nama'],'jenis_kelamin'=>];
-        // }
+        $sql ="call insert_user(?,?,?,?,?,?,?,?,?,?)";
+        $data = ['nama_lengkap'=>$input['nama'],'jenis_kelamin'=>$input['jk'],"alamat"=>$input['alamat'],"no_hp"=>$input['telp'],"Email"=>$input['email'],"username"=>$input['username'],"password"=>$input['password'],"id_akses"=>$input['akses'],"foto_user"=>$input['img'],'status_user'=>$input['status']];
+        $value = $this->db->query($sql,$data);
+        return $this->db->affected_rows();
+        
     }
 }
 

@@ -1,11 +1,13 @@
-function swallSuccess(titles, texts, types) {
+function swallSuccess(titles, texts, types, success) {
     Swal({
         title: titles,
         text: texts,
         type: types
     }).then((result) => {
         if (result.value) {
-            location.reload();
+            if (typeof success == 'function') {
+                success();
+            };
         }
     })
 }
@@ -48,14 +50,6 @@ function notifToastr(types, text) {
         "hideMethod": "fadeOut"
     };
 }
-
-function methodToInsert(form_id, modal_id, modal_title, text) {
-    method = 'tambah';
-    $(form_id)[0].reset();
-    $(modal_id).modal("show");
-    $(modal_title).text(text);
-}
-
 $(document).ready(function () {
 
     $("#btn_ubah_profil").click(function (e) {
@@ -84,7 +78,11 @@ $(document).ready(function () {
                 if (success.success === true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid')
                         .next().remove();
-                    swallSuccess("Berhasil", "Data Disimpan", "success");
+                    swallSuccess("Berhasil", "Data Disimpan", "success", function () {
+                        location.reload()
+                    });
+                } else if ((success.success == false) && (success.error.length > 0)) {
+                    swallSuccess("Gagal Update", success.error, "error", null);
                 } else {
                     $.each(success.msg, function (key, val) {
                         let el = $('#' + key)

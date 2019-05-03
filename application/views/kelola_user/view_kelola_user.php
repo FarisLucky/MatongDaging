@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Kelola User</h4>
-                                <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
+                                <img id="logo_perusahaan" width="50px" src="<?php echo base_url().'assets/uploads/images/profil/user/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>
@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block"><i class="fa fa-m"></i>Kelola Perusahaan</h5>
-                                <a href="<?= base_url() ?>setting/tambahuser"class="btn btn-info btn-sm float-right">Tambah</a>
+                                <a href="<?= base_url() ?>kelola_users/tambah"class="btn btn-info btn-sm float-right">Tambah</a>
                             </div>
                         </div>
                         <hr>

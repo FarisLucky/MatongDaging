@@ -53,13 +53,17 @@ $route['default_controller'] = 'Dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['setting/profilperusahaan'] = 'Profil_perusahaan'; //Route Perumahan
-$route['setting/user'] = 'Kelola_users'; //Route Perumahan
-$route['setting/datauser'] = 'Kelola_users/datausers'; //Route Perumahan
-$route['setting/userstatus'] = 'Kelola_users/userstatus'; //Route Perumahan
-$route['setting/detailuser/(:num)'] = 'Kelola_users/detailuser/$1'; //Route Perumahan
-$route['setting/userproperti'] = 'Kelola_users/userProperti'; //Route Perumahan
-$route['setting/hapus/(:num)'] = 'Kelola_users/hapus/$1'; //Route Perumahan
-$route['setting/tambahuser'] = 'Kelola_users/tambah'; //Route Perumahan
-$route['setting/coretambah'] = 'Kelola_users/core_tambah'; //Route Perumahan
+// $route['setting/profilperusahaan'] = 'Profil_perusahaan'; //Route Perumahan
+// $route['setting/user'] = 'Kelola_users'; //Route User
+// $route['setting/datauser'] = 'Kelola_users/datausers'; //Route user
+// $route['setting/userstatus'] = 'Kelola_users/userstatus'; //Route user
+// $route['setting/detailuser/(:num)'] = 'Kelola_users/detailuser/$1'; //Route user
+// $route['setting/userproperti'] = 'Kelola_users/userProperti'; //Route user
+// $route['setting/hapus/(:num)'] = 'Kelola_users/hapus/$1'; //Route user
+// $route['setting/tambahuser'] = 'Kelola_users/tambah'; //Route user
+// $route['setting/coretambah'] = 'Kelola_users/core_tambah'; //Route user
+// Route Login
+// $route['login'] = 'auth'; //Route user
+// $route['core_login'] = 'auth/core_login'; //Route user
+
 $route['wc'] = 'Welcome'; //Route Perumahan
