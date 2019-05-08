@@ -43,8 +43,8 @@
                                     <td><?php echo $no++ ?></td>
                                     <td><?php echo $t->nama_type ?></td>
                                     <td>
-                                    <a href="edit/<?php echo $t->id_type ?>" class="btn btn-primary">Edit</a>
-                                    <a href="hapus/<?php echo $t->id_type ?>" class="btn btn-danger">Delete</a>
+                                    <a href="<?= base_url() .'type_id/edit'?>/<?= $t->id_type ?>" class="btn btn-primary" class="btn btn-primary">Edit</a>
+                                    <a href="<?= base_url() .'type_id/hapus'?>/<?= $t->id_type ?>" class="btn btn-danger">Delete</a>
                                     </td>
 
                                 </tr>

@@ -6,6 +6,6 @@
                       <input type="text" name = "nama_kelompok" value = "<?php echo $k->nama_kelompok ?>"class="form-control" id="exampleInputName1" placeholder="">
                     </div>
                     <td></td>
-                    <td><input type="submit" value="Simpan"></td>
+                    <button type="submit" class="btn btn-sm btn-success float-right">Simpan</button>
                 </form>
                 <?php } ?>

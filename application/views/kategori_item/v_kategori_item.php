@@ -49,8 +49,8 @@
                                     <td><?php echo $k->id_user ?></td>
                                     <td><?php echo $k->id_kategori ?></td>
                                     <td>
-                                    <a href="edit/<?php echo $k->id_kelompok ?>" class="btn btn-primary">Edit</a>
-                                    <a href="hapus/<?php echo $k->id_kelompok ?>" class="btn btn-danger">Delete</a>
+                                    <a href="<?= base_url() .'kategori_item/edit'?>/<?= $k->id_kelompok ?>" class="btn btn-primary" class="btn btn-primary">Edit</a>
+                                    <a href="<?= base_url() .'kategori_item/hapus'?>/<?= $k->id_kelompok ?>" class="btn btn-danger" class="btn btn-danger">Delete</a>
                                     </td>
 
                                 </tr>

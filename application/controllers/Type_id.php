@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Type_id extends CI_Controller 
 {
 	function __construct(){
-	parent::__construct();		
+	parent::__construct();	
+	$this->load->library('form_validation');	
 	$this->load->model('M_type_id');	
 }
 		public function index()
@@ -28,12 +29,28 @@ class Type_id extends CI_Controller
 	$this->load->view('partials/part_footer',$data);
 	}
 	function tambah_aksi(){
+	$config = array (
+		array(
+			'field' => 'nama_type',
+			'label' => 'Nama type',
+			'rules' => 'required'
+		));
+	$this->form_validation->set_rules($config);
+	if ($this->form_validation->run()==TRUE) {
 	$nama_type = $this->input->post('nama_type');
 	$data = array(
 		'nama_type' => $nama_type
 		);
 	$this->M_type_id->input_data($data,'type_id_card');
 	redirect('type_id/index');
+	} else {
+	$active = "type_id_card";
+	$data['menus'] = $this->rolemenu->getMenus($active);
+	$this->load->view('partials/part_navbar',$data);
+    $this->load->view('partials/part_sidebar',$data);
+    $this->load->view('type_id_card/v_tambah_type');
+	$this->load->view('partials/part_footer',$data);
+	}
 	}
 	function hapus($id_type)
 	{

@@ -4,10 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Kategori_item extends CI_Controller 
 {
 	function __construct(){
-	parent::__construct();		
+	parent::__construct();	
+	$this->load->library('form_validation');
 	$this->load->model('M_kategori_item');	
 }
-		public function index()
+	public function index()
 	{
 	$active = "kategori_item";
 	$data['kategori_item'] = $this->M_kategori_item->tampil_data()->result();
@@ -28,6 +29,14 @@ class Kategori_item extends CI_Controller
 	$this->load->view('partials/part_footer',$data);
 	}
 	function tambah_aksi(){
+	$config = array (
+		array(
+			'field' => 'nama_kelompok',
+			'label' => 'Nama Kelompok',
+			'rules' => 'required'
+		));
+	$this->form_validation->set_rules($config);
+	if ($this->form_validation->run()==TRUE) {
 	$nama_kelompok = $this->input->post('nama_kelompok');
 	$data = array(
 		'nama_kelompok' => $nama_kelompok,
@@ -36,6 +45,14 @@ class Kategori_item extends CI_Controller
 		);
 	$this->M_kategori_item->input_data($data,'kelompok_item');
 	redirect('kategori_item/index');
+	} else {
+	$active = "kategori_item";
+	$data['menus'] = $this->rolemenu->getMenus($active);
+	$this->load->view('partials/part_navbar',$data);
+    $this->load->view('partials/part_sidebar',$data);
+    $this->load->view('kategori_item/v_tambah_item');
+	$this->load->view('partials/part_footer',$data);
+	}
 	}
 	function hapus($id_kelompok)
 	{
@@ -69,3 +86,4 @@ class Kategori_item extends CI_Controller
 	redirect('kategori_item/index');
 }
 }
+

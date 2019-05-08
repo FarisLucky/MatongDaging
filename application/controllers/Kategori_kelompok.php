@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Kategori_kelompok extends CI_Controller 
 {
 	function __construct(){
-	parent::__construct();		
+	parent::__construct();
+	$this->load->library('form_validation');	
 	$this->load->model('M_kategori_kelompok');	
 }
 		public function index()
@@ -28,12 +29,28 @@ class Kategori_kelompok extends CI_Controller
 	$this->load->view('partials/part_footer',$data);
 	}
 	function tambah_aksi(){
+	$config = array (
+		array(
+			'field' => 'nama_kategori',
+			'label' => 'Nama Ketegori',
+			'rules' => 'required'
+		));
+	$this->form_validation->set_rules($config);
+	if ($this->form_validation->run()==TRUE) {
 	$nama_kategori = $this->input->post('nama_kategori');
 	$data = array(
 		'nama_kategori' => $nama_kategori
 		);
 	$this->M_kategori_kelompok->input_data($data,'kategori_kelompok');
 	redirect('kategori_kelompok/index');
+	} else {
+	$active = "kategori_kelompok";
+	$data['menus'] = $this->rolemenu->getMenus($active);
+	$this->load->view('partials/part_navbar',$data);
+    $this->load->view('partials/part_sidebar',$data);
+    $this->load->view('kategori_kelompok/v_tambah_kategori');
+	$this->load->view('partials/part_footer',$data);
+	}
 	}
 	function hapus($id_kategori)
 	{

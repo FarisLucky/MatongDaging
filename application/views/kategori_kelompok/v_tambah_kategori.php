@@ -2,7 +2,8 @@
                     <div class="form-group">
                       <label for="exampleInputName1">nama_kategori</label>
                       <input type="text" name = "nama_kategori" class="form-control" id="exampleInputName1" placeholder="">
+                      <small class="form-text text-danger"><?= form_error ('nama_kategori'); ?></small>
                     </div>
                     <td></td>
-                    <td><input type="submit" value="Tambah"></td>
+                    <button type="submit" class="btn btn-sm btn-success float-right">Simpan</button>
                 </form>
