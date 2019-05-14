@@ -30,7 +30,6 @@
                                 <table class="table table-hover" id="tbl_users">
                                     <thead>
                                         <th>No</th>
-                                        <th>Id_kategori</th>
                                         <th>Nama_kategori</th>
                                         <th>Aksi</th>
                                     </thead>
@@ -42,7 +41,6 @@
                                 ?>
                                 <tr>
                                     <td><?php echo $no++ ?></td>
-                                    <td><?php echo $k->id_kategori ?></td>
                                     <td><?php echo $k->nama_kategori ?></td>
                                     <td>
                                     <a href="<?= base_url() .'kategori_kelompok/edit'?>/<?= $k->id_kategori ?>" class="btn btn-primary">Edit</a>
