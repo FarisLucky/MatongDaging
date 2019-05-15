@@ -1,0 +1,272 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Transaksi extends CI_Controller {
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('Model_transaksi',"Mtransaksi");
+        checkSession();
+    }
+    
+    public function index()
+    {
+        $active = 'Transaksi';
+        $data['title'] = 'Transaksi';
+        $data['menus'] = $this->rolemenu->getMenus(null,$active);
+        $data['js'] = $this->rolemenu->getMenuJavascript(5); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
+        $data['img'] = getCompanyLogo();
+        $data['konsumen'] = $this->Mtransaksi->getKonsumen();
+        $data['unit'] = $this->Mtransaksi->getUnit(1);
+        $data['type'] = $this->Mtransaksi->getType();
+        $this->pages("transaksi/view_transaksi",$data);
+    }
+
+    public function dataKonsumen()
+    {
+        $data = ['success'=>false];
+        $input = $this->input->post('id_kons');
+        $val = $this->Mtransaksi->getKonsumenId($input);
+        if ($val) {
+            $data['success'] = true;
+            $data['obj'] = $val->row();
+        }
+        else{
+            $data['success'] = false;
+        }
+        $this->output->set_output(json_encode($data));
+    }
+    public function dataUnit()
+    {
+        $data = ['success'=>false];
+        $input = $this->input->post('id_unit');
+        $val = $this->Mtransaksi->getUnitId($input);
+        if ($val) {
+            $data['success'] = true;
+            $data['obj'] = $val->row();
+            $data['harga'] = number_format($data['obj']->harga_unit,2,',','.');
+        }
+        else{
+            $data['success'] = false;
+        }
+        $this->output->set_output(json_encode($data));
+    }
+    public function getHarga()
+    {
+        $data = ['success'=>false];
+        $input = $this->input->post('kesepakatan');
+        $data['ttl_harga'] = $input;
+        return $this->output->set_output(json_encode($data));
+        
+    }
+    public function total_transaksi()
+    {
+        $data = ['success'=>false];
+        $check_tj = $this->input->post('t_j');
+        $val_tj = $this->input->post('val_tj');
+        $ttl_sementara = $this->input->post('sementara');
+        if ($check_tj == "tidak_masuk_harga_jual") {
+            $data['success'] = true;
+            $data['hasil'] = $ttl_sementara;
+        }
+        else{
+            $data['success'] = true;
+            $data['hasil'] = $ttl_sementara - $val_tj ;
+        }
+        return $this->output->set_output(json_encode($data));
+    }
+
+    // Insert Transaksi
+    public function insertTransaksi()
+    {
+        $data = [
+            'success'=>false,
+            'msg'=>[]
+        ];
+        $input = $this->input();
+        if ($input['type_pembayaran'] == 2) {
+            $input['periode_bayar'] = 1;
+            $input['total_bayar_periode'] = str_replace('.','',$this->input->post('txt_ttl_akhir'));
+        }
+        $query = $this->Mtransaksi->tambahTransaksi($input);
+        if ($query) {
+                $id_insert = $this->db->insert_id();
+                $detail = [$this->input->post('txt_nama_tambah'),$this->input->post('txt_volume_tambah'),$this->input->post('txt_satuan_tambah'),$this->input->post('txt_harga_tambah')];
+                $data['detail'] = $this->reArray($detail);
+                // Detail Transaksi
+                if (!empty($data['detail'])) {
+                    $detail_transaksi = [];
+                    foreach ($data['detail'] as $key => $value) {
+                        if (!empty($key)) {
+                            # code...
+                            $detail_transaksi['penambahan'] = $value[0]; 
+                            $detail_transaksi['volume'] = $value[1]; 
+                            $detail_transaksi['satuan'] = $value[2]; 
+                            $detail_transaksi['harga'] = $value[3]; 
+                            $detail_transaksi['transaksi'] = $id_insert; 
+                            $this->Mtransaksi->insertDetail($detail_transaksi);
+                        }
+                    }
+                    $data['success'] = true;
+                    $data['hello'] = "tidak masuk";
+                }
+                // Uang Muka Angsuran 
+                if (!empty($this->input->post('txt_angsuran'))) {
+                    $angsuran = $this->input->post('txt_angsuran');
+                    $data_angsuran = [];
+                    $no= 1;
+                    foreach ($angsuran as $key => $value) {
+                        $data_angsuran['id_transaksi'] = $id_insert;
+                        $data_angsuran['nama_pembayaran'] = 'Angsuran '.$no;
+                        $data_angsuran['total_tagihan'] = $value;
+                        $data_angsuran['tgl_jatuh_tempo'] = $this->input->post('tgl_uang_muka');
+                        $data_angsuran['hutang'] = $value;
+                        $data_angsuran['status'] = 'belum bayar';
+                        $data_angsuran['id_user'] = $this->session->userdata('id_user');
+                        $data_angsuran['id_jenis'] = 2;
+                        $this->Mtransaksi->insertAngsuranUangMuka($data_angsuran);
+                        $no++;
+                    }
+                    $data['success'] = true;
+                }
+
+                // Uang Tanda Jadi 
+                if (!empty($this->input->post('txt_tanda_jadi'))) {
+                    $t_jd = $this->input->post('txt_tanda_jadi');
+                    $data_tj = [];
+                    $unit = $this->Mtransaksi->getNameUnit($this->input->post('select_unit'));
+                    $nama_unit = $unit->nama_unit;
+                    $data_tj['id_transaksi'] = $id_insert;
+                    $data_tj['nama_pembayaran'] = 'Tanda Jadi Unit '.$nama_unit;
+                    $data_tj['total_tagihan'] = $t_jd;
+                    $data_tj['tgl_jatuh_tempo'] = $this->input->post('tgl_tanda_jadi');
+                    $data_tj['hutang'] = $t_jd;
+                    $data_tj['status'] = 'belum bayar';
+                    $data_tj['id_user'] = $this->session->userdata('id_user');
+                    $data_tj['id_jenis'] = 1;
+                    $this->Mtransaksi->insertAngsuranUangMuka($data_tj);
+                    $no++;
+                    $data['success'] = true;
+                }
+
+                //  Periode pembayaran
+                if (!empty($this->input->post('txt_type_pembayaran'))) {
+                    $type = $this->input->post('txt_type_pembayaran');
+                    if ($type == 1 || $type == 3) {
+                        $data_pembayaran = [];
+                        $periode = $this->input->post('periode_bayar');
+                        $total_bayar = str_replace(".","",$this->input->post('total_bayar_periode'));
+                        $no= 1;
+                        for($i = 1; $i <= $periode; $i++) {
+                            $data_pembayaran['id_transaksi'] = $id_insert;
+                            $data_pembayaran['nama_pembayaran'] = 'Cicilan '.$no;
+                            $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['tgl_jatuh_tempo'] = $this->input->post('tgl_pembayaran');
+                            $data_pembayaran['hutang'] = $total_bayar;
+                            $data_pembayaran['status'] = 'belum bayar';
+                            $data_pembayaran['id_user'] = $this->session->userdata('id_user');
+                            $data_pembayaran['id_type_bayar'] = $this->input->post('txt_type_pembayaran');
+                            $data_pembayaran['id_jenis'] = 3;
+                            $this->Mtransaksi->insertPembayaranTransaksi($data_pembayaran);
+                            $no++;
+                        }
+                    }
+                    else{
+                        $data_pembayaran = [];
+                        $periode = 1;
+                        $total_bayar = str_replace(".","",$this->input->post('total_bayar_periode'));
+                        for($i = 1; $i <= $periode; $i++) {
+                            $data_pembayaran['id_transaksi'] = $id_insert;
+                            $data_pembayaran['nama_pembayaran'] = 'Tunai ';
+                            $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['tgl_jatuh_tempo'] = $this->input->post('tgl_pembayaran');
+                            $data_pembayaran['hutang'] = $total_bayar;
+                            $data_pembayaran['status'] = 'belum bayar';
+                            $data_pembayaran['id_user'] = $this->session->userdata('id_user');
+                            $data_pembayaran['id_type_bayar'] = $this->input->post('txt_type_pembayaran');
+                            $data_pembayaran['id_jenis'] = 3;
+                            $this->Mtransaksi->insertPembayaranTransaksi($data_pembayaran);
+                            $no++;
+                        }
+                    }
+                    $data['success'] = true;
+                }
+                $konsumen = $this->Mtransaksi->calonToKonsumen($input['konsumen']);
+                $unit = $this->Mtransaksi->unitToTerjual($input['unit']);
+
+                // Cek Ubah Konsumen dan Unit terjual
+                if ($konsumen == true && $unit == true) {
+                    $data['success'] = true;
+                }else{
+                    $data['success'] = false;
+                }
+            // }else{
+            $data['success'] = false;
+            $data['error'] = "Tidak bisa ditambah";
+        }
+        $this->output->set_output(json_encode($data));
+    }
+      // This function is private. so , anyone cannot to access this function from web based
+    private function pages($core_page,$data){
+        $this->load->view('partials/part_navbar',$data);
+        $this->load->view('partials/part_sidebar',$data);
+        $this->load->view($core_page,$data);
+        $this->load->view('partials/part_footer',$data);
+    }
+    private function validate()
+    {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt_ppjb','No PPJB','trim|required');
+        $this->form_validation->set_rules('select_konsumen','Nama Unit','trim|required');
+        $this->form_validation->set_rules('select_unit','select_unit','trim|required');
+        $this->form_validation->set_rules('txt_kesepakatan','Kesepakatan','trim|required');
+        $this->form_validation->set_rules('txt_total_tambahan','Total Tambahan','trim|required');
+        $this->form_validation->set_rules('txt_tanda_jadi','Tanda Jadi','trim|required');
+        $this->form_validation->set_rules('periode_Um','Total Transaksi','trim|required');
+        $this->form_validation->set_rules('txt_type_pembayaran','Total Transaksi','trim|required');
+        $this->form_validation->set_rules('periode_bayar','Total Transaksi','trim|required');
+        $this->form_validation->set_rules('tgl_tanda_jadi','Tanggal Tanda Jadi','trim|required');
+        $this->form_validation->set_rules('tgl_uang_muka','Tanggal Uang Muka','trim|required');
+        $this->form_validation->set_rules('tgl_pembayaran','Tanggal Pembayaran','trim|required');
+        // $this->form_validation->set_rules('txt_nama_tambahan[]','Tanggal Pembayaran','trim|required');
+        // $this->form_validation->set_rules('txt_volume_tambahan[]','Tanggal Pembayaran','trim|required');
+        // $this->form_validation->set_rules('txt_satuan_tambahan[]','Tanggal Pembayaran','trim|required');
+        // $this->form_validation->set_rules('txt_harga_tambahan[]','Tanggal Pembayaran','trim|required');
+        $this->form_validation->set_error_delimiters('<div class="invalid-feedback">','</div>');
+    }
+    private function input()
+    {
+        return [
+            "no_ppjb"=>$this->input->post('txt_ppjb'),
+            "konsumen"=>$this->input->post('select_konsumen'),
+            "unit"=>$this->input->post('select_unit'),
+            "kesepakatan"=>str_replace('.','',$this->input->post('txt_kesepakatan')),
+            "total_tambahan"=>str_replace('.','',$this->input->post('txt_total_tambahan')),
+            "tanda_jadi"=>str_replace('.','',$this->input->post('txt_tanda_jadi')),
+            "total_transaksi"=>str_replace('.','',$this->input->post('txt_ttl_transaksi')),
+            "periode_uang_muka"=>$this->input->post('periode_Um'),
+            "uang_muka"=>str_replace('.','',$this->input->post('txt_uang_muka')),
+            "total_akhir"=>str_replace('.','',$this->input->post('txt_ttl_akhir')),
+            "type_pembayaran"=>$this->input->post('txt_type_pembayaran'),
+            "periode_bayar"=>$this->input->post('periode_bayar'),
+            "total_bayar_periode"=>str_replace('.','',$this->input->post('total_bayar_periode')),
+            "tgl_tanda_jadi"=>$this->input->post('tgl_tanda_jadi'),
+            "tgl_uang_muka"=>$this->input->post('tgl_uang_muka'),
+            "tgl_pembayaran"=>$this->input->post('tgl_pembayaran'),
+        ];
+    }
+    private function reArray($data) {
+        $uploads = array();
+        foreach($data as $key0=>$value0) {
+            foreach($value0 as $key=>$value) {
+                    $uploads[$key][$key0] = $value;
+            }
+        }
+        // $files = $uploads;
+        return $uploads; // prevent misuse issue
+    }
+}
+
+/* End of file Controllername.php */

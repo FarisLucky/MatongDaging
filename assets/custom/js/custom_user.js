@@ -125,20 +125,16 @@ $(document).ready(function () {
 
     $("#detail_user_content #form_user_properti").submit(function (e) {
         e.preventDefault();
-        if (!$("#properti").is(':checked')) {
-            toastr.remove();
-            notifToastr("error", "Pilih Perumahan");
-            return;
-        }
-        let id = $("#hidden_user").val();
-        let properti = $("#properti").attr("data-id");
-        let ajax = [$(this).attr("action"), $(this).attr("method")];
-        setDataMethod("", ajax, {
-            id_user: id,
-            id_properti: properti
-        }, function (success) {
-            console.log(success);
-            if (success == true) {
+        // if (!$("#properti").is(':checked')) {
+        //     toastr.remove();
+        //     notifToastr("error", "Pilih Perumahan");
+        //     return;
+        // }
+        let form = $(this).serialize();
+        let ajax = [$(this).attr("action"), "post"];
+        console.log(form);
+        setDataMethod("", ajax, form, function (success) {
+            if (success.success == true) {
                 swallSuccess("Berhasil", "Data Disimpan", "success", function () {
                     location.reload();
                 });

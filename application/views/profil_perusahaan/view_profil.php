@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Setting Perusahaan</h4>
-                                <img id="logo_perusahaan" width="50px" src="<?php echo base_url().'assets/uploads/images/profil/user/'.$img->logo_perusahaan ?>" class="float-right" alt="">
+                                <img id="logo_perusahaan" width="50px" src="<?php echo base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="form-group">
                                                         <label>Logo</label>
-                                                        <img id="logo_perusahaan" width="150px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" alt="" >
+                                                        <img id="logo_perusahaan" width="150px" src="<?= base_url().'assets/uploads/images/properti/'.$perusahaan[0]['logo_perusahaan'] ?>" alt="" >
                                                     </div> 
                                                 </div>
                                             </div>  

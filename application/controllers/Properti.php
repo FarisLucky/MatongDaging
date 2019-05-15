@@ -8,15 +8,14 @@ class Properti extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('Model_properti');
-        
+        checkSession();
     }
     
-
     public function index()
     {
-        $active = 'Master Perumahan';
+        $active = 'Properti';
         $data['title'] = 'Properti';
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(5); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
         $data['img'] = getCompanyLogo();
         $this->page('properti/view_properti',$data);
@@ -34,16 +33,16 @@ class Properti extends CI_Controller {
         $no = 1;
         foreach ($fetch_values as $value) {
             if ($value->status != 'publish') {
-                $this->status = '<a href="'.base_url().'properti/detailproperti/'.$value->id_user.'" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Ubah</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_properti" data-id="'.$value->id_user.'">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="nonaktif_data_user" data-id="'.$value->id_user.'">Publish</button>';
+                $this->status = '<a href="'.base_url().'properti/detailproperti/'.$value->id_properti.'" class="btn btn-sm btn-primary mr-1" id="detail_data_properti">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_properti" data-id="'.$value->id_properti.'">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="publish_data_properti" data-id="'.$value->id_properti.'">Publish</button>';
             }else{
-                $this->status = '<a href="'.base_url().'properti/detailproperti/'.$value->id_user.'" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a>';
+                $this->status = '<a href="'.base_url().'properti/detailproperti/'.$value->id_properti.'" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_properti" data-id="'.$value->id_properti.'">Hapus</button>';
             }
             $sub = array();
             $sub[] = strval($no);
             $sub[] = $value->nama_properti;
             $sub[] = $value->luas_tanah;
             $sub[] = $value->rekening;
-            $sub[] = ' <img id="foto_properti" width="70px" src="'.base_url().'assets/uploads/images/properti/'.$value->foto_properti.'" class="" alt="">';
+            $sub[] = '<img id="foto_properti" width="70px" src="'.base_url().'assets/uploads/images/properti/'.$value->foto_properti.'" class="" alt="">';
             $sub[] = $value->alamat;
             $sub[] = $this->status;
             $data[] = $sub;
@@ -59,9 +58,9 @@ class Properti extends CI_Controller {
     }
     public function detailProperti($id)
     {
-        $active = 'Master Perumahan';
+        $active = 'Properti';
         $data['title'] = 'Detail';
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(5); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
         $data['properti'] = $this->Model_properti->getDataProperti($id); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
         $data['img'] = getCompanyLogo();
@@ -72,7 +71,6 @@ class Properti extends CI_Controller {
         $data = [
             "success" => false,
             "title" =>'Update Properti',
-            "error",
             'msg' => [],
         ];
         $this->validate(); //fungsi validate ada dibawah
@@ -149,14 +147,113 @@ class Properti extends CI_Controller {
 
     public function tambah()
     {
-        $active = 'Master Perumahan';
+        $active = 'Properti';
         $data['title'] = 'Tambah';
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(5); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
         $data['img'] = getCompanyLogo();
         $this->page('properti/view_tambah_properti',$data);
     }
+    public function core_tambah() //Core Tambah
+    {
+        $data = [
+            "success" => false,
+            "title" =>'Tambah Properti',
+            'msg' => [],
+        ];
+        $this->validate(); //fungsi validate ada dibawah
+        if ($this->form_validation->run() == false) {
+            foreach ($_POST as $key => $value) {
+                $data['msg'][$key] = form_error($key);
+            }
+        }
+        else{
+            $config['upload_path'] = './assets/uploads/images/properti/';
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['encrypt_name'] = true;
+            $config['max_size']  = '2048';
+            $config['max_width']  = '1024';
+            $config['max_height']  = '768';
+            $this->load->library('upload', $config);
+            $img = $this->reArrayFoto($_FILES['foto']);
+            if (isset($_FILES['foto'])) {
+                foreach ($img as $key => $value) {
+                    $_FILES[$key] = $value;
+                    if ($this->upload->do_upload($key)){
+                        if ($key == "logo") {
+                            $upload = $this->upload->data();
+                            $logo = $upload['file_name'];
+                        }
+                        else if($key == "foto"){
+                            $upload = $this->upload->data();
+                            $foto = $upload['file_name'];
+                        }else{
+                            $no_data ="Foto Tidak Tersedia";
+                        }
+                    }
+                    else{
+                        if ($key == "logo") {
+                            $logo = "";
+                        }
+                        else if($key == "foto"){
+                            $foto = "";
+                        }else{
+                            $logo = "";
+                            $foto = "";
+                        }
+                    }
+                }
+            }
+            $input = $this->input($logo,$foto);
+            $db = $this->Model_properti->insertDataProperti($input);
+            if ($db) {
+                $data['success'] = true;
+                $data['gambar'] = "Berhasil diubah";
+                // $data['redirect'] = redirect('properti');
+            }else{
+                $data['success'] = false;
+                $data['error'] = "Gagal Menambahkan";
+                $data['gambar'] = "gagal Diubah";
+            }
+        }
+        return $this->output->set_output(json_encode($data));
+    }
 
+    public function hapus()
+    {
+        $data = [
+            "success" => false,
+        ];
+        $input = $this->input->post('id_properti');
+        $link = $this->Model_properti->getImage($input);
+        $logo = $link->logo_properti;
+        $foto = $link->foto_properti;
+        $query = $this->Model_properti->hapusData($input);
+        if ($query) {
+            unlink("./assets/uploads/images/properti/".$logo);
+            unlink("./assets/uploads/images/properti/".$foto);
+            $data['success'] = true;
+        }else{
+            $data['success'] = false;
+        }
+        $this->output->set_output(json_encode($data));
+    }
+
+    public function publish()
+    {
+        $data = [
+            "success" => false,
+        ];
+        $input = $this->input->post('id_properti');
+        $query = $this->Model_properti->publishData($input);
+        if ($query) {
+            $data['success'] = true;
+        }else{
+            $data['success'] = false;
+        }
+        $this->output->set_output(json_encode($data));
+    }
+    // function function tambahan
     private function validate()
     {
         
@@ -200,7 +297,7 @@ class Properti extends CI_Controller {
     }
     private function unlinkImg($link)
     {
-        $path = "./assets/uploads/images/profil/user/".$link;
+        $path = "./assets/uploads/images/properti/".$link;
         if (file_exists($path)) {
             unlink($path);
         }

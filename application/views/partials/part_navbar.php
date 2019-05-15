@@ -22,6 +22,8 @@
 <link rel="stylesheet" href="<?= base_url() ?>assets/custom/DataTables/datatables.min.css">
 <!-- Toastr Css -->
 <link rel="stylesheet" href="<?= base_url() ?>assets/custom/toastr/toastr.min.css">
+<!-- Select Css -->
+<link rel="stylesheet" href="<?= base_url() ?>assets/custom/select2/css/select2.min.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="<?= base_url() ?>assets/images/favicon.png" />
 </head>

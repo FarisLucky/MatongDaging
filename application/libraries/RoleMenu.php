@@ -8,7 +8,7 @@ class RoleMenu
     {
         $this->CI=& get_instance();
     }
-    public function getMenus($active_menu = null,$active_sub_menu = null)
+    public function getMenus($active_menu,$active_sub_menu)
     {
         $sql = "select * from tbl_role_menu where id_akses = ?";
         $session = $this->CI->session->userdata('id_akses');
@@ -16,7 +16,7 @@ class RoleMenu
         $html='';
         foreach ($val as $key => $value) {
             $active = ($active_menu == $value->menu) ? $active_menu="active" : $active_menu="";
-            $url = (substr($value->url,0,1) == "#")?$value->url:base_url($value->url);
+            $url = (substr($value->url,0,1) == "#") ? $value->url : base_url($value->url);
             $sub_menu = $this->getSubMenus($value->id_menu,$active_sub_menu,$value->url);
             $html .= '<li class="nav-item '.$active.'">
             <a class="nav-link" '.$sub_menu["collapse"].' href="'.$url.'">
@@ -58,12 +58,12 @@ class RoleMenu
     {
         $this->CI->db->select('javascript');
         $hasil = $this->CI->db->get_where('user_sub_menu',["id_sub"=>$id]);
-        return $hasil->result_array();
+        return $hasil->row_array();
     }
     public function getMenuJavascript($id)
     {
         $this->CI->db->select('javascript');
         $hasil = $this->CI->db->get_where('user_menu',["id_menu"=>$id]);
-        return $hasil->result_array();
+        return $hasil->row_array();
     }
 }
