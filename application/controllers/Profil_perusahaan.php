@@ -15,7 +15,7 @@ class Profil_perusahaan extends CI_Controller
     {
         $active = 'Profil Perusahaan';
         $data['title'] = 'Profil';
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(2);
         $data['perusahaan'] = $this->Mperusahaan->getPerusahaan();
         $data['img'] = getCompanyLogo();
@@ -46,7 +46,7 @@ class Profil_perusahaan extends CI_Controller
             }
         }
         else{
-            $config['upload_path'] = './assets/uploads/images/profil/user/';
+            $config['upload_path'] = './assets/uploads/images/properti/';
             $config['allowed_types'] = 'gif|jpg|png';
             $config['encrypt_name'] = true;
             $config['max_size']  = '2048';
@@ -56,7 +56,7 @@ class Profil_perusahaan extends CI_Controller
             if ($_FILES['image']['name'] != "") {
                 if ($this->upload->do_upload('image')){
                     $link = $this->Mperusahaan->getLogo(3);
-                    $path = "./assets/uploads/images/profil/user/".$link[0]['logo_perusahaan'];
+                    $path = "./assets/uploads/images/properti/".$link[0]['logo_perusahaan'];
                     if (file_exists($path)) {
                         unlink($path);
                     }

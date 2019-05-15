@@ -17,7 +17,7 @@ class Kelola_users extends CI_Controller
     {
         $active = 'Kelola User';
         $data['title'] = 'User';
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(4); //Jangan DIUbah !!
         $data['user'] = $this->Muser->getUser();
         $data['img'] = getCompanyLogo();
@@ -31,13 +31,14 @@ class Kelola_users extends CI_Controller
     {
         $active = 'Kelola User';
         $data['title'] = 'Tambah User';
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(4); //Jangan DIUbah !!
-        $data['akses'] = $this->Muser->getAkses(); //Mengambil data role akses 
-        $this->load->view('partials/part_navbar', $data);
-        $this->load->view('partials/part_sidebar', $data);
-        $this->load->view('kelola_user/view_tambah_user', $data);
-        $this->load->view('partials/part_footer', $data);
+        $data['akses'] = $this->Muser->getAkses(); //Mengambil data role akses
+        $data['img'] = getCompanyLogo();
+        $this->load->view('partials/part_navbar',$data);
+        $this->load->view('partials/part_sidebar',$data);
+        $this->load->view('kelola_user/view_tambah_user',$data);
+        $this->load->view('partials/part_footer',$data);
     }
     public function core_tambah() //Core Tambah
     {
@@ -47,16 +48,16 @@ class Kelola_users extends CI_Controller
             'msg' => [],
         ];
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('txt_nama_user', 'Nama', 'trim|required');
-        $this->form_validation->set_rules('txt_alamat_user', 'Alamat', 'trim|required');
-        $this->form_validation->set_rules('txt_akses_user', 'Hak Akses', 'trim|required');
-        $this->form_validation->set_rules('txt_email_user', 'Email', 'trim|required|valid_email|is_unique[user.Email]');
-        $this->form_validation->set_rules('txt_telp_user', 'Telp', 'trim|required|is_unique[user.no_hp]');
-        $this->form_validation->set_rules('txt_username_user', 'Username', 'trim|required|is_unique[user.username]');
-        $this->form_validation->set_rules('txt_status_user', 'Status', 'trim|required');
-        $this->form_validation->set_rules('txt_password_user', 'Password', 'trim|required');
-        $this->form_validation->set_rules('txt_retype_password', 'Password', 'trim|required|matches[txt_password_user]');
-        $this->form_validation->set_error_delimiters('<div class="invalid-feedback">', '</div>');
+        $this->form_validation->set_rules('txt_nama_user','Nama','trim|required');
+        $this->form_validation->set_rules('txt_alamat_user','Alamat','trim|required');
+        $this->form_validation->set_rules('txt_akses_user','Hak Akses','trim|required');
+        $this->form_validation->set_rules('txt_email_user','Email','trim|required|valid_email|is_unique[user.Email]');
+        $this->form_validation->set_rules('txt_telp_user','Telp','trim|required|max_length[13]|min_length[10]|greater_than[0]|is_unique[user.no_hp]');
+        $this->form_validation->set_rules('txt_username_user','Username','trim|required|is_unique[user.username]');
+        $this->form_validation->set_rules('txt_status_user','Status','trim|required');
+        $this->form_validation->set_rules('txt_password_user','Password','trim|required');
+        $this->form_validation->set_rules('txt_retype_password','Password','trim|required|matches[txt_password_user]');
+        $this->form_validation->set_error_delimiters('<div class="invalid-feedback">','</div>');
         if ($this->form_validation->run() == false) {
             foreach ($_POST as $key => $value) {
                 $data['msg'][$key] = form_error($key);
@@ -175,11 +176,10 @@ class Kelola_users extends CI_Controller
     {
         $active = 'Detail User';
         $data['title'] = 'Detail User';
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(4); //Jangan DIUbah !!
         $data['users'] = $this->Muser->getUserWhereId($id);
         $data['properti'] = $this->Muser->getProperti($id);
-        $data['user_properti'] = $this->Muser->getUserProperti($id);
         $data['img'] = getCompanyLogo();
         $this->load->view('partials/part_navbar', $data);
         $this->load->view('partials/part_sidebar', $data);
@@ -188,18 +188,27 @@ class Kelola_users extends CI_Controller
     }
     public function userProperti() //Menambahkan user assign properti
     {
-        $data = [
-            'id_user' => $this->input->post('id_user'),
-            'id_properti' => $this->input->post('id_properti')
-
+        $send = [
+            'success'=>false
         ];
-        $get = $this->Muser->insertUserProperti($data);
-        if ($get > 0) {
-            $success = true;
-        } else {
-            $success = false;
+        $id = $this->input->post('txt_id');
+        $properti = $this->input->post('user_properti');
+        if (isset($properti)) {
+            $query1 = $this->Muser->deleteAssignProperti($id);
+            foreach ($properti as $key => $value) {
+                // $query1 = $this->Muser->getAssignProperti($id,$value);
+                if ($query1) {
+                    $send['success'] = true;
+                    $get = $this->Muser->insertUserProperti($id,$value);
+                }else{
+                    $send['success'] = false;
+                }
+            }
+        }else{
+            $query1 = $this->Muser->deleteAssignProperti($id);
+            $send['success'] = true;
         }
-        $this->output->set_output(json_encode($success));
+        $this->output->set_output(json_encode($send));
     }
     public function hapus($id) //Menghapus User
     {

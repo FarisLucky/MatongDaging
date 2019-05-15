@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Kelola Properti</h4>
-                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$img->logo_perusahaan ?>" class="float-right" alt="">
+                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <hr>
-                        <form id="form_detail" action="<?= base_url() ?>properti/update" method="post" enctype="multipart/form-data">
+                        <form id="form_tambah" action="<?= base_url() ?>properti" method="post" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-sm-12">
                                     <div class="row">
@@ -58,11 +58,11 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="txt_logo" class="d-flex">logo Properti</label><input type="file" name="img[logo]" multiple id="txt_logo" class="form-control col-sm-4">
+                                                <label for="txt_logo" class="d-flex">logo Properti</label><input type="file" name="foto[logo]" multiple id="txt_logo" class="form-control col-sm-4">
                                                 
                                             </div>
                                             <div class="form-group">
-                                                <label for="txt_foto" class="d-flex">Foto Properti</label><input type="file" name="img[foto]" multiple id="txt_foto" class="form-control col-sm-4">
+                                                <label for="txt_foto" class="d-flex">Foto Properti</label><input type="file" name="foto[foto]" multiple id="txt_foto" class="form-control col-sm-4">
                                             </div>
                                         </div>
                                     </div>                                
@@ -79,8 +79,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <button type="button" id="btn_ubah_properti" class="btn btn-success mr-2">Simpan</button>
-                                <a href="<?= base_url() ?>properti" id="btn_ubah_properti" class="btn btn-dark mr-2">Batal</a>
+                                <button type="submit" id="btn_simpan_properti" class="btn btn-success mr-2">Simpan</button>
+                                <a href="<?= base_url() ?>properti" id="btn_batal_properti" class="btn btn-dark mr-2">Batal</a>
                             </div>  
                         </div>
                         </form>  

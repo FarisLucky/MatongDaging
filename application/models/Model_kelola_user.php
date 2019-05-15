@@ -27,15 +27,10 @@ class Model_kelola_user extends CI_Model {
         $sql = "select id_properti,nama_properti,foto_properti from tbl_properti";
         return $this->db->query($sql)->result();
     }
-    public function insertUserProperti($params)
+    public function insertUserProperti($id_user,$id_properti)
     {
-        $this->db->insert($this->table,['id_properti'=>$params['id_properti'],'id_user'=>$params['id_user']]);
+        $this->db->insert($this->table,['id_properti'=>$id_properti,'id_user'=>$id_user]);
         return $this->db->affected_rows();
-    }
-    public function getUserProperti($id)
-    {
-        $val = $this->db->get_where($this->table,['id_User'=>$id]);
-        return $val->row();
     }
     public function hapus($id)
     {
@@ -51,6 +46,16 @@ class Model_kelola_user extends CI_Model {
     public function getAkses()
     {
         return $this->db->get('user_role')->result();
+    }
+    public function deleteAssignProperti($id)
+    {
+        $result = $this->db->delete($this->table,['id_user'=>$id]);
+        return $this->db->affected_rows();
+    }
+    public function getAssignProperti($id_user,$id_properti)
+    {
+        $result = $this->db->get_where($this->table,['id_properti'=>$id_properti,'id_user'=>$id_user]);
+        return $result->num_rows();
     }
     public function insertUser($input)
     {

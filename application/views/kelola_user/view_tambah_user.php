@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Kelola User</h4>
-                                <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
+                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>
@@ -20,8 +20,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <h5 class="d-inline-block">Detail User</h5>
-                                <div class="badge badge-primary float-right">Marketing</div>
+                                <h5 class="d-inline-block">Tambah User</h5>
                             </div>
                         </div>
                         <hr>
@@ -40,14 +39,14 @@
                                                 <div class="col-sm-6">
                                                     <div class="form-radio form-radio-flat">
                                                         <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="radio_jk" id="radio1">Laki - Laki
+                                                            <input type="radio" class="form-check-input" name="radio_jk" id="radio1" value="laki-laki">Laki - Laki
                                                         </label>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="form-radio form-radio-flat">
                                                         <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="radio_jk" id="radio2">Perempuan
+                                                            <input type="radio" class="form-check-input" name="radio_jk" id="radio2" value="perempuan">Perempuan
                                                         </label>
                                                     </div>
                                                 </div>
@@ -97,11 +96,11 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="txt_username_user">Password</label>
-                                                <input type="password" name="txt_password_user" class="form-control" id="txt_password_user"><div class="mt-1"></div><div class="d-flex flex-row"><input type="checkbox" class="float-left mt-1 mr-1" name="show_pw" id="show_pw"><small>show Password</small></div>
+                                                <input type="password" name="txt_password_user" class="form-control" id="txt_password_user"><div class="mt-1"></div><div class="d-flex flex-row"><input type="checkbox" class="float-left mr-1" name="show_pw" id="show_pw"><label for="show_pw">show Password</label></div>
                                             </div>
                                             <div class="form-group mt-34">
                                                 <label for="txt_username_user">Retype Password</label>
-                                                <input type="password" name="txt_retype_password" class="form-control" id="txt_retype_password"><div class="mt-1"></div><div class="d-flex flex-row"><input type="checkbox" class="float-left mt-1 mr-1" name="show_pw2" id="show_pw2"><small>show Password</small></div>
+                                                <input type="password" name="txt_retype_password" class="form-control" id="txt_retype_password"><div class="mt-1"></div><div class="d-flex flex-row"><input type="checkbox" class="float-left mt-1 mr-1" name="show_pw2" id="show_pw2"><label for="show_pw2">show Password</label></div>
                                             </div>
                                         </div>
                                     </div>
