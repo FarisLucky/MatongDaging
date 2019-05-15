@@ -1,22 +1,22 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Kategori_kelompok extends CI_Controller 
+class Pengeluaran extends CI_Controller 
 {
 	function __construct(){
 	parent::__construct();
 	$this->load->library('form_validation');	
-	$this->load->model('M_kategori_kelompok');	
+	$this->load->model('M_pengeluaran');	
 }
 		public function index()
 	{
-		$active = "kategori_kelompok";
-		$data['kategori_kelompok'] = $this->M_kategori_kelompok->tampil_data()->result();
+		$active = "pengeluaran";
+		$data['pengeluaran'] = $this->M_pengeluaran->tampil_data()->result();
         $data['menus'] = $this->rolemenu->getMenus($active);
         // $data['js'] = $this->rolemenu->getJavascript(4); //Jangan DIUbah !!
         $this->load->view('partials/part_navbar',$data);
         $this->load->view('partials/part_sidebar',$data);
-		$this->load->view('Kategori_kelompok/v_kategori_kelompok',$data);
+		$this->load->view('pengeluaran/v_pengeluaran',$data);
         $this->load->view('partials/part_footer',$data);
        	
 	}
