@@ -6,7 +6,7 @@
                     <div class="card-body p-4">
                         <div class="row">
                             <div class="col-sm-12">
-                                <h4 class="dark txt_title d-inline-block mt-2">Kelola Kategori Kelompok</h4>
+                                <h4 class="dark txt_title d-inline-block mt-2">Kelola RAB Perumahan</h4>
                                 <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
                             </div>
                         </div>
@@ -20,8 +20,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <h5 class="d-inline-block"><i class="fa fa-m"></i>Kategori Kelompok</h5>
-                                <a href="<?= base_url() ?>kategori_kelompok/tambah"class="btn btn-info btn-sm float-right">Tambah</a>
+                                <h5 class="d-inline-block"><i class="fa fa-m"></i>Kelola RAB</h5>
+                                <a href="<?= base_url() ?>kelola_rab_perumahan/tambah"class="btn btn-info btn-sm float-right">Tambah</a>
                             </div>
                         </div>
                         <hr>
@@ -30,21 +30,23 @@
                                 <table class="table table-hover" id="tbl_users">
                                     <thead>
                                         <th>No</th>
-                                        <th>Nama_kategori</th>
+                                        <th>Nama_kelompok</th>
+                                        <th>Id_kategori</th>
                                         <th>Aksi</th>
                                     </thead>
                                     <tbody>
                                         <tr>
                                 <?php 
                                 $no = 1;
-                                foreach($kategori_kelompok as $k){ 
+                                foreach($kelola_rab as $k){ 
                                 ?>
                                 <tr>
                                     <td><?php echo $no++ ?></td>
-                                    <td><?php echo $k->nama_kategori ?></td>
+                                    <td><?php echo $k->nama_kelompok ?></td>
+                                    <td><?php echo $k->id_kategori ?></td>
                                     <td>
-                                    <a href="<?= base_url() .'kategori_kelompok/edit'?>/<?= $k->id_kategori ?>" class="btn btn-primary">Edit</a>
-                                    <a href="<?= base_url() .'kategori_kelompok/hapus'?>/<?= $k->id_kategori ?>" class="btn btn-danger" class="btn btn-danger">Delete</a>
+                                    <a href="<?= base_url() .'kelola_rab_perumahan/edit'?>/<?= $k->id_kelompok ?>" class="btn btn-primary" class="btn btn-primary">Edit</a>
+                                    <a href="<?= base_url() .'kelola_rab_perumahan/hapus'?>/<?= $k->id_kelompok ?>" class="btn btn-danger" class="btn btn-danger">Delete</a>
                                     </td>
 
                                 </tr>
