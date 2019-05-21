@@ -9,9 +9,9 @@ class M_jenis_pembayaran extends CI_Model
         return $this->db->get('jenis_pembayaran');
     }
 
-    public function getSelectionData($id_jns)
+    public function getSelectionData($id)
     {
-        $data = $this->db->get_where('jenis_pembayaran', $id_jns);
+        $data = $this->db->get_where('jenis_pembayaran', ['id_jenis' => $id]);
         return $data->result_array();
     }
 
