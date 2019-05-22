@@ -25,12 +25,12 @@
                             <div class="form-group">
                                 <div class="form-label-group">
                                     <label>Pilih Type ID Card</label>
-                                    <select name="edit_id_type" id="" class="form-control">
+                                    <select name="val_id_type" id="" class="form-control">
                                         <option value="">-- Pilih --</option>
                                         <?php
                                         foreach ($id_type as  $value) {
                                             ?>
-                                            <option value="<?= $value['id_type'] ?>"><?= $value['nama_type'] ?></option>
+                                            <option value="<?= $value['id_type'] ?>"><?= $value['id_type'] ?></option>
                                         <?php
                                     }
                                     ?>
