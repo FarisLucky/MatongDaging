@@ -14,7 +14,6 @@ function swallSuccess(titles, texts, types, success) {
 $(document).ready(function () {
     $("#form_login").submit(function (e) {
         e.preventDefault();
-
         let datas = $(this).serialize();
         $.ajax({
             type: "post",
@@ -38,5 +37,29 @@ $(document).ready(function () {
                 }
             }
         });
+    });
+    $('a#pilih_properti').click(function (e) { 
+        e.preventDefault();
+        let pilih = $("input[name='check_properti']:checked");
+        if (pilih.length == 0) {
+            toastr.remove();
+            toastr.error('Pilih Properti')
+            return;
+        }
+        let value = pilih.val();
+        $.ajax({
+            type: "post",
+            url: "core_auth_properti",
+            data: {value},
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success == true) {
+                    window.location.reload();
+                }
+            }
+        });
+        // if ( < 1) {
+        //     toastr.error('Pilih Perumahan');
+        // }
     });
 });

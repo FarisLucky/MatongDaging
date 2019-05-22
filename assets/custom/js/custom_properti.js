@@ -91,7 +91,6 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (success) {
-                // console.log(success);
                 if (success.success === true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid')
                         .next().remove();

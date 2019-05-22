@@ -13,9 +13,8 @@ class Unit_properti extends CI_Controller {
     
     public function index()
     {
-        $active = 'Unit Properti';
+        $data['menus'] = $this->rolemenu->getMenus();
         $data['title'] = 'Unit Properti';
-        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(6); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
         $data['img'] = getCompanyLogo();
         $this->pages("unit_properti/view_unit",$data);
@@ -27,10 +26,10 @@ class Unit_properti extends CI_Controller {
         $column = "*";
         $tbl = "unit_properti";
         $order = "nama_unit";
-        $column_where = "id_properti";
-        $value_where = "1";
+        $id_properti = $this->session->userdata('id_properti');
+        $column_where = ["id_properti"=>$id_properti];
         $search = ['nama_unit','type','luas_tanah','luas_bangunan','harga_unit','status_unit'];
-        $fetch_values = $this->ssd->makeDataTables($column,$tbl,$search,$order,$column_where,$value_where);
+        $fetch_values = $this->ssd->makeDataTables($column,$tbl,$search,$order,$column_where);
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
@@ -55,7 +54,7 @@ class Unit_properti extends CI_Controller {
         }
         $output = array(
             'draw'=>intval($this->input->post('draw')),
-            'recordsTotal'=>intval($this->ssd->get_all_datas($tbl,$column_where,$value_where)),
+            'recordsTotal'=>intval($this->ssd->get_all_datas($tbl,$column_where)),
             'recordsFiltered'=>intval($this->ssd->get_filtered_datas($column,$tbl,$search,$order)),
             'data'=> $data
         );
@@ -64,18 +63,16 @@ class Unit_properti extends CI_Controller {
 
     public function tambah() //Menampilkan Form Tambah
     {
-        $active = 'Unit Properti';
         $data['title'] = 'Tambah Unit';
-        $data['menus'] = $this->rolemenu->getMenus(null,$active);
+        $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(6); //Jangan DIUbah !!
         $data['img'] = getCompanyLogo();
         $this->pages("unit_properti/view_tambah_unit",$data); 
     }
     public function detail_unit($id) //Menampilkan Form Tambah
     {
-        $active = 'Unit Properti';
         $data['title'] = 'Detail Unit';
-        $data['menus'] = $this->rolemenu->getMenus(null,$active);
+        $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(6); //Jangan DIUbah !!
         $data['img'] = getCompanyLogo();
         $data['unit'] = $this->Munit->getUnitWithId($id);
@@ -96,8 +93,9 @@ class Unit_properti extends CI_Controller {
             }
         }
         else{
-            $jml_unit = $this->Munit->getJumlahUnit(1); 
-            $jml_properti = $this->Munit->getJumlahProperti(1);
+            $id_properti = $this->session->userdata('id_properti');
+            $jml_unit = $this->Munit->getJumlahUnit($id_properti); 
+            $jml_properti = $this->Munit->getJumlahProperti($id_properti);
             $rows_unit = $jml_unit->jumlah;
             $rows_properti = $jml_properti->jumlah;
             if ($rows_unit >= $rows_properti)

@@ -274,7 +274,6 @@ $(document).ready(function () {
             data: form,
             dataType: "JSON",
             success: function (response) {
-                console.log(response);
                 if (response.success == true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid');
                     swallSuccess("Sukses", "Berhasil ditambahkan", "success", function () {

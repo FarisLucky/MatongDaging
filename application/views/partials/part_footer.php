@@ -27,7 +27,6 @@
 <!-- inject:js -->
 <script src="<?= base_url() ?>assets/js/off-canvas.js"></script>
 <script src="<?= base_url() ?>assets/js/misc.js"></script>
-
 <!-- DataTables -->
   <script src="<?= base_url() ?>assets/custom/DataTables/datatables.min.js"></script>
 <!-- Sweet ALert -->

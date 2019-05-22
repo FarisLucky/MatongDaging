@@ -7,6 +7,9 @@ function checkSession()
     if (!isset($_SESSION["login"])) {
         redirect("auth");
     }
+    elseif ((!isset($_SESSION['id_properti'])) && ($_SESSION['id_akses'] != 1)) {
+        redirect("auth/kelompokproperti");
+    }
     elseif (empty($menu)) {
         redirect('dashboard');
     }
@@ -64,4 +67,13 @@ function getProperti($properti,$id)
         $value = "";
     }
     return $value;
+}
+
+
+function addMonths($date,$months) {
+    $orig_day = $date->format("d");
+    $date->modify("+".$months." months");
+    while ($date->format("d") < $orig_day && $date->format("d") < 5) {
+        $date->modify("-1 day");
+    }
 }
