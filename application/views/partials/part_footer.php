@@ -36,10 +36,10 @@
 <script src="<?= base_url() ?>assets/custom/toastr/toastr.min.js"></script>
 <!-- CKEditor -->
 <script src="<?= base_url() ?>assets/custom/ckeditor/ckeditor.js"></script>
-<!-- <script src="<?= base_url() ?>assets/custom/ckeditor/config.js"></script> -->
+<script src="<?= base_url() ?>assets/custom/select2/js/select2.full.min.js"></script>
 <!-- endinject -->
 <!-- End custom js for this page-->
-<script src="<?= base_url().'assets/custom/js/'.$js[0]['javascript'].'.js' ?>"></script>
+<script src="<?= base_url().'assets/custom/js/'.$js['javascript'].'.js' ?>"></script>
 
 </body>
 

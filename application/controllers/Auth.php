@@ -43,6 +43,7 @@ class Auth extends CI_Controller {
             if ($user->num_rows() >0 ) {
                 $rows = $user->row();
                 if (password_verify($input['password'],$rows->password)) {
+                    if ($rows->status_user === 'aktif') {
                     $data['auth'] = "Berhasil Login";
                     $data['success'] = true;
                     $data['redirect'] = "dashboard";
@@ -54,6 +55,11 @@ class Auth extends CI_Controller {
                         'login' => true
                     ];
                     $this->session->set_userdata($session);
+                    }else{
+                        
+                        $data['auth'] = "Akun Anda sedang diNonaktifkan";
+                        $data['success'] = false;
+                    }
                 }
                 else{
                     $data['auth'] = "Password tidak Cocok";

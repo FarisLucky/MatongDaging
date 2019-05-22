@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Kelola User</h4>
-                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$img->logo_perusahaan ?>" class="float-right" alt="">
+                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>
@@ -82,20 +82,24 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-12">
-                                <h6>Silahkan Atur Properti yang akan di gunakan oleh User</h6>
+                                <h6>Silahkan Atur Properti yang akan di Kelola oleh User</h6>
                             </div>
                         </div>
                         <form id="form_user_properti" action="<?= base_url() ?>kelola_users/userproperti" method="post" >
                         <input type="hidden" name="txt_id" id="hidden_user" value="<?= $users->id_user ?>">
                         <div class="row">
-                            <?php foreach ($properti as $key => $value) : ?>
+                        <!-- <?php var_dump($user_properti) ?> -->
+                            <?php foreach ($properti as $key => $prop) : 
+                                    $id = $prop->id_properti;
+                                    $check = getProperti($id,$users->id_user);
+                                ?>
                                 <div class="col-sm-3">
-                                    <img src="<?= base_url() ?>assets/uploads/images/profil/user/try.png" alt="" class="img-rounded img-properti">
+                                    <img src="<?= base_url() ?>assets/uploads/images/properti/<?= $prop->foto_properti ?>" alt="" class="img-rounded img-properti">
                                     <div class="form-group">
                                         <div class="col-sm-12">
                                             <div class="form-check form-check-flat">
                                                 <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input" name="membershipRadios" id="properti" data-id="<?= $value->id_properti ?>" value="" <?php ($user_properti != null) ? ($value->id_properti == $user_properti->id_properti) ? $check = "checked":$check = "":$check=""; echo $check ?>><?php echo $value->nama_properti ?>
+                                                    <input type="checkbox" class="form-check-input" name="user_properti[]" id="user_properti" value="<?= $prop->id_properti ?>" <?php  echo $check ?>><?php echo $prop->nama_properti ?>
                                                 </label>
                                             </div>
                                         </div>

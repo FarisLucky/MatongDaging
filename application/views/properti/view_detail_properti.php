@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Kelola Properti</h4>
-                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$img->logo_perusahaan ?>" class="float-right" alt="">
+                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>

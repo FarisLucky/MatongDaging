@@ -15,7 +15,7 @@ class Dashboard extends CI_Controller {
     {
         $active = 'Dashboard';
         $data['title'] = "Dashboard";
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getMenuJavascript(1);
         $this->load->view('partials/part_navbar',$data);
         $this->load->view('partials/part_sidebar',$data);

@@ -16,24 +16,6 @@ function swallSuccess(titles, texts, types, success) {
     })
 }
 
-function swallQuestion(titles, texts, types, success) {
-    Swal({
-        title: titles,
-        text: texts,
-        type: types,
-        showCancelButton: true,
-        confirmButtonColor: '#a55eea',
-        cancelButtonColor: '#fed330',
-        confirmButtonText: 'Hapus !'
-    }).then((result) => {
-        if (result.value) {
-            if (typeof success == 'function') {
-                success();
-            };
-        }
-    })
-}
-
 function notifToastr(types, text) {
     toastr[types](text);
     toastr.options = {
@@ -57,9 +39,9 @@ function notifToastr(types, text) {
 
 $(document).ready(function () {
 
-    if ($("#tambah_properti").length > 0) {
-        CKEDITOR.replace('txt_spr');
-    }
+    // if ($("#tambah_properti").length > 0) {
+    //     CKEDITOR.replace('txt_spr');
+    // }
     const properti = $('#tbl_properti').DataTable({
         "processing": true,
         "responsive": true,
@@ -100,7 +82,7 @@ $(document).ready(function () {
         e.preventDefault();
         let form = new FormData($(this)[0]);
         let url = $(this).attr('action');
-        console.log(form);
+        // console.log(form);
         $.ajax({
             type: "post",
             url: url,
@@ -109,18 +91,16 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (success) {
-                console.log(success);
+                // console.log(success);
                 if (success.success === true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid')
                         .next().remove();
                     swallSuccess("Berhasil", "Data Disimpan", "success", function () {
                         location.reload();
                     });
+                } else if ((success.success == false) && (success.error)) {
+                    swallSuccess("Gagal Update", success.error, "error", null);
                 } else {
-                    if (success.error != "") {
-                        swallSuccess("Kesalahan", "Kesalahan !", "error");
-                        return;
-                    }
                     $.each(success.msg, function (key, val) {
                         let el = $('#' + key)
                         el.removeClass('is-invalid')
@@ -133,4 +113,106 @@ $(document).ready(function () {
             }
         });
     });
+    $("#form_tambah").on("submit", function (e) {
+        e.preventDefault();
+        let form = new FormData($(this)[0]);
+        let url = $(this).attr('action');
+        // console.log(form);
+        $.ajax({
+            type: "post",
+            url: "core_tambah",
+            data: form,
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            success: function (success) {
+                // console.log(success);
+                if (success.success === true) {
+                    $('input.form-group').removeClass('is-invalid').removeClass('is-valid')
+                        .next().remove();
+                    swallSuccess("Berhasil", "Data Disimpan", "success", function () {
+                        window.location.href = url;
+                    });
+                } else if ((success.success == false) && (success.error)) {
+                    swallSuccess("Gagal Update", success.error, "error", null);
+                } else {
+                    $.each(success.msg, function (key, val) {
+                        let el = $('#' + key)
+                        el.removeClass('is-invalid')
+                            .addClass(val.length > 0 ? 'is-invalid' : 'is-valid')
+                            .next().remove();
+                        el.after(val);
+                        return;
+                    });
+                }
+            }
+        });
+    });
+    $("table#tbl_properti").on("click", "#hapus_data_properti", function (e) {
+        e.preventDefault();
+        Swal({
+            title: "Hapus ?",
+            text: "Apakah ingin dihapus ?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#a55eea',
+            cancelButtonColor: '#fed330',
+            confirmButtonText: 'Hapus !'
+        }).then((result) => {
+            if (result.value) {
+                let id = $(this).attr('data-id');
+                $.ajax({
+                    type: "post",
+                    url: "properti/hapus",
+                    data: {
+                        id_properti: id
+                    },
+                    dataType: "JSON",
+                    success: function (success) {
+                        if (success.success == "false") {
+                            swallSuccess("Gagal Dihapus", success.error, "error", null);
+                        } else {
+                            swallSuccess("Berhasil", "Berhasil Dihapus", "success", function () {
+                                properti.ajax.reload();
+                            });
+                        }
+                    }
+                });
+            }
+        })
+    });
+
+    $("table#tbl_properti").on("click", "#publish_data_properti", function (e) {
+        e.preventDefault();
+        Swal({
+            title: "Publish ?",
+            text: "Apakah ingin dipublish ?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#a55eea',
+            cancelButtonColor: '#fed330',
+            confirmButtonText: 'publish !'
+        }).then((result) => {
+            if (result.value) {
+                let id = $(this).attr('data-id');
+                $.ajax({
+                    type: "post",
+                    url: "properti/publish",
+                    data: {
+                        id_properti: id
+                    },
+                    dataType: "JSON",
+                    success: function (success) {
+                        if (success.success == "false") {
+                            swallSuccess("Gagal Dipublish", success.error, "error", null);
+                        } else {
+                            swallSuccess("Berhasil", "Berhasil Dipublish", "success", function () {
+                                properti.ajax.reload();
+                            });
+                        }
+                    }
+                });
+            }
+        })
+    })
 });
