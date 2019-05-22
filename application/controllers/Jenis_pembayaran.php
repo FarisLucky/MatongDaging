@@ -7,6 +7,7 @@ class Jenis_pembayaran extends CI_Controller
     {
         parent::__construct();
         $this->load->model('M_jenis_pembayaran');
+        $this->load->library('session');
     }
 
     public function index()
@@ -26,10 +27,22 @@ class Jenis_pembayaran extends CI_Controller
         $active = 'Edit Jenis Pembayaran';
         $data['title'] = 'Edit Jenis Pembayaran';
         $data['menus'] = $this->rolemenu->getMenus($active);
-        $data['jenispembayaran'] = $this->M_jenis_pembayaran->getSelectionData(['id_jenis', $id]); //id_jenis itu field databasenya trus $id itu yang di deket edit itu, trus jenis_pembayaran itu variabel yang harus sama kaya isi value yang di view
+        $data['jenispembayaran'] = $this->M_jenis_pembayaran->getSelectionData($id); //id_jenis itu field databasenya trus $id itu yang di deket edit itu, trus jenispembayaran itu variabel yang harus sama kaya isi value yang di view
         $this->load->view('partials/part_navbar', $data);
         $this->load->view('partials/part_sidebar', $data);
         $this->load->view('jenis_pembayaran/v_edit_jenispembayaran', $data);
         $this->load->view('partials/part_footer', $data);
+    }
+
+    public function coreperbarui()
+    {
+        $post = [
+            'id_jenis' => $this->input->post('edit_id_jenis', true),
+            'jenis_pembayaran' => $this->input->post('edit_jenis_pembayaran', true)
+        ];
+        $this->M_jenis_pembayaran->updateDataProduk($post);
+        //alert 
+        $this->session->set_flashdata('success', 'Anda Berhasil Mengubah Data');
+        redirect('jenis_pembayaran');
     }
 }
