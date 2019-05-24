@@ -81,14 +81,14 @@ $(document).ready(function () {
                     swallSuccess("Berhasil", "Data Disimpan", "success", function () {
                         location.reload()
                     });
-                } else if ((success.success == false) && (success.error.length > 0)) {
+                } else if ((success.success == false) && (success.error > 0)) {
                     swallSuccess("Gagal Update", success.error, "error", null);
                 } else {
                     $.each(success.msg, function (key, val) {
                         let el = $('#' + key)
                         el.removeClass('is-invalid')
                             .addClass(val.length > 0 ? 'is-invalid' : 'is-valid')
-                            .next().remove();
+                            .next('.invalid-feedback').remove();
                         el.after(val);
                         return;
                     });

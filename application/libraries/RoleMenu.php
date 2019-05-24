@@ -8,20 +8,19 @@ class RoleMenu
     {
         $this->CI = &get_instance();
     }
-    public function getMenus($active_menu, $active_sub_menu)
+    public function getMenus($active_menu = null,$active_sub_menu = null)
     {
         $sql = "select * from tbl_role_menu where id_akses = ?";
         $session = $this->CI->session->userdata('id_akses');
         $val = $this->CI->db->query($sql, $session)->result();
         $html = '';
         foreach ($val as $key => $value) {
-            $active = ($active_menu == $value->menu) ? $active_menu = "active" : $active_menu = "";
-            $url = (substr($value->url, 0, 1) == "#") ? $value->url : base_url($value->url);
-            $sub_menu = $this->getSubMenus($value->id_menu, $active_sub_menu, $value->url);
-            $html .= '<li class="nav-item ' . $active . '">
-            <a class="nav-link" ' . $sub_menu["collapse"] . ' href="' . $url . '">
-                <i class="' . $value->icon . '"></i>
-                <span class="menu-title">' . $value->menu . '</span>';
+            $url = (substr($value->url,0,1) == "#") ? $value->url : base_url($value->url);
+            $sub_menu = $this->getSubMenus($value->id_menu,$value->url);
+            $html .= '<li class="nav-item">
+            <a class="nav-link" '.$sub_menu["collapse"].' href="'.$url.'">
+                <i class="'.$value->icon.'"></i>
+                <span class="menu-title">'.$value->menu.'</span>';
             $html .= $sub_menu["icons"];
             $html .= '</a>';
             $html .= $sub_menu["html"];
@@ -29,7 +28,7 @@ class RoleMenu
         }
         return $html;
     }
-    public function getSubMenus($id, $active_menu, $url_menu)
+    public function getSubMenus($id,$url_menu)
     {
         $data_array = [];
         $val = $this->CI->db->get_where('user_sub_menu', ['id_menu' => $id]);
@@ -41,8 +40,9 @@ class RoleMenu
             $html .= '<div class="collapse" id="' . ltrim($url_menu, "#") . '">
             <ul class="nav flex-column sub-menu">';
             foreach ($rows as $key => $value) {
-                $active_sub = ($value->nama_sub == $active_menu) ? $active_menu = 'active' : $active_menu = '';
-                $html .= '<li class="nav-item"><a class="nav-link ' . $active_sub . '" href="' . base_url($value->sub_url) . '"> ' . $value->nama_sub . ' </a>
+                // $active_sub = "";
+                // ($active_sub_menu == $value->name_actived) ? $active_sub = 'hai' : $active_sub;
+                $html .= '<li class="nav-item"><a class="nav-link " href="'.base_url($value->sub_url).'"> '.$value->nama_sub.' </a>
                     </li>';
             }
             $html .= '</ul>
@@ -53,7 +53,10 @@ class RoleMenu
             $li = '';
             $active_sub = '';
         }
-        $data_array = ['collapse' => $collap, 'html' => $html, 'icons' => $li, 'active_sub' => $active_sub];
+        else {
+            $html = '';$collap='';$li='';;
+        }
+        $data_array = ['collapse'=>$collap,'html'=>$html,'icons'=>$li];
         return $data_array;
     }
     public function getJavascript($id)

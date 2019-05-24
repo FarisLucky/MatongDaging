@@ -13,9 +13,8 @@ class Profil_perusahaan extends CI_Controller
     
     public function index()
     {
-        $active = 'Profil Perusahaan';
         $data['title'] = 'Profil';
-        $data['menus'] = $this->rolemenu->getMenus(null,$active);
+        $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(2);
         $data['perusahaan'] = $this->Mperusahaan->getPerusahaan();
         $data['img'] = getCompanyLogo();

@@ -34,23 +34,23 @@
                                                 <input type="text" name="txt_nama_user" class="form-control" id="txt_nama_user">
                                             </div>
                                             <div class="form-group">
-                                            <label class="col-form-label">Jenis Kelamin</label>
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="form-radio form-radio-flat">
-                                                        <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="radio_jk" id="radio1" value="laki-laki">Laki - Laki
-                                                        </label>
+                                                <label class="col-form-label">Jenis Kelamin</label>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-radio">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="radio_jk" id="radio1" value="laki-laki">Laki Laki
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-radio">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="custom-control-input" name="radio_jk" id="radio2" value="perempuan">Perempuan
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <div class="form-radio form-radio-flat">
-                                                        <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="radio_jk" id="radio2" value="perempuan">Perempuan
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="txt_file">Photo</label>

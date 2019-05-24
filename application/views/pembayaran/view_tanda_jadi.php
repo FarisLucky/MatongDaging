@@ -26,10 +26,10 @@
                                         <th>Nama Perumahan</th>
                                         <th>Nama Rumah</th>
                                         <th>Tanggal Tanda Jadi</th>
+                                        <th>Status</th>
                                         <th>Tanda Jadi</th>
                                         <th>Total Kesepakatan</th>
                                         <th>Total Transaksi</th>
-                                        <th>Status Transaksi</th>
                                         <th>Aksi</th>
                                     </thead>
                                 </table>                                 
@@ -40,4 +40,53 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_tanda_jadi">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tanda Jadi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="" method="post" class="form_tanda_jadi" enctype="multipart/formdata">
+      <input type="hidden" name="input_hidden">
+      <div class="modal-body">
+        <div class="row m-3">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="">Tanda Jadi</label>
+                    <input type="text" class="form-control tanda_jadi" name="tanda_jadi" disabled>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="">Bayar</label>
+                    <input type="text" class="form-control" name="bayar" id="bayar">
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="">Tanggal</label>
+                    <input type="date" class="form-control" name="tgl">
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="">Upload Bukti</label>
+                    <input type="file" class="form-control" name="upload">
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
 </div>
