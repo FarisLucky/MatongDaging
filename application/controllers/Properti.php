@@ -13,9 +13,8 @@ class Properti extends CI_Controller {
     
     public function index()
     {
-        $active = 'Properti';
         $data['title'] = 'Properti';
-        $data['menus'] = $this->rolemenu->getMenus(null,$active);
+        $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(5); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
         $data['img'] = getCompanyLogo();
         $this->page('properti/view_properti',$data);
@@ -58,9 +57,8 @@ class Properti extends CI_Controller {
     }
     public function detailProperti($id)
     {
-        $active = 'Properti';
+        $data['menus'] = $this->rolemenu->getMenus();
         $data['title'] = 'Detail';
-        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(5); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
         $data['properti'] = $this->Model_properti->getDataProperti($id); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
         $data['img'] = getCompanyLogo();
@@ -147,9 +145,8 @@ class Properti extends CI_Controller {
 
     public function tambah()
     {
-        $active = 'Properti';
+        $data['menus'] = $this->rolemenu->getMenus();
         $data['title'] = 'Tambah';
-        $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(5); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
         $data['img'] = getCompanyLogo();
         $this->page('properti/view_tambah_properti',$data);

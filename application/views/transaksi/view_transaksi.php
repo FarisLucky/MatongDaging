@@ -304,19 +304,19 @@
                         <div class="row">
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label for="txt_type_pembayaran">Tanggal Tanda Jadi</label>
+                                    <label for="txt_type_pembayaran">Perkiraan Bayar Tanda Jadi</label>
                                     <input type="date" class="form-control" name="tgl_tanda_jadi" id="tgl_tanda_jadi">
                                 </div> 
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label for="txt_type_pembayaran">Tanggal Uang Muka</label>
+                                    <label for="txt_type_pembayaran">Perkiraan Bayar Uang Muka</label>
                                     <input type="date" class="form-control" name="tgl_uang_muka" id="tgl_uang_muka">
                                 </div> 
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label for="txt_type_pembayaran">Tanggal Pembayaran</label>
+                                    <label for="txt_type_pembayaran">Perkiraan Bayar Cicilan</label>
                                     <input type="date" class="form-control" name="tgl_pembayaran" id="tgl_pembayaran">
                                 </div> 
                             </div>

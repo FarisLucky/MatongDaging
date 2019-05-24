@@ -53,6 +53,17 @@ $route['default_controller'] = 'Dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['pembayaran/uangmuka/kelola/(:num)'] = 'pembayaran/kelola_um/$1';
+$route['pembayaran/uangmuka/bayar'] = 'pembayaran/uang_muka_modal';
+$route['pembayaran/uangmuka/submitbayar'] = 'pembayaran/core_uang_muka';
+$route['pembayaran/transaksi/bayar/(:num)'] = 'pembayaran/bayar_transaksi/$1';
+$route['pembayaran/transaksi/bayar'] = 'pembayaran/transaksi_modal';
+$route['pembayaran/datac'] = 'pembayaran/data_transaksi';
+$route['pembayaran/transaksi/submitbayar'] = 'pembayaran/core_cicilan';
+$route['approve/transaksi/detail/(:num)'] = 'approve/detail/$1';
+
+// Auth Login
+$route['auth/kelompokproperti'] = 'auth/auth_properti';
 // $route['setting/profilperusahaan'] = 'Profil_perusahaan'; //Route Perumahan
 // $route['setting/user'] = 'Kelola_users'; //Route User
 // $route['setting/datauser'] = 'Kelola_users/datausers'; //Route user

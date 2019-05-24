@@ -13,6 +13,7 @@
   <!-- endinject -->
   <!-- plugin css for this page -->
   <link rel="stylesheet" href="<?= base_url() ?>assets/vendors/iconfonts/font-awesome/css/font-awesome.css">
+  <link rel="stylesheet" href="<?= base_url() ?>assets/vendors/icheck/skins/all.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css">

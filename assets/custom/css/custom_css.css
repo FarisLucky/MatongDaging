@@ -55,6 +55,29 @@ hr {
     font-size: 17px!important;
     font-weight: 400;
 }
+
+.ttl_um{
+    display: inline-block;
+    margin-bottom: 30px;
+    padding: 0px 4px 5px 4px;
+    border-bottom: 1.7px solid #7f8c8d;
+}
+.dtr-title,.dtr-data{
+    padding-right: 15px!important;
+}
+.kh-title{
+    font-size: 15px;
+    padding-bottom: 3px;
+    border-bottom: 1.7px solid #7f8c8d;
+    font-weight: 500;
+}
+.img-properti-auth{
+    max-width: 150px!important;
+}
+.auth_title{
+    font-size: 14px!important;
+    font-weight: 600;
+}
 /* table.dataTable tbody td {
     width: 100%;
     white-space: pre-wrap;
