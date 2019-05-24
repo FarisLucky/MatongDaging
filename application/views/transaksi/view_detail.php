@@ -1,6 +1,5 @@
-<div class="content-wrapper" id="tambah_property">
+<div class="content-wrapper" id="detail_property">
     <div class="container">
-        <form id="form_transaksi" action="<?= base_url() ?>transaksi" method="post">
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
@@ -12,11 +11,11 @@
                             <div class="col-sm-4 pt-2">
                                 <div class="form-group">
                                 <label for="">No PPJB</label>
-                                    <input type="text" class="form-control" name="txt_ppjb" id="txt_ppjb" placeholder="Masukkan PPJB">
+                                    <input type="text" class="form-control" name="txt_ppjb" id="txt_ppjb" value="<?= $transaksi->no_ppjb ?>" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-4 p-4">
-                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
+                                <a href="<?= base_url() ?>transaksi" id="btn_batal_properti" class="btn mr-2 float-right d-block text-info"><i class="fa fa-arrow-left"></i>Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -37,36 +36,31 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="select_konsumen">Pilih Konsumen</label>
-                                    <select name="select_konsumen" class="form-control p-2" id="select_konsumen">
-                                        <option value="">Pilih Konsumen</option>
-                                        <?php foreach ($konsumen as $key => $value) : ?>
-                                            <option value="<?= $value->id_konsumen ?>"><?= $value->nama_konsumen ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <input type="text" name="nama_konsumen" class="form-control" value="<?= $konsumen->nama_konsumen ?>" readonly>
                                 </div>    
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="txt_card">Card</label>
-                                    <input type="text" name="txt_card" class="form-control" id="txt_card" disabled>
+                                    <input type="text" name="txt_card" class="form-control" value="<?= $konsumen->id_card ?>" readonly>
                                 </div>        
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="txt_telp">Telp</label>
-                                    <input type="text" name="txt_telp" class="form-control" id="txt_telp" disabled>
+                                    <input type="text" name="txt_telp" class="form-control" value="<?= $konsumen->telp ?>" readonly>
                                 </div> 
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="txt_email">Email</label>
-                                    <textarea class="form-control" name="txt_email" id="txt_email" rows="3" disabled></textarea>
+                                    <textarea class="form-control" name="txt_email" rows="3" readonly><?= $konsumen->email ?></textarea>
                                 </div>  
                             </div>
                             <div class="col-sm-8">
                                 <div class="form-group">
                                     <label for="txt_alamat">Alamat</label>
-                                    <textarea class="form-control" name="txt_alamat" id="txt_alamat" rows="3" disabled></textarea>
+                                    <textarea class="form-control" name="txt_alamat" rows="3" readonly><?= $konsumen->alamat ?></textarea>
                                 </div> 
                             </div>
                         </div>
@@ -88,42 +82,31 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="select_unit">Pilih Unit</label>
-                                    <select name="select_unit" class="form-control p-2" id="select_unit">
-                                        <option value="">Unit Properti</option>
-                                        <?php foreach ($unit as $key => $value) : ?>
-                                            <option value="<?= $value->id_unit ?>"><?= $value->nama_unit?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <input type="text" name="nama_unit" class="form-control" value="<?= $unit->nama_unit ?>" readonly>
                                 </div>         
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="txti_nama">Properti</label>
-                                    <input type="text" name="txt_properti" class="form-control" id="txt_properti" disabled>
-                                </div>   
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_type">Type Unit</label>
-                                    <input type="text" name="txt_type" class="form-control" id="txt_type" disabled>
+                                    <input type="text" name="txt_type" class="form-control" value="<?= $unit->type ?>" disabled>
                                 </div> 
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_bangunan">Luas Bangunan</label>
-                                    <input type="text" name="txt_bangunan" class="form-control" id="txt_bangunan" disabled>
+                                    <input type="text" name="txt_bangunan" class="form-control" value="<?= $unit->luas_bangunan ?>" disabled>
                                 </div> 
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_bangunan">Luas Tanah</label>
-                                    <input type="text" name="txt_tanah" class="form-control" id="txt_tanah" disabled>
+                                    <input type="text" name="txt_tanah" class="form-control" value="<?= $unit->luas_tanah ?>" disabled>
                                 </div> 
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_harga">Harga</label>
-                                    <input type="text" name="txt_harga" class="form-control" id="txt_harga" value="<?= number_format(0,2,',','.') ?>" disabled>
+                                    <input type="text" name="txt_harga" class="form-control" id="txt_harga" value="<?= number_format($unit->harga_unit,2,',','.') ?>" disabled>
                                 </div> 
                             </div>
                         </div>
@@ -133,7 +116,7 @@
                                 <div class="form-group row">
                                     <label for="txt_nama_tambah" class="col-sm-5 col-form-label f-29">Kesepakatan Harga</label>
                                     <div class="col-sm-7">
-                                    <input type="text" name="txt_kesepakatan" class="form-control" id="txt_kesepakatan">
+                                        <input type="text" name="txt_kesepakatan" class="form-control" value="<?= $transaksi->total_kesepakatan ?>" readonly>
                                     <small class="form-text text-danger">* digunakan untuk mengecek total harga</small>
                                     </div>
                                 </div> 
@@ -150,55 +133,53 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block">Data Tambahan</h5>
-                                <button type="button" class="btn btn-sm btn-primary float-right" id="tambah_form">Tambah</button>
                             </div>
                         </div>
                         <hr>
                         <div class="form-clone">
+                            <?php if (!empty($detail_transaksi)) {
+                                foreach ($detail_transaksi as $key => $value) { ?> 
                             <div class="form-tambah">
                                 <small class="tambah_txt">Penambahan</small>
-                                <button type="button" class="btn btn-sm btn-danger float-right" id="hapus_form">Hapus</button>
                                 <div class="row mt-2">
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label for="txt_nama_tambah">Nama</label>
-                                            <input type="text" name="txt_nama_tambah[]" class="form-control" id="txt_nama_tambah">
+                                            <input type="text" name="txt_nama_tambah[]" class="form-control" value="<?= $value->penambahan ?>" readonly>
                                         </div>   
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label for="txt_volume_tambah">Volume</label>
-                                            <input type="number" name="txt_volume_tambah[]" class="form-control" id="txt_volume_tambah">
+                                            <input type="number" name="txt_volume_tambah[]" class="form-control" value="<?= $value->volume ?>" readonly>
                                         </div> 
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label for="txt_satuan_tambah">Satuan</label>
-                                            <input type="text" name="txt_satuan_tambah[]" class="form-control" id="txt_satuan_tambah">
+                                            <input type="text" name="txt_satuan_tambah[]" class="form-control" value="<?= $value->satuan ?>" readonly>
                                         </div> 
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label for="txt_harga_tambah">Harga per M2</label>
-                                            <input type="text" name="txt_harga_tambah[]" class="form-control" id="txt_harga_tambah">
+                                            <input type="text" name="txt_harga_tambah[]" class="form-control" value="<?= $value->harga ?>" readonly>
                                         </div> 
                                     </div>
                                 </div>
                             </div>
+                            <?php } }else{ ?>
+                            <h4 class="text-center">Tidak Ada Tambahan</h4>
+                            <?php } ?>
                         </div>
                         <hr>
                         <div class="row justify-content-end">
-                            <!-- <div class="col-sm-2"> -->    
-                            <!-- </div> -->
                             <div class="col-sm-4">
                                 <div class="row">
-                                    <div class="col-sm-2 pt-4">
-                                        <button type="button" class="btn btn-sm btn-info btn-kunci"><i class="mdi mdi-lock-outline"></i></button>     
-                                    </div>
                                     <div class="col-sm-10">
                                         <div class="form-group">
                                             <label for="txt_total">Total Tambahan</label>
-                                            <input type="text" name="txt_total_tambahan" class="form-control" id="txt_total_tambahan" value="0" readonly>
+                                            <input type="text" name="txt_total_tambahan" class="form-control" value="<?= $transaksi->total_tambahan ?>" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -222,34 +203,19 @@
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_tanda_jadi">Tanda Jadi</label>
-                                    <input type="text" name="txt_tanda_jadi" class="form-control" id="txt_tanda_jadi">
-                                </div>
-                                <div class="form-radio form-radio-flat">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input btn-check" name="radio_tj" id="radio2" value="tidak_masuk_harga_jual">Tidak masuk harga jual
-                                    </label>
-                                </div>
-                                <div class="form-radio form-radio-flat">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input btn-check" name="radio_tj" id="radio1" value="masuk_harga_jual">Masuk harga jual
-                                    </label>
+                                    <input type="text" name="txt_tanda_jadi" class="form-control" value="<?= $transaksi->tanda_jadi ?>" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_ttl_transaksi">Total Transaksi</label>
-                                    <input type="text" name="txt_ttl_transaksi" class="form-control" id="txt_ttl_transaksi" Readonly>
+                                    <input type="text" name="txt_ttl_transaksi" class="form-control"value="<?= $transaksi->total_transaksi ?>" Readonly>
                                 </div> 
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="periode_Um">Periode Uang Muka</label>
-                                    <select name="periode_Um" id="periode_Um" class="form-control form-control-sm">
-                                        <option value="">Pilih Periode</option>
-                                        <?php $p = 36; for ($i=1; $i < $p ; $i++) { ?>
-                                            <option value="<?= $i ?>"><?= $i ?></option>
-                                        <?php } ?>
-                                    </select>
+                                    <input type="text" name="ttl_periode" value="<?= $transaksi->periode_uang_muka ?>" class="form-control" readonly>
                                 </div> 
                             </div>
                         </div>
@@ -258,7 +224,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group row">
                                     <div class="col-sm-7">
-                                        <input type="text" name="txt_uang_muka" class="form-control" id="txt_uang_muka" Readonly>
+                                        <input type="text" name="txt_uang_muka" class="form-control" value="<?= $transaksi->uang_muka ?>" Readonly>
                                     </div>
                                     <label for="txt_uang_muka" class="col-sm-5 f-29 col-form-label">Uang Muka</label>
                                 </div> 
@@ -267,7 +233,7 @@
                                 <div class="form-group row">
                                     <label for="txt_nama_tambah" class="col-sm-5 col-form-label f-29 border-left border-dark">Total Akhir</label>
                                     <div class="col-sm-7">
-                                    <input type="text" name="txt_ttl_akhir" class="form-control" id="txt_ttl_akhir" Readonly>
+                                        <input type="text" name="txt_ttl_akhir" class="form-control" value="<?= $transaksi->total_akhir ?>" Readonly>
                                     </div>
                                 </div> 
                             </div>
@@ -288,46 +254,36 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-sm-3 bayar">
+                            <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label for="txt_type_pembayaran">Type Pembayaran</label>
-                                    <select name="txt_type_pembayaran" id="txt_type_pembayaran" class="form-control form-control-sm">
-                                        <option value="">Pilih Type</option>
-                                        <?php foreach ($type as $key => $value): ?>
-                                            <option value="<?= $value['id_type_bayar'] ?>"><?= $value['type_bayar'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <label for="type_pembayaran">Type Pembayaran</label>
+                                    <input type="text" class="form-control" value="<?= $transaksi->type_pembayaran ?>" readonly>
                                 </div> 
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_type_pembayaran">Perkiraan Bayar Tanda Jadi</label>
-                                    <input type="date" class="form-control" name="tgl_tanda_jadi" id="tgl_tanda_jadi">
+                                    <input type="date" class="form-control" name="tgl_tanda_jadi" value="<?= $transaksi->tempo_tanda_jadi ?>" readonly>
                                 </div> 
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_type_pembayaran">Perkiraan Bayar Uang Muka</label>
-                                    <input type="date" class="form-control" name="tgl_uang_muka" id="tgl_uang_muka">
+                                    <input type="date" class="form-control" name="tgl_uang_muka" value="<?= $transaksi->tempo_uang_muka ?>" readonly>
                                 </div> 
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_type_pembayaran">Perkiraan Bayar Cicilan</label>
-                                    <input type="date" class="form-control" name="tgl_pembayaran" id="tgl_pembayaran">
+                                    <input type="date" class="form-control" name="tgl_pembayaran" value="<?= $transaksi->tempo_bayar ?>" readonly>
                                 </div> 
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <button type="submit" id="btn_simpan_properti" class="btn btn-success mr-2">Simpan</button>
-                                <a href="<?= base_url() ?>transaksi" class="btn btn-dark mr-2">Batal</a>
+                                <a href="<?= base_url() ?>transaksi" id="btn_batal_properti" class="btn btn-dark mr-2 float-right">Kembali</a>
                             </div>  
                         </div>
-                        </form>  
                     </div>
                 </div>
             </div>

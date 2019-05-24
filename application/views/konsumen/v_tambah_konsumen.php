@@ -1,3 +1,5 @@
+<div class="content-wrapper">
+<div class="container">
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
@@ -19,22 +21,25 @@
                     <div class="col-sm-12">
                     </div>
                 </div>
-                <form action="<?php echo base_url() . 'index.php/konsumen/tambah_data'; ?>" method="post">
+                <form action="<?php echo base_url() . 'index.php/konsumen/tambah_data'; ?>" method="post" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-label-group">
                                     <label>Pilih Type ID Card</label>
-                                    <select name="val_id_type" id="" class="form-control">
+                                    <select name="val_id_type" id="" class="form-control <?= form_error('val_id_card') ? 'is-invalid' : '' ?>">
                                         <option value="">-- Pilih --</option>
                                         <?php
                                         foreach ($id_type as  $value) {
                                             ?>
-                                            <option value="<?= $value['id_type'] ?>"><?= $value['id_type'] ?></option>
+                                            <option value="<?= $value['id_type'] ?>"><?= $value['nama_type'] ?></option>
                                         <?php
                                     }
                                     ?>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        <?php echo form_error('val_id_card') ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +71,7 @@
                             <div class="form-group">
                                 <div class="form-label-group">
                                     <label for="inpt_alamat">Alamat</label>
-                                    <input type="text" id="inpt_alamat" name="val_alamat" value="<?= set_value('val_alamat') ?>" placeholder="Masukan Alamat" class="form-control <?= form_error('val_alamat') ? 'is-invalid' : '' ?> ">
+                                    <textarea type="text" id="inpt_alamat" name="val_alamat" placeholder="Masukan Alamat" class="form-control <?= form_error('val_alamat') ? 'is-invalid' : '' ?> "><?= set_value('val_alamat') ?></textarea>
                                     <div class="invalid-feedback">
                                         <?php echo form_error('val_alamat') ?>
                                     </div>
@@ -127,7 +132,7 @@
                             <div class="form-group">
                                 <div class="form-label-group">
                                     <label for="inpt_alamat_kantor">Alamat Kantor</label>
-                                    <input type="text" id="inpt_alamat_kantor" name="val_alamat_kantor" value="<?= set_value('val_alamat_kantor') ?>" placeholder="Masukan Alamat Kantor Anda " class="form-control <?= form_error('val_alamat_kantor') ? 'is-invalid' : '' ?> ">
+                                    <textarea type="text" id="inpt_alamat_kantor" name="val_alamat_kantor" placeholder="Masukan Alamat Kantor Anda " class="form-control <?= form_error('val_alamat_kantor') ? 'is-invalid' : '' ?> "><?= set_value('val_alamat_kantor') ?></textarea>
                                     <div class="invalid-feedback">
                                         <?php echo form_error('val_alamat_kantor') ?>
                                     </div>
@@ -146,32 +151,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="form-label-group">
-                            <label>Pilih Status Konsumen</label>
-                            <select name="val_status_konsumen" id="" class="form-control">
-                                <option value="">-- Pilih --</option>
-                                <option value="calon konsumen">Calon Konsumen</option>
-                                <option value="konsumen">Konsumen</option>
-                            </select>
-                        </div>
-                    </div>
 
                     <!-- foto -->
                     <div class="form-group">
                         <label for="name">Foto Ktp</label>
-                        <input class="form-control-file <?php echo form_error('price') ? 'is-invalid' : '' ?>" type="file" name="val_foto" />
+                        <input class="form-control-file <?php echo form_error('price') ? 'is-invalid' : '' ?>" type="file" name="val_foto" >
                         <div class="invalid-feedback">
                             <?php echo form_error('image') ?>
                         </div>
                     </div>
-
-                    <?php
-                    if (isset($_POST['submit'])) {
-                        $statuskonsumen = $_POST['status_konsumen'];
-                        $sql = $db->query("INSERT INTO tbl_konsumen (status_konsumen) VALUES ('$statuskonsumen') ");
-                    }
-                    ?>
                     <div class="form-row">
                         <button type="submit" class="btn btn-success mr-2">Submit</button>
                         <a href="<?php echo site_url('index.php/Konsumen/index/') ?>" class="btn btn-light btn-fw"></i> Cancel</a>
@@ -182,3 +170,5 @@
             </div>
         </div>
     </div>
+    </div>
+</div>

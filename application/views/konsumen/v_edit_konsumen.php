@@ -1,3 +1,5 @@
+<div class="content-wrapper">
+<div class="container">
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
@@ -19,7 +21,7 @@
                     <div class="col-sm-12">
                     </div>
                 </div>
-                <form method="post" action="<?= base_url() ?>index.php/Konsumen/corePerbarui">
+                <form method="post" action="<?= base_url() ?>konsumen/corePerbarui" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="hidden" name="edit_id_konsumen" value="<?= $konsumen[0]['id_konsumen'] ?>">
 
@@ -123,14 +125,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="form-label-group">
-                                <label>Pilih Status Konsumen</label>
-                                <select name="edit_status_konsumen" id="" class="form-control">
-                                    <option value="">-- Pilih --</option>
-                                    <option value="calon konsumen" <?= $konsumen[0]['status_konsumen'] == 'calon konsumen' ? 'selected' : '' ?>>Calon Konsumen</option>
-                                    <option value="konsumen" <?= $konsumen[0]['status_konsumen'] == 'konsumen' ? 'selected' : '' ?>>Konsumen</option>
-                                </select><br>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <img src="<?= base_url()."assets/uploads/images/konsumen/".$konsumen[0]['foto_ktp'] ?>" width="200px" alt="">
+                                <input type="file" class="form-control col-sm-6" name="img_foto">
                             </div>
                         </div>
 
@@ -143,3 +141,5 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>

@@ -20,11 +20,6 @@
             </div>
             </div>
         </div>
-        <?php for ($i=0;$i<5;$i++) {
-  $d = new DateTime("2019-01-31");
-  addmonths($d,$i);
-  echo $d->format("Y-m-d")."<br>";
-}?>
         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
             <div class="card card-statistics">
             <div class="card-body">

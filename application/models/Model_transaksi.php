@@ -11,6 +11,13 @@ class Model_transaksi extends CI_Model {
     {
         return $this->db->get('type_bayar')->result_array();
     }
+    public function getListTransaksi($params)
+    {
+        $wh = ['id_properti'=>$params['id_properti'],'id_user'=>$params['id_user']];
+        $this->db->where($wh);
+        $query = $this->db->get('tbl_transaksi');
+        return $query->result();
+    }
     public function getUnit($id)
     {
         return $this->db->get_where('tbl_unit_properti',['id_properti'=>$id,'status_unit'=>'belum terjual'])->result();
@@ -25,31 +32,24 @@ class Model_transaksi extends CI_Model {
         $query = $this->db->get_where('tbl_unit_properti',['id_unit'=>$id]);
         return $query;
     }
+    public function getDetailId($id)
+    {
+        $query = $this->db->get_where('detail_transaksi',['id_transaksi'=>$id]);
+        return $query;
+    }
     public function tambahtransaksi($params)
     {
-        $data = [
-            'no_ppjb'=>$params['no_ppjb'],
-            'id_konsumen'=>$params['konsumen'],
-            'id_unit'=>$params['unit'],
-            'tgl_transaksi'=>date('Y-m-d'),
-            'total_transaksi'=>$params['total_transaksi'],
-            'total_kesepakatan'=>$params['kesepakatan'],
-            'total_akhir'=>$params['total_akhir'],
-            'tanda_jadi'=>$params['tanda_jadi'],
-            'uang_muka'=>$params['uang_muka'],
-            'periode_uang_muka'=>$params['periode_uang_muka'],
-            'id_type_bayar'=>$params['type_pembayaran'],
-            'bayar_periode'=>$params['periode_bayar'],
-            'pembayaran'=>$params['total_bayar_periode'],
-            'status_transaksi'=>'pending',
-            'persetujuan_manager'=>'pending',
-            'tempo_tanda_jadi'=>$params['tgl_tanda_jadi'],
-            'tempo_uang_muka'=>$params['tgl_uang_muka'],
-            'tempo_bayar'=>$params['tgl_pembayaran'],
-            'total_tambahan'=>$params['total_tambahan'],
-            'id_user'=>$this->session->userdata('id_user')
-        ];
+        $data = $this->input($params);
+        $data['tgl_transaksi'] = date('Y-m-d');
         $this->db->insert('transaksi_unit', $data);
+        return $this->db->affected_rows();
+    }
+    public function ubahTransaksi($params,$where)
+    {
+        $data = $this->input($params);
+        $key_where = ['id_transaksi'=>$where];
+        $this->db->where($key_where);
+        $this->db->update('transaksi_unit', $data);
         return $this->db->affected_rows();
     }
     public function insertDetail($params)
@@ -87,6 +87,45 @@ class Model_transaksi extends CI_Model {
         $this->db->select('nama_unit');
         $this->db->where('id_unit', $params);
         return $this->db->get('unit_properti')->row();
+    }
+    public function getDetail($params)
+    {
+        $query = $this->db->get_where('tbl_transaksi',['id_transaksi'=>$params]);
+        return $query->row();
+    }
+    private function input($params)
+    {
+        return [
+            'no_ppjb'=>$params['no_ppjb'],
+            'id_konsumen'=>$params['konsumen'],
+            'id_unit'=>$params['unit'],
+            'total_transaksi'=>$params['total_transaksi'],
+            'total_kesepakatan'=>$params['kesepakatan'],
+            'total_akhir'=>$params['total_akhir'],
+            'tanda_jadi'=>$params['tanda_jadi'],
+            'uang_muka'=>$params['uang_muka'],
+            'periode_uang_muka'=>$params['periode_uang_muka'],
+            'id_type_bayar'=>$params['type_pembayaran'],
+            'bayar_periode'=>$params['periode_bayar'],
+            'pembayaran'=>$params['total_bayar_periode'],
+            'status_transaksi'=>'sementara',
+            'persetujuan_manager'=>'pending',
+            'tempo_tanda_jadi'=>$params['tgl_tanda_jadi'],
+            'tempo_uang_muka'=>$params['tgl_uang_muka'],
+            'tempo_bayar'=>$params['tgl_pembayaran'],
+            'total_tambahan'=>$params['total_tambahan'],
+            'id_user'=>$this->session->userdata('id_user')
+        ];
+    }
+    public function deleteData($table,$where)
+    {
+        $this->db->delete($table,$where);
+    }
+    public function lock($table,$id)
+    {
+        $this->db->where('id_transaksi', $id);
+        $this->db->update($table,['status_transaksi'=>'pending']);
+        return $this->db->affected_rows();
     }
 }
 

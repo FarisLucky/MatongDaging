@@ -62,6 +62,10 @@ $route['pembayaran/datac'] = 'pembayaran/data_transaksi';
 $route['pembayaran/transaksi/submitbayar'] = 'pembayaran/core_cicilan';
 $route['approve/transaksi/detail/(:num)'] = 'approve/detail/$1';
 
+// transaksi
+$route['transaksi/edit/datakonsumen'] = 'transaksi/datakonsumen';
+$route['transaksi/edit/dataunit'] = 'transaksi/dataunit';
+
 // Auth Login
 $route['auth/kelompokproperti'] = 'auth/auth_properti';
 // $route['setting/profilperusahaan'] = 'Profil_perusahaan'; //Route Perumahan

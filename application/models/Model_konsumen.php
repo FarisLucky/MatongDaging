@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_konsumen extends CI_Model
+class Model_konsumen extends CI_Model
 {
     public $image = "default.jpg";
 

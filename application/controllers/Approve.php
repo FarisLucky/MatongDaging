@@ -64,11 +64,12 @@ class Approve extends CI_Controller {
     }
     public function penjualan()
     {
+        $id = $this->session->userdata('id_properti');
         $data['title'] = 'Approve Transaksi';
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(10); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
         $data['img'] = getCompanyLogo();
-        $data['approve_trans'] = $this->MApprove->gettransaksi();
+        $data['approve_trans'] = $this->MApprove->getTransaksi();
         $this->pages("approve/view_approve_transaksi",$data);
     }
     public function detail($id)

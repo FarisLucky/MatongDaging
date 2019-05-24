@@ -36,6 +36,7 @@ $(document).ready(function () {
     //     placeholder: 'Pilih Unit',
     //     theme: "bootstrap"
     // });
+    $("#tbl_list_transaksi").DataTable();
     let tambah_form = 1;
     $("#tambah_form").click(function (e) { 
         e.preventDefault();
@@ -45,7 +46,6 @@ $(document).ready(function () {
     });
     $(".form-clone").on("click","#hapus_form",function (e) { 
         e.preventDefault();
-        let ttl_harga = $("#txt_total_tambahan").attr("data-id");
         if ($(".form-tambah").length > 1) {
             let total = 0;
             $(this).closest(".form-tambah").remove();
@@ -53,7 +53,6 @@ $(document).ready(function () {
                 total += Number($(this).val().split('.').join('')); 
             })
             $("#txt_total_tambahan").val(formatRupiah(String(total), 'Rp. '));
-            $("#txt_total_tambahan").attr("data-id",total);
         }else{
             swallSuccess("Gagal", "Tidak dapat dihapus", "error","")
         }
@@ -61,7 +60,7 @@ $(document).ready(function () {
     });
     $("#select_konsumen").change(function (e) { 
         e.preventDefault();
-        let id = $(this).val(); 
+        let id = $(this).val();
         if (id == "") {
             $("#txt_card").val("");
             $("#txt_telp").val("");
@@ -70,7 +69,7 @@ $(document).ready(function () {
         }else{
             $.ajax({
                 type: "post",
-                url: "transaksi/datakonsumen",
+                url: "datakonsumen",
                 data: {
                     id_kons:id
                 },
@@ -98,7 +97,7 @@ $(document).ready(function () {
         }else{
             $.ajax({
                 type: "post",
-                url: "transaksi/dataunit",
+                url: "dataunit",
                 data: {
                     id_unit:id
                 },
@@ -109,7 +108,6 @@ $(document).ready(function () {
                     $("#txt_tanah").val(response.obj.luas_tanah);
                     $("#txt_bangunan").val(response.obj.luas_bangunan);
                     $("#txt_harga").val(response.harga);
-                    // $("#txt_kesepakatan").val(formatRupiah(response.obj.harga_unit, 'Rp. '));
                 }
             });
         }
@@ -144,16 +142,20 @@ $(document).ready(function () {
     
     let kesepakatan = document.getElementById('txt_kesepakatan');
     let tanda_jadi = document.getElementById('txt_tanda_jadi');
+    if (kesepakatan != null) {
 		kesepakatan.addEventListener('keyup', function(e){
 			// tambahkan 'Rp.' pada saat form di ketik
 			// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
 			kesepakatan.value = formatRupiah(this.value, 'Rp. ');
         });
+    }
+    if (tanda_jadi != null) {
 		tanda_jadi.addEventListener('keyup', function(e){
 			// tambahkan 'Rp.' pada saat form di ketik
 			// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
 			tanda_jadi.value = formatRupiah(this.value, 'Rp. ');
         });
+    }
     $("#txt_kesepakatan").focusout(function (e) { 
         e.preventDefault();
         let harga;
@@ -164,7 +166,6 @@ $(document).ready(function () {
         //     return;
         // }
         $("#txt_ttl_transaksi,#txt_ttl_akhir").val(kesepakatans)
-        $("#txt_ttl_transaksi,#txt_ttl_akhir").attr("data-id",kesepakatans.split('.').join(''));
     });
     $(".btn-check").on("change",function (e) {
         e.preventDefault();
@@ -172,17 +173,15 @@ $(document).ready(function () {
         let tanda_jadi = $("#txt_tanda_jadi").val();
         let parseTanda = parseInt(tanda_jadi.split('.').join(''));
         let hasil;
-        let ttl_sementara = parseInt ($("#txt_ttl_transaksi").attr('data-id'));
+        let ttl_sementara = parseInt ($("#txt_ttl_transaksi").val().split('.').join(''));
         if (radio == "tidak_masuk_harga_jual") {
             hasil = ttl_sementara;
             $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
-            $("#txt_ttl_akhir").attr("data-id",hasil);
             return;
         }
         else {
             hasil = parseInt(ttl_sementara - parseTanda);
             $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
-            $("#txt_ttl_akhir").attr("data-id",hasil);
             return;
         }
     })
@@ -197,24 +196,21 @@ $(document).ready(function () {
         let hasil;
         let tanda_jadi = $(this).val();
         let parseTanda = parseInt(tanda_jadi.split('.').join(''));
-        let ttl_sementara = parseInt ($("#txt_ttl_transaksi").attr('data-id'));
+        let ttl_sementara = parseInt ($("#txt_ttl_transaksi").val().split('.').join(''));
         if (radio.length > 0 ) {
             if (radio.val() == "masuk_harga_jual") {
                 hasil = parseInt(ttl_sementara - parseTanda);
                 $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
-                $("#txt_ttl_akhir").attr("data-id",hasil);
                 return;
             }
             else {
                 hasil = ttl_sementara;
                 $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
-                $("#txt_ttl_akhir").attr("data-id",hasil);
                 return;
             }
         }else{
             hasil = ttl_sementara;
             $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
-            $("#txt_ttl_akhir").attr("data-id",hasil);
         }
     });
     $(document).on("focusout","input[name='txt_angsuran[]']",function () { 
@@ -224,20 +220,17 @@ $(document).ready(function () {
             total += Number($(this).val()); 
         })
         $("#txt_uang_muka").val(formatRupiah(String(total), 'Rp. '));
-        $("#txt_uang_muka").attr("data-id",total);
-        let ttl = $("#txt_ttl_akhir").attr("data-id");
+        let ttl = $("#txt_ttl_akhir").val().split('.').join('');
         let value = ttl - total;
         $("#txt_ttl_akhir").val(formatRupiah(String(value), 'Rp. '));
-        $("#txt_ttl_akhir").attr("data-id",value);
     });
     $(document).on("change","#periode_bayar",function (e) { 
         e.preventDefault();
-        let ttl_akhir = parseInt($("#txt_ttl_akhir").attr('data-id'));
+        let ttl_akhir = parseInt($("#txt_ttl_akhir").val().split('.').join(''));
         let cicilan; 
         let value = parseInt($(this).val());
         cicilan = parseInt(ttl_akhir/value);
         $("#total_bayar_periode").val(formatRupiah(String(cicilan), 'Rp. '))
-        $("#total_bayar_periode").attr("data-id",cicilan);
 
     });
     $(document).on("keyup","input[name='txt_harga_tambah[]']",function(e) {
@@ -251,16 +244,14 @@ $(document).ready(function () {
             total += Number($(this).val().split('.').join('')); 
         })
         $("#txt_total_tambahan").val(formatRupiah(String(total), 'Rp. '));
-        $("#txt_total_tambahan").attr("data-id",total);
     })
     $(".btn-kunci").click(function (e) { 
         e.preventDefault();
         let tambahan = $("#txt_kesepakatan").val();
         let split_tambahan = parseInt(tambahan.split('.').join(''));
-        let transaksi = parseInt($("#txt_total_tambahan").attr("data-id"));
+        let transaksi = parseInt($("#txt_total_tambahan").val().split('.').join(''));
         let total = transaksi + split_tambahan;
         $("#txt_ttl_transaksi").val(formatRupiah(String(total), 'Rp. '));
-        $("#txt_ttl_transaksi").attr("data-id",total);
 
     });
     
@@ -270,7 +261,7 @@ $(document).ready(function () {
         let form = $(this).serialize();
         $.ajax({
             type: "post",
-            url: "transaksi/inserttransaksi",
+            url: "inserttransaksi",
             data: form,
             dataType: "JSON",
             success: function (response) {
@@ -295,58 +286,71 @@ $(document).ready(function () {
             }
         });
     });
-    // $("#form_transaksi").submit(function (e) {
-    //     e.preventDefault();
-    //     let form_js = $(this).serialize();
-    //     let txt_ppjb = $("#txt_ppjb").val();
-    //     let selet_konsumen = $("#select_konsumen").val();
-    //     let selet_unit = $("#select_unit").val();
-    //     let txt_total_tambahan = $("#txt_total_tambahan").val();
-    //     let txt_kesepakatan = $("#txt_kesepakatan").val();
-    //     let txt_tanda_jadi = $("#txt_tanda_jadi").val();
-    //     let periode_Um = $("#periode_Um").val();
-    //     let txt_type_bayar = $("#txt_type_bayar").val();
-    //     let periode_bayar = $("#periode_bayar").val();
-    //     let urls = "transaksi/inserttransaksi";
-    //     let types = "post";
-    //     let angsuran_js = [];
-    //     let txt_angsuran = $("input[name='txt_angsuran[]']");
-    //     if (txt_angsuran.length > 0) {
-    //         txt_angsuran.each(function () {
-    //             angsuran_js.push($(this).val());
-    //         });
-    //     }else{
-    //         angsuran_js = "";
-    //     }
-    //     $.ajax({
-    //         type: types,
-    //         url: urls,
-    //         data: {
-    //             form_js,txt_ppjb,select_konsumen,select_unit,txt_total_tambahan,txt_kesepakatan,txt_tanda_jadi,periode_Um,txt_type_bayar,periode_bayar,angsuran:angsuran_js
-    //         },
-    //         dataType: "JSON",
-    //         success: function (response) {
-    //             console.log(response);
-    //             if (response.success == true) {
-    //                 $('input.form-group').removeClass('is-invalid').removeClass('is-valid')
-    //                     .next().remove();
-    //                 swallSuccess(response.title, response.text, response.type, function () {
-    //                     window.location.href = url;
-    //                 })
-    //             } else if ((response.success == false) && (response.error)) {
-    //                 swallSuccess(response.title, response.text, response.type, function () {
-    //                     window.location.href = url;
-    //                 })
-    //             } else {
-    //                 $.each(response.msg, function (key, val) {
-    //                     let el = $('#' + key)
-    //                     el.removeClass('is-invalid')
-    //                         .addClass(val.length > 0 ? 'is-invalid' : 'is-valid')
-    //                         .next().remove();
-    //                     el.after(val);
-    //                 });
-    //             }
-    //         }
-    //     });
-    // });
+
+    $("#form_ubah_transaksi").on("submit",function (e) { 
+        e.preventDefault();
+        let form = $(this).serialize();
+        let url = $(this).attr("action");
+        $.ajax({
+            type: "post",
+            url: url+"/core_ubah_transaksi",
+            data: form,
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success == true) {
+                    $('input.form-group').removeClass('is-invalid').removeClass('is-valid');
+                    swallSuccess("Sukses", "Berhasil ditambahkan", "success", function () {
+                        location.reload();
+                    })
+                } else if ((response.success == false) && (response.error)) {
+                    swallSuccess(response.title, response.text, response.type, function () {
+                        window.location.href = url;
+                    })
+                } else {
+                    $.each(response.msg, function (key, val) {
+                        let el = $('#' + key)
+                        el.removeClass('is-invalid')
+                            .addClass(val.length > 0 ? 'is-invalid' : 'is-valid')
+                            .next('.invalid-feedback').remove();
+                        el.after(val);
+                    });
+                }
+            }
+        });
+    });
+
+    $("#tbl_list_transaksi").on("click",".lock",function (e) { 
+        e.preventDefault();
+        $id = $(this).attr('data-id');
+        Swal({
+            title: "Kunci ?",
+            text: "Apakah ingin dikunci ?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#a55eea',
+            cancelButtonColor: '#fed330',
+            confirmButtonText: 'Lock !'
+        }).then((result) => {
+            if (result.value) {
+                let id = $(this).attr('data-id');
+                $.ajax({
+                    type: "post",
+                    url: "transaksi/lock",
+                    data: {
+                        id_transaksi: id
+                    },
+                    dataType: "JSON",
+                    success: function (success) {
+                        if (success.success == "false") {
+                            swallSuccess("Gagal", "Gagal dikunci", "error", null);
+                        } else {
+                            swallSuccess("Berhasil", "Berhasil Dikunci", "success", function () {
+                                location.reload();
+                            });
+                        }
+                    }
+                });
+            }
+        })
+    });
 });

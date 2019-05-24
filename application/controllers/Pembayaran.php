@@ -29,7 +29,7 @@ class Pembayaran extends CI_Controller {
     }
     public function uangMuka()
     {
-        $data['title'] = "Tanda Jadi";
+        $data['title'] = "Uang Muka";
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(8); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
         $data['img'] = getCompanyLogo();
@@ -37,7 +37,7 @@ class Pembayaran extends CI_Controller {
     }
     public function cicilan()
     {
-        $data['title'] = "Tanda Jadi";
+        $data['title'] = "Cicilan";
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(8); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
         $data['img'] = getCompanyLogo();
