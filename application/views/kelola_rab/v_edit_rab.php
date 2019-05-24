@@ -25,10 +25,22 @@
                             <div class="col-sm-12">
                                 <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
 		          			  <div class="form-group">
-		                      <label for="exampleInputName1">nama_kelompok</label>
-		                        <input type="hidden" name = "id_kelompok" value = "<?php echo $k->id_kelompok ?>"class="form-control" id="exampleInputName1" placeholder="">
-		                      <input type="text" name = "nama_kelompok" value = "<?php echo $k->nama_kelompok ?>"class="form-control" id="exampleInputName1" placeholder="">
+		                      <label for="exampleInputName1">nama_detail</label>
+		                        <input type="hidden" name = "id_detail" value = "<?php echo $k->id_detail ?>"class="form-control" id="exampleInputName1" placeholder="">
+		                      <input type="text" name = "nama_detail" value = "<?php echo $k->nama_detail ?>"class="form-control" id="exampleInputName1" placeholder="">
 		                    </div>
+                            <div class="form-group">
+                              <label for="exampleInputName1">volume</label>
+                              <input type="text" name = "volume" value = "<?php echo $k->volume ?>"class="form-control" id="exampleInputName1" placeholder="">
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputName1">satuan</label>
+                              <input type="text" name = "satuan" value = "<?php echo $k->satuan ?>"class="form-control" id="exampleInputName1" placeholder="">
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputName1">harga_satuan</label>
+                              <input type="text" name = "harga_satuan" value = "<?php echo $k->harga_satuan ?>"class="form-control" id="exampleInputName1" placeholder="">
+                            </div>
 		                    <td></td>
 		                    <button type="submit" class="btn btn-sm btn-success float-right">Simpan</button>
 		                </form>

@@ -53,35 +53,11 @@ class Pengeluaran extends CI_Controller
 
 		),
 		array(
-			'field' => 'tgl_buat',
-			'label' => 'Tgl_buat',
-			'rules' => 'required'
-
-		),
-		array(
 			'field' => 'bukti_kwitansi',
 			'label' => 'Bukti_kwitansi',
 			'rules' => 'required'
 
-		),
-		array(
-			'field' => 'id_user',
-			'label' => 'Id_user',
-			'rules' => 'required'
-
-		),
-		array(
-			'field' => 'id_properti',
-			'label' => 'Id_properti',
-			'rules' => 'required'
-
-		),
-		array(
-			'field' => 'id_kelompok',
-			'label' => 'Id_kelompok',
-			'rules' => 'required'
-
-		),
+		)
 	);
 	$this->form_validation->set_rules($config);
 	if ($this->form_validation->run()==TRUE) {
@@ -89,31 +65,26 @@ class Pengeluaran extends CI_Controller
 	$volume = $this->input->post('volume');
 	$satuan = $this->input->post('satuan');
 	$harga_satuan = $this->input->post('harga_satuan');
-	$tgl_buat = $this->input->post('tgl_buat');
+	$tgl_buat = date("Y-m-d H:i:s");
 	$bukti_kwitansi = $this->input->post('bukti_kwitansi');
-	$id_user = $this->input->post('id_user');
-	$id_properti = $this->input->post('id_properti');
-	$id_kelompok = $this->input->post('id_kelompok');
 	$data = array(
 		'nama_pengeluaran' => $nama_pengeluaran,
 		'volume' => $volume,
 		'satuan' => $satuan,
 		'harga_satuan' => $harga_satuan,
 		'tgl_buat' => $tgl_buat,
-		'bukti_kwitansi' => $bukti_kwitansi,
-		'id_user' => $id_user,
-		'id_properti' => $id_properti,
-		'id_kelompok' => $id_kelompok
+		'bukti_kwitansi' => $bukti_kwitansi
 		);
 	$this->M_pengeluaran->input_data($data,'pengeluaran');
 	redirect('pengeluaran/index');
 	} else {
-	$active = "pengeluaran";
-	$data['menus'] = $this->rolemenu->getMenus($active);
-	$this->load->view('partials/part_navbar',$data);
-    $this->load->view('partials/part_sidebar',$data);
-    $this->load->view('pengeluaran/v_tambah_pengeluaran');
-	$this->load->view('partials/part_footer',$data);
+	
+		 $active = "pengeluaran";
+		 $data['menus'] = $this->rolemenu->getMenus($active);
+		 $this->load->view('partials/part_navbar',$data);
+		 $this->load->view('partials/part_sidebar',$data);
+		 $this->load->view('pengeluaran/v_tambah_pengeluaran');
+		$this->load->view('partials/part_footer',$data);
 	}
 	}
 	function hapus($id_pengeluaran)
