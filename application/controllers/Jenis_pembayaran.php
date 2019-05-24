@@ -13,8 +13,9 @@ class Jenis_pembayaran extends CI_Controller
     public function index()
     {
         $active = 'Jenis Pembayaran';
+        $active_sub_menu = 'tidac tau apa maksud ini';
         $data['title'] = 'Jenis Pembayaran';
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus($active, $active_sub_menu);
         $data['jenispembayaran'] = $this->M_jenis_pembayaran->ambildata()->result();
         $this->load->view('partials/part_navbar', $data);
         $this->load->view('partials/part_sidebar', $data);
@@ -25,8 +26,9 @@ class Jenis_pembayaran extends CI_Controller
     public function edit($id) //id itu terserah cuma deklarasi
     {
         $active = 'Edit Jenis Pembayaran';
+        $active_sub_menu = 'tidac tau apa maksud ini';
         $data['title'] = 'Edit Jenis Pembayaran';
-        $data['menus'] = $this->rolemenu->getMenus($active);
+        $data['menus'] = $this->rolemenu->getMenus($active, $active_sub_menu);
         $data['jenispembayaran'] = $this->M_jenis_pembayaran->getSelectionData($id); //id_jenis itu field databasenya trus $id itu yang di deket edit itu, trus jenispembayaran itu variabel yang harus sama kaya isi value yang di view
         $this->load->view('partials/part_navbar', $data);
         $this->load->view('partials/part_sidebar', $data);
