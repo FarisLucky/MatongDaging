@@ -37,9 +37,6 @@
                                         <th>Harga_satuan</th>
                                         <th>Tgl_buat</th>
                                         <th>Bukti_kwitansi</th>
-                                        <th>Id_user</th>
-                                        <th>Id_properti</th>
-                                        <th>Id_kelompok</th>
                                         <th>Aksi</th>
                                     </thead>
                                     <tbody>
@@ -56,9 +53,6 @@
                                     <td><?php echo $p->harga_satuan ?></td>
                                     <td><?php echo $p->tgl_buat ?></td>
                                     <td><?php echo $p->bukti_kwitansi ?></td>
-                                    <td><?php echo $p->id_user ?></td>
-                                    <td><?php echo $p->id_properti ?></td>
-                                    <td><?php echo $p->id_kelompok ?></td>
                                     <td>
                                     <a href="<?= base_url() .'pengeluaran/edit'?>/<?= $p->id_pengeluaran ?>" class="btn btn-primary">Edit</a>
                                     <a href="<?= base_url() .'pengeluaran/hapus'?>/<?= $p->id_pengeluaran ?>" class="btn btn-danger" class="btn btn-danger">Delete</a>

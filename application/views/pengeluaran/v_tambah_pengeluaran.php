@@ -23,7 +23,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
-    							<div class="form-group">
+          							<div class="form-group">
 			                      <label for="exampleInputName1">nama_pengeluaran</label>
 			                      <input type="text" name = "nama_pengeluaran" class="form-control" id="exampleInputName1" placeholder="">
 			                      <small class="form-text text-danger"><?= form_error ('nama_pengeluaran'); ?></small>
@@ -44,29 +44,9 @@
                                   <small class="form-text text-danger"><?= form_error ('harga_satuan'); ?></small>
                                 </div>
                                 <div class="form-group">
-                                  <label for="exampleInputName1">tgl_buat</label>
-                                  <input type="text" name = "tgl_buat" class="form-control" id="exampleInputName1" placeholder="">
-                                  <small class="form-text text-danger"><?= form_error ('tgl_buat'); ?></small>
-                                </div>
-                                <div class="form-group">
                                   <label for="exampleInputName1">bukti_kwitansi</label>
                                   <input type="text" name = "bukti_kwitansi" class="form-control" id="exampleInputName1" placeholder="">
                                   <small class="form-text text-danger"><?= form_error ('bukti_kwitansi'); ?></small>
-                                </div>
-                                <div class="form-group">
-                                  <label for="exampleInputName1">id_user</label>
-                                  <input type="text" name = "id_user" class="form-control" id="exampleInputName1" placeholder="">
-                                  <small class="form-text text-danger"><?= form_error ('id_user'); ?></small>
-                                </div>
-                                <div class="form-group">
-                                  <label for="exampleInputName1">id_properti</label>
-                                  <input type="text" name = "id_properti" class="form-control" id="exampleInputName1" placeholder="">
-                                  <small class="form-text text-danger"><?= form_error ('id_properti'); ?></small>
-                                </div>
-                                <div class="form-group">
-                                  <label for="exampleInputName1">id_kelompok</label>
-                                  <input type="text" name = "id_kelompok" class="form-control" id="exampleInputName1" placeholder="">
-                                  <small class="form-text text-danger"><?= form_error ('id_kelompok'); ?></small>
                                 </div>
 			                    <td></td>
 			                    <button type="submit" class="btn btn-sm btn-success float-right">Simpan</button>
