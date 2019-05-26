@@ -33,14 +33,14 @@ class Follow_calon_konsumen extends CI_Controller
 
     public function tambah()
     {
-        $active = 'Tambah Follow Calon Konsumen';
+        $active = 'Follow Calon Konsumen';
         $active_sub_menu = 'tidak tau apa maksud ini';
-        $data['title'] = 'Tambah Data Follow Calon Konsumen';
+        $data['title'] = 'Follow Calon Konsumen';
         $data['menus'] = $this->rolemenu->getMenus($active, $active_sub_menu);
-        $data['follow_calon_konsumen'] = $this->M_follow_calon_konsumen->getSelectionData("id_follow")->result_array();
+        $data['follow_calon_konsumen'] = $this->M_follow_calon_konsumen->ambildata()->result();
         $this->load->view('partials/part_navbar', $data);
         $this->load->view('partials/part_sidebar', $data);
-        $this->load->view('konsumen/v_tambah_follow_calon_konsumen', $data);
+        $this->load->view('follow_calon_konsumen/v_tambah_follow_calon_konsumen', $data);
         $this->load->view('partials/part_footer', $data);
     }
 }

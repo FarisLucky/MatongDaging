@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h5 class="d-inline-block"><i class="fa fa-m"></i>Data Follow Up Konsumen</h5>
-                        <a href="<?= base_url() ?>Follow_calon_konsumen/tambah" class="btn btn-info btn-sm float-right">Tambah</a>
+                        <a href="<?= base_url() ?>follow_calon_konsumen/tambah" class="btn btn-info btn-sm float-right">Tambah</a>
                     </div>
                 </div>
                 <hr>
