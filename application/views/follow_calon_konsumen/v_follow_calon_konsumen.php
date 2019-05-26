@@ -4,7 +4,7 @@
             <div class="card-body p-4">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="dark txt_title d-inline-block mt-2">Follow Up Konsumen</h4>
+                        <h4 class="dark txt_title d-inline-block mt-2">Follow Calon Konsumen</h4>
                     </div>
                 </div>
             </div>
@@ -17,7 +17,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h5 class="d-inline-block"><i class="fa fa-m"></i>Data Follow Up Konsumen</h5>
+                        <h5 class="d-inline-block"><i class="fa fa-m"></i>Data Follow Calon Konsumen</h5>
                         <a href="<?= base_url() ?>follow_calon_konsumen/tambah" class="btn btn-info btn-sm float-right">Tambah</a>
                     </div>
                 </div>
