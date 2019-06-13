@@ -53,9 +53,6 @@ class RoleMenu
             $li = '';
             $active_sub = '';
         }
-        else {
-            $html = '';$collap='';$li='';;
-        }
         $data_array = ['collapse'=>$collap,'html'=>$html,'icons'=>$li];
         return $data_array;
     }
