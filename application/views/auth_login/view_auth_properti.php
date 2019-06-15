@@ -27,14 +27,14 @@
           <div class="col-lg-12 mx-auto text-white">
             <form action="">
             <div class="row align-items-center d-flex flex-row mb-2">
-              <div class="col-lg-6 text-lg-right pr-lg-5 pl-lg-4">
-                  <h5 class="text-right mb-3">Pilih Perumahan</h5>
-                  <div class="row justify-content-end">
+              <div class="col-lg-12 pr-lg-5 pl-lg-4">
+                  <h5 class=" mb-3">Pilih Perumahan</h5>
+                  <div class="row justify-content-center">
                     <?php if (!empty($properti_user)) { 
                       $button = '<a class="text-white font-weight-medium btn pl-4 border-secondary pr-4 btn-success" href="'.base_url().'auth/core_auth_properti" id="pilih_properti">Pilih</a>';
                       foreach ($properti_user as $key => $value) {?>
 
-                        <div class="col-sm-3 text-center">
+                        <div class="col-sm-2 text-center">
                           <img src="<?= base_url() ?>assets/uploads/images/properti/<?= $value['foto'] ?>" alt="" class="img-thumbnail img-properti-auth">
                           <div class="form-radio">
                             <label class="form-check-label">
@@ -50,12 +50,6 @@
 
                     <?php } ?>
                   </div>
-              </div>
-              <div class="col-lg-6 error-page-divider text-lg-left pl-lg-4">
-                <h2 class="pl-2">Hi!</h2>
-                <h3 class="font-weight-light ml-3">Stefan Leony</h3>
-                <h3 class="font-weight-light ml-3 border-bottom d-inline-block pb-1">Marketing
-                <h2 cllass="font-weight-light">^_^</h2></h3>
               </div>
             </div>
             </form>

@@ -3,30 +3,25 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Model_approve extends CI_Model {
+class Model_approve extends CI_Model 
+{
 
-    public function getPembayaran(  )
+    public function getDataWhere($select,$tbl,$where,$order = null ,$ord_by = null)
     {
-        return $this->db->get_where('tbl_pembayaran',['status'=>'pending'])->result();
+        $this->db->select($select);
+        $this->db->from($tbl);
+        $this->db->where($where);
+        if ((!empty($order)) && (!empty($ord_by))) {
+            $this->db->order_by($order, $ord_by);
+        }
+        return $this->db->get();
     }
-    public function getAllTransaksi($id)
+    public function updateData($column,$tbl,$where)
     {
-        return $this->db->get_where('tbl_transaksi',['id_transaksi'=>$id])->row();
-    }
-    public function setConfirm($params)
-    {
-        $this->db->where('id_pembayaran', $params); 
-        $this->db->update('pembayaran_transaksi',['status'=>'selesai']);
+        $this->db->where($where); 
+        $this->db->update($tbl,$column);
         return $this->db->affected_rows();
         
-    }
-    public function getDataApprove($params)
-    {
-        return $this->db->get_where('tbl_pembayaran',['id_pembayaran'=>$params])->row();
-    }
-    public function getTransaksi()
-    {
-        return $this->db->get_where('tbl_transaksi',['status_transaksi'=>'lunas'])->result();
     }
     public function getData($params)
     {
@@ -36,10 +31,6 @@ class Model_approve extends CI_Model {
     public function getDataPembayaran($params)
     {
         return $this->db->get_where('tbl_pembayaran',['id_transaksi'=>$params,'status'=>'selesai'])->result();
-    }
-    public function getDetailTransaksi($params)
-    {
-        return $this->db->get_where('detail_transaksi',['id_transaksi'=>$params])->result();
     }
     public function getHutang($transaksi,$jenis)
     {

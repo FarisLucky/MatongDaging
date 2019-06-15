@@ -1,3 +1,5 @@
 $(document).ready(function () {
-    const id = $("#tbl_konsumen").DataTable(); 
+    const id = $("#tbl_konsumen").DataTable({
+        'responsive':true
+    }); 
 });

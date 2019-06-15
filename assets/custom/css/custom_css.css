@@ -78,6 +78,118 @@ hr {
     font-size: 14px!important;
     font-weight: 600;
 }
+.input-helper::before{
+    border: 2px solid #bdc3c7!important;
+}
+.akses_title{
+    margin-left: 0!important;
+    padding: 5px 20px!important;
+}
+.nav_properti{
+    margin: 0 auto !important;
+    padding: 0 7px;
+}
+.bg_red{
+    background: #ff4081;
+    border-radius: 5px;
+    text-align: center;
+}
+.assign{
+    background-color: #eeff41!important;
+}
+.profile-icon img{
+    max-width: 50px;
+    text-align: center;
+    align-content: center;
+}
+.profile-icon .profile-image{
+    text-align: center;
+}
+.profile-icon .profile-name{
+    font-size: 14px;
+    text-transform: capitalize;
+    padding: 10px 5px 5px 5px;
+    border-bottom: 1px solid #bdbdbd;
+    color: #424242;
+}
+.text-setting{
+    font-size: 15px;
+    color: whitesmoke;
+}
+.bg-setting{
+    text-align: center;
+    background-color: #ffab40;
+}
+.padding-setting{
+    padding: 9px 25px;
+}
+.txt-filter{
+    font-size: 17px;
+    border-bottom: 1px solid rgba(65, 64, 66,0.8);
+    border-bottom-style: ridge;
+    padding: 2px 2px;
+    text-shadow: 0.6px 0.5px 1px rgba(65, 64, 66,0.8);
+}
+.form-control{
+    border-radius: 5px!important;
+}
+.container{
+    width: 100%;
+    margin: 10px;
+}
+.txt-center{
+    text-align: center;
+}
+.column{
+    position: relative;
+    width: 100%;
+    min-height: 1;
+    padding: 10px;
+}
+.title{
+    font-size: 14px;
+    font-weight: 600;
+}
+.subtitle{
+    font-size: 13px;
+    font-weight: 400;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+table th{
+    padding:5px;
+    text-align: center;
+}
+table td{
+    padding: 5px 10px;
+}
+table img{
+    width: 50px;
+}
+.txt-normal{
+    font-size: 13px;
+    padding: 2px 5px;
+    margin: 5px 0;
+}
+.txt-semi-high{
+    font-size: 15px;
+    padding: 2px 5px;
+}
+.bdr-btm{
+    border-bottom: 1px solid #bdbdbd;
+}
+.wht-medium{
+    font-weight: 550;
+}
+#modal_laporan_konsumen,#modal_laporan_calon .modal-body label{
+    font-size: 13px;
+}
+#sidebar .profile-icon img{
+    max-width: 80px;
+    border-radius: 20%;
+}
 /* table.dataTable tbody td {
     width: 100%;
     white-space: pre-wrap;

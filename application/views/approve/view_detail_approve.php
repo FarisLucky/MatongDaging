@@ -20,7 +20,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <h5 class="d-inline-block">Konsumen : Konsumen</h5>
+                                <h5 class="d-inline-block">Konsumen : <?= $data_transaksi->nama_lengkap ?></h5>
+                                <a href="<?= base_url().'approve/penjualan' ?>" class="float-right"><i class="fa fa-arrow-circle-left"></i> Kembali</a>
                             </div>
                         </div>
                         <div class="row">
@@ -143,13 +144,13 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="txt_nama">Total UM</label>
-                                        <input type="text" name="txt_ttl_transaksi" class="form-control" value="" readonly>
+                                        <input type="text" name="txt_ttl_transaksi" class="form-control" value="<?= number_format($data_transaksi->uang_muka,2,',','.') ?>" readonly>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
-                                    <div class="form-group">
+                                    <div class="form-group text-center">
                                         <label for="txt_nama" class="mb-3">Periode</label>
-                                        <strong></strong>
+                                        <strong><?= $data_transaksi->periode_uang_muka ?></strong>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -174,19 +175,19 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="txt_nama">Total Cicilan</label>
-                                        <input type="text" name="txt_ttl_cicilan" class="form-control" value="" readonly>
+                                        <input type="text" name="txt_ttl_cicilan" class="form-control" value="<?= number_format($data_transaksi->pembayaran,2,",",".") ?>" readonly>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
-                                    <div class="form-group">
+                                    <div class="form-group text-center">
                                         <label for="txt_nama" class="mb-3">Periode</label>
-                                        <strong class="periode"></strong>
+                                        <strong class="periode"><?= $data_transaksi->bayar_periode ?></strong>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label for="txt_nama" class="mb-3">Type</label>
-                                        <strong class="type"></strong>
+                                        <strong class="type"><?= $data_transaksi->type_pembayaran ?></strong>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -217,46 +218,32 @@
   <div class="modal-dialog ">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Uang Muka</h5>
+        <h5 class="modal-title">Detail Pembayaran</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" class="form_uang_muka" action="<?= base_url() ?>pembayaran/transaksi/submitbayar" enctype="multipart/formdata">
-      <input type="hidden" name="input_hidden">
       <div class="modal-body">
-        <div class="row m-3">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Cicilan</label>
-                    <input type="text" class="form-control cicilan" name="cicilan" disabled>
-                </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <small class="txt-normal user">User : </small><br>
+                <small class="txt-normal tgl_bayar">Tanggal Bayar : </small><br>
+                <small class="txt-normal tgl_tempo">Tanggal Tempo : </small><br>
             </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Bayar</label>
-                    <input type="text" class="form-control nominal_cicilan" name="bayar">
-                </div>
+            <div class="col-sm-6">
+                <small class="txt-normal jenis">Jenis Pembayaran : </small><br>
+                <small class="txt-normal type_modal">Type Pembayaran : </small><br>
+                <small class="txt-normal">Status : <small class="badge badge-success status"></small> </small><br>
             </div>
+        </div> 
+        <hr>
+        <div class="row">
             <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Tanggal</label>
-                    <input type="date" class="form-control" name="tgl">
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Upload Bukti</label>
-                    <input type="file" class="form-control" name="upload">
-                </div>
+                <small class="txt-normal">Bukti Bayar</small>
+                <img src="<?= base_url().'assets/uploads/' ?>" class="img-base" width="150px" alt="">
             </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
-      </div>
-      </form>
     </div>
   </div>
 </div>

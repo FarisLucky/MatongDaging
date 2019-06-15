@@ -7,15 +7,15 @@ class Properti extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+        $this->rolemenu->init();
         $this->load->model('Model_properti');
-        checkSession();
     }
     
     public function index()
     {
         $data['title'] = 'Properti';
         $data['menus'] = $this->rolemenu->getMenus();
-        $data['js'] = $this->rolemenu->getJavascript(5); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
+        $data['js'] = $this->rolemenu->getJavascript(5); //Jangan DiUbah hanya bisa diganti berdasarkan id_dari sbu/menu ini !!
         $data['img'] = getCompanyLogo();
         $this->page('properti/view_properti',$data);
     }
@@ -31,10 +31,23 @@ class Properti extends CI_Controller {
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
+            $properti = $this->Model_properti->getDataWhere('rab_properti',['id_properti'=>$value->id_properti,'type'=>'Properti']);
+            $unit = $this->Model_properti->getDataWhere('rab_properti',['id_properti'=>$value->id_properti,'type'=>'unit']);
             if ($value->status != 'publish') {
                 $this->status = '<a href="'.base_url().'properti/detailproperti/'.$value->id_properti.'" class="btn btn-sm btn-primary mr-1" id="detail_data_properti">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_properti" data-id="'.$value->id_properti.'">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="publish_data_properti" data-id="'.$value->id_properti.'">Publish</button>';
             }else{
-                $this->status = '<a href="'.base_url().'properti/detailproperti/'.$value->id_properti.'" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_properti" data-id="'.$value->id_properti.'">Hapus</button>';
+                $this->status = '<a href="'.base_url().'properti/detailproperti/'.$value->id_properti.'" class="btn btn-sm btn-primary mr-1" id="detail_data_properti">Detail</a>';
+                if ($properti->num_rows() < 1) {
+                    $this->status .= '<button type="button" data-id="'.$value->id_properti.'" class="btn btn-sm btn-info mr-1" id="tambah_rab_properti">Tambah RAB Properti</button>';
+                }else{
+                    $this->status .= '<a href="'.base_url()."rab/properti/".$value->id_properti.'" class="btn btn-sm btn-info mr-1" id="rab_data_properti">RAB Properti</a>';
+                }
+                if($unit->num_rows() < 1){
+                    $this->status .= '<button type="button" data-id="'.$value->id_properti.'" class="btn btn-sm btn-success mr-1" id="tambah_rab_unit">Tambah RAB Unit</button>';
+                }
+                else{
+                    $this->status .= ' <a href="'.base_url()."rab/unit/".$value->id_properti.'" class="btn btn-sm btn-success mr-1" id="rab_data_unit">RAB Unit</button>';
+                }
             }
             $sub = array();
             $sub[] = strval($no);
@@ -249,6 +262,44 @@ class Properti extends CI_Controller {
             $data['success'] = false;
         }
         $this->output->set_output(json_encode($data));
+    }
+    public function rab()
+    {
+        $data = ['success' =>false];
+        date_default_timezone_set('Asia/Jakarta');
+        $properti = $this->input->post('id_properti');
+        $unit = $this->input->post('id_unit');
+        if (!empty($properti)) {
+            $input = [
+                'nama_rab'=>$this->input->post('nama'),
+                'type'=>'properti',
+                'tgl_buat'=>date("Y-m-d"),
+                'total_anggaran'=>0,
+                'id_user'=>$this->session->userdata('id_user'),
+                'id_properti'=>$properti
+            ];
+            $query = $this->Model_properti->naturalInsert("rab_properti",$input);
+            if ($query) {
+                $data['success'] = true;
+                $data['redirect'] = base_url()."rab/properti/".$properti;
+            }
+        }
+        if (!empty($unit)) {
+            $input = [
+                'nama_rab'=>$this->input->post('nama'),
+                'type'=>'unit',
+                'tgl_buat'=>date("Y-m-d"),
+                'total_anggaran'=>0,
+                'id_user'=>$this->session->userdata('id_user'),
+                'id_properti'=>$unit
+            ];
+            $query = $this->Model_properti->naturalInsert("rab_properti",$input);
+            if ($query) {
+                $data['success'] = true;
+                $data['redirect'] = base_url()."rab/unit/".$unit;
+            }
+        }
+        return $this->output->set_output(json_encode($data));
     }
     // function function tambahan
     private function validate()

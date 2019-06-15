@@ -7,8 +7,8 @@ class Transaksi extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+        $this->rolemenu->init();
         $this->load->model('Model_transaksi',"Mtransaksi");
-        checkSession();
     }
     
     public function index()
@@ -19,6 +19,7 @@ class Transaksi extends CI_Controller {
         $data['js'] = $this->rolemenu->getMenuJavascript(5); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
         $data['img'] = getCompanyLogo();
         $data['list_transaksi'] = $this->Mtransaksi->getListTransaksi($params);
+        $data['list_unlock'] = $this->Mtransaksi->getDataWhere("id_transaksi,no_ppjb,nama_lengkap,nama_unit,type_pembayaran,total_transaksi,tgl_transaksi","tbl_transaksi",["kunci"=>"unlock","id_user"=>$_SESSION['id_user']])->result();
         $this->pages("transaksi/view_list_transaksi",$data);
     }
     public function tambah()
@@ -153,6 +154,7 @@ class Transaksi extends CI_Controller {
                             $detail_transaksi['satuan'] = $value[2]; 
                             $detail_transaksi['harga'] = $value[3]; 
                             $detail_transaksi['transaksi'] = $id_insert; 
+                            $detail_transaksi["total"] = $value[1] * $id_insert;
                             $this->Mtransaksi->insertDetail($detail_transaksi);
                         }
                     }
@@ -226,7 +228,7 @@ class Transaksi extends CI_Controller {
                     else{
                         $data_pembayaran = [];
                         $periode = 1;
-                        $total_bayar = str_replace(".","",$this->input->post('total_bayar_periode'));
+                        $total_bayar = str_replace(".","",$this->input->post('txt_ttl_akhir'));
                         for($i = 1; $i <= $periode; $i++) {
                             $data_pembayaran['id_transaksi'] = $id_insert;
                             $data_pembayaran['nama_pembayaran'] = 'Tunai ';
@@ -243,19 +245,11 @@ class Transaksi extends CI_Controller {
                     }
                     $data['success'] = true;
                 }
-                // $konsumen = $this->Mtransaksi->calonToKonsumen($input['konsumen']);
-                // $unit = $this->Mtransaksi->unitToTerjual($input['unit']);
-
-                // Cek Ubah Konsumen dan Unit terjual
-                // if ($konsumen == true && $unit == true) {
-                //     $data['success'] = true;
-                // }else{
-                //     $data['success'] = false;
-                // }
             }
         }
         $this->output->set_output(json_encode($data));
     }
+    
     // Ubah Transaksi
     public function core_ubah_transaksi()
     {
@@ -291,11 +285,11 @@ class Transaksi extends CI_Controller {
                             $detail_transaksi['satuan'] = $value[2]; 
                             $detail_transaksi['harga'] = $value[3]; 
                             $detail_transaksi['transaksi'] = $id; 
+                            $detail_transaksi["total"] = $value[1] * $id_insert;
                             $this->Mtransaksi->insertDetail($detail_transaksi);
                         }
                     }
                     $data['success'] = true;
-                    $data['hello'] = "tidak masuk";
                 }
                 // Uang Muka Angsuran 
                 if (!empty($this->input->post('txt_angsuran'))) {
@@ -381,15 +375,6 @@ class Transaksi extends CI_Controller {
                     }
                     $data['success'] = true;
                 }
-                // $konsumen = $this->Mtransaksi->calonToKonsumen($input['konsumen']);
-                // $unit = $this->Mtransaksi->unitToTerjual($input['unit']);
-
-                // Cek Ubah Konsumen dan Unit terjual
-                // if ($konsumen == true && $unit == true) {
-                //     $data['success'] = true;
-                // }else{
-                //     $data['success'] = false;
-                // }
             }
         }
         $this->output->set_output(json_encode($data));
@@ -398,11 +383,30 @@ class Transaksi extends CI_Controller {
     {
         $data = ["success"=>false];
         $id = $this->input->post('id_transaksi');
-        $query = $this->Mtransaksi->lock("transaksi_unit",$id);        
-        if ($query) {
+        $status = $this->Mtransaksi->getDataWhere("status_transaksi","tbl_transaksi",["id_transaksi"=>$id])->row();
+        if ($status->status_transaksi == "sementara") {
+            $query = $this->Mtransaksi->updateData(["status"=>"pending","kunci"=>"lock"],"transaksi_unit",["id_transaksi"=>$id]);       
+            $data['success'] = true;
+        }else{
+            $query = $this->Mtransaksi->updateData(["kunci"=>"lock"],"transaksi_unit",["id_transaksi"=>$id]);       
             $data['success'] = true;
         }
         $this->output->set_output(json_encode($data));
+    }
+    
+    // Hapus Transaksi
+    public function delete($params)
+    {
+        $data = ['success'=>false];
+        if (intval($params)) {
+            $query = $this->Mtransaksi->deleteData("pembayaran_transaksi",["id_transaksi"=>$params]);
+            if ($query) {
+                $this->Mtransaksi->deleteData("transaksi_unit",["id_transaksi"=>$params]);
+                $data['success'] = true;
+            }
+        }
+        return $this->output->set_output(json_encode($data));
+        
     }
       // This function is private. so , anyone cannot to access this function from web based
     private function pages($core_page,$data){
@@ -418,12 +422,9 @@ class Transaksi extends CI_Controller {
         $this->form_validation->set_rules('select_konsumen','Nama Unit','trim|required');
         $this->form_validation->set_rules('select_unit','select_unit','trim|required');
         $this->form_validation->set_rules('txt_kesepakatan','Kesepakatan','trim|required');
-        $this->form_validation->set_rules('txt_total_tambahan','Total Tambahan','trim|required');
         $this->form_validation->set_rules('txt_tanda_jadi','Tanda Jadi','trim|required');
         $this->form_validation->set_rules('txt_type_pembayaran','Total Transaksi','trim|required');
-        $this->form_validation->set_rules('periode_bayar','Total Transaksi','trim|required');
         $this->form_validation->set_rules('tgl_tanda_jadi','Tanggal Tanda Jadi','trim|required');
-        $this->form_validation->set_rules('tgl_uang_muka','Tanggal Uang Muka','trim|required');
         $this->form_validation->set_rules('tgl_pembayaran','Tanggal Pembayaran','trim|required');
         $this->form_validation->set_error_delimiters('<div class="invalid-feedback">','</div>');
     }

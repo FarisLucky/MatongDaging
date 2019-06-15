@@ -72,8 +72,9 @@
                                                 <input type="text" name='txt_email' class="form-control" id="txt_email_user" value="<?= $users->Email;?>"disabled>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <img src="<?= base_url() ?>assets/images/faces/face1.jpg">
+                                        <div class="col-md-4 text-center">
+                                            <small class="txt-normal mb-2">Foto Profil</small>
+                                            <img src="<?= base_url()."assets/uploads/images/profil/user/".$users->foto_user ?> " width="100%" class="img-thumbnail">
                                         </div>
                                     </div>
                                 </form>                                  
