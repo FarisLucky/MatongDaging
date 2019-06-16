@@ -9,6 +9,23 @@ class M_follow_calon_konsumen extends CI_Model
         return $this->db->get('follow_calon_konsumen');
     }
 
+    public function getAll()
+    {
+        $result = $this->db->query("SELECT f.*, k.nama_lengkap FROM follow_calon_konsumen f JOIN konsumen k ON k.id_konsumen = f.id_konsumen")->result();
+        return $result;
+    }
+
+    function getData()
+    {
+        $query = $this->db->query('SELECT * FROM konsumen where status_konsumen = "calon konsumen"');
+        return $query->result_array();
+    }
+
+    public function insertDataFollow($data)
+    {
+        $this->db->insert("follow_calon_konsumen", $data);
+    }
+
     public function delete($id)
     {
         $input = ['id_follow' => $id['id_follow']];
@@ -16,30 +33,14 @@ class M_follow_calon_konsumen extends CI_Model
         $this->db->delete('follow_calon_konsumen');
     }
 
-    public function getSelectionData($id)
+    public function getSelectionData($where)
     {
-        $data = $this->db->get_where('follow_calon_konsumen', ['id_follow' => $id]);
-        return $data->result_array();
-    }
-    /*public function getData($tb) //untuk ngambil type
-    {
-        return $this->db->get($tb);
+        return $this->db->get_where('follow_calon_konsumen', $where)->row_array();
     }
 
-    public function getSelectionData($id)
+    public function updateDatafollow($data) //edit
     {
-        $data = $this->db->get_where('konsumen', ['id_konsumen' => $id]);
-        return $data->result_array();
+        $this->db->where('id_follow', $this->input->post('edit_id_follow'));
+        $this->db->update('follow_calon_konsumen', $data);
     }
-
-    public function updateDataKonsumen($data, $id)
-    {
-        $this->db->update('konsumen', $data, ['id_konsumen' => $id]); //WHERE id_konsumnen = $id
-    }
-
-    
-    public function insertDataKonsumen($data)
-    {
-        $this->db->insert("konsumen", $data);
-    }*/
 }
