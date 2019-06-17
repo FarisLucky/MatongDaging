@@ -27,7 +27,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-12">
-                                <table class="table table-hover display responsive no-wrap" id="tbl_properti">
+                                <table class="table table-hover" id="tbl_properti">
                                     <thead>
                                         <th>No</th>
                                         <th>Nama</th>
@@ -57,22 +57,19 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <small>Pilih Perumahan yang akan di Kelola Oleh User:</small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 col-12">
-                    <img src="" alt="">
-                </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <form action="<?= base_url() ?>properti/rab_properti" id="form_modal">
+                    <div class="form-group name">
+                        <label for="">Nama RAB</label>
+                        <input type="text" class="form-control" name="txt_name">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-success">Tambah</button>
+                    </div>
+                </form>
             </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

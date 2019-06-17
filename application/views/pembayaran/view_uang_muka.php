@@ -18,25 +18,42 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table table-hover display responsive no-wrap" id="tbl_uang_muka">
-                                    <thead>
-                                        <th>Nama</th>
-                                        <th>Nama Perumahan</th>
-                                        <th>Nama Rumah</th>
-                                        <th>Tanggal Uang Muka</th>
-                                        <th>Periode</th>
-                                        <th>Status</th>
-                                        <th>Uang Muka</th>
-                                        <th>Total Kesepakatan</th>
-                                        <th>Total Transaksi</th>
-                                        <th>Total Akhir</th>
-                                        <th>Aksi</th>
-                                    </thead>
-                                </table>                                 
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="unit_id">Pilih Unit</label>
+                                <select name="id_unit" id="id_unit" class="form-control text-center">
+                                    <option value=""> -- Unit -- </option>
+                                    <?php foreach ($unit as $key => $value) : ?>
+                                        <option value="<?= $value->id_unit ?>"><?= $value->nama_unit ?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                         </div>
+                        <div class="col-sm-2 pt-4">
+                            <button type="submit" class="btn btn-primary mr-2" id="filter_bayar_um"><i class="fa fa-search"></i>Search</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-hover" id="tbl_uang_muka">
+                                <thead>
+                                    <th>Nama</th>
+                                    <th>Nama Perumahan</th>
+                                    <th>Nama Rumah</th>
+                                    <th>Tanggal Uang Muka</th>
+                                    <th>Periode</th>
+                                    <th>Status</th>
+                                    <th>Uang Muka</th>
+                                    <th>Total Kesepakatan</th>
+                                    <th>Total Transaksi</th>
+                                    <th>Total Akhir</th>
+                                    <th>Aksi</th>
+                                </thead>
+                            </table>                                 
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

@@ -36,7 +36,9 @@ $(document).ready(function () {
     //     placeholder: 'Pilih Unit',
     //     theme: "bootstrap"
     // });
-    $("#tbl_list_transaksi").DataTable();
+    $("#tbl_list_transaksi,#tbl_list_unlock").DataTable({
+        "responsive" :true
+    });
     let tambah_form = 1;
     $("#tambah_form").click(function (e) { 
         e.preventDefault();
@@ -132,9 +134,6 @@ $(document).ready(function () {
         if ((id == "1") || (id == "3")) {
             form += '<div class="col-sm-3 val_periode"><div class="form-group"><label for="periode_bayar">Periode Bayar(Bulan)</label><input type="number" name="periode_bayar" class="form-control" id="periode_bayar" required></div></div><div class="col-sm-3 val_periode"><div class="form-group"><label for="total_bayar_periode">Cicilan</label><input type="text" name="total_bayar_periode" class="form-control" id="total_bayar_periode" Readonly required></div></div>';
         }
-        else if(id == "2"){
-            form += '<div class="col-sm-3 val_periode"><div class="form-group"><label for="total_bayar_periode">Cicilan</label><input type="text" name="total_bayar_periode" class="form-control" id="total_bayar_periode" Readonly required></div></div>';
-        }
         // form += '</div>';
         $(".bayar").after(form);
     });
@@ -160,11 +159,11 @@ $(document).ready(function () {
         e.preventDefault();
         let harga;
         let kesepakatans = String($(this).val());
-        // if (($("#select_unit").val() == "") || ($("#select_konsumen").val() == "")) {
-        //     swallSuccess("Error", "Isi data diatas","error","")
-        //     $(this).val("");
-        //     return;
-        // }
+        if (($("#select_unit").val() == "") || ($("#select_konsumen").val() == "")) {
+            swallSuccess("Error", "Isi data diatas","error","")
+            $(this).val("");
+            return;
+        }
         $("#txt_ttl_transaksi,#txt_ttl_akhir").val(kesepakatans)
     });
     $(".btn-check").on("change",function (e) {
@@ -327,8 +326,8 @@ $(document).ready(function () {
             text: "Apakah ingin dikunci ?",
             type: "question",
             showCancelButton: true,
-            confirmButtonColor: '#a55eea',
-            cancelButtonColor: '#fed330',
+            confirmButtonColor: '#448aff',
+            cancelButtonColor: '#ff4081',
             confirmButtonText: 'Lock !'
         }).then((result) => {
             if (result.value) {
@@ -353,4 +352,39 @@ $(document).ready(function () {
             }
         })
     });
+    $("#tbl_list_transaksi").on("click",".delete-transaksi",function (e) { 
+        e.preventDefault();
+        let href = $(this).attr('href');
+        Swal({
+            title: "Hapus ?",
+            text: "Apakah ingin dihapus ?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: '#448aff',
+            cancelButtonColor: '#ff4081',
+            confirmButtonText: 'Hapus !'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: "post",
+                    url: href,
+                    dataType: "JSON",
+                    success: function (success) {
+                        if (success.success == false) {
+                            swallSuccess("Gagal", "Gagal dihapus", "error", null);
+                        } else {
+                            swallSuccess("Berhasil", "Berhasil Dihapus", "success", function () {
+                                location.reload();
+                            });
+                        }
+                    }
+                });
+            }
+        })
+    });
+
+    $("#detail_unlock").click(function (e) {
+        e.preventDefault();
+        $("#modal_list_transaksi").modal("show");
+    })
 });

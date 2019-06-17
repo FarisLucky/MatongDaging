@@ -231,7 +231,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group row">
-                                    <label for="txt_nama_tambah" class="col-sm-5 col-form-label f-29 border-left border-dark">Total Akhir</label>
+                                    <label class="col-sm-5 col-form-label f-29 border-left border-dark">Total Akhir</label>
                                     <div class="col-sm-7">
                                         <input type="text" name="txt_ttl_akhir" class="form-control" value="<?= $transaksi->total_akhir ?>" Readonly>
                                     </div>
@@ -278,11 +278,6 @@
                                     <input type="date" class="form-control" name="tgl_pembayaran" value="<?= $transaksi->tempo_bayar ?>" readonly>
                                 </div> 
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a href="<?= base_url() ?>transaksi" id="btn_batal_properti" class="btn btn-dark mr-2 float-right">Kembali</a>
-                            </div>  
                         </div>
                     </div>
                 </div>

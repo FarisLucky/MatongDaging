@@ -1,3 +1,7 @@
+<?php 
+  $properti = get_where('tbl_properti',['id_properti'=>$this->session->userdata('id_properti')])->row();
+  $assign_properti = get_where('tbl_user_assign_properti',['id_user'=>$this->session->userdata('id_user')])->result();
+  $users = get_where('tbl_users',['id_user'=>$this->session->userdata['id_user']])->row(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +33,7 @@
   <link rel="shortcut icon" href="<?= base_url() ?>assets/images/favicon.png" />
 </head>
 
-<body>
+<body data-base="<?= base_url() ?>">
   <div class="container-scroller">
 
 
@@ -170,36 +174,46 @@
               </a>
             </div>
           </li>
-          <li class="nav-item dropdown d-none d-xl-inline-block">
-            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <span class="profile-text">Hello, Richard V.Welsh !</span>
-              <img class="img-xs rounded-circle" src="images/faces/face1.jpg" alt="Profile image">
+          <?php if ($_SESSION['id_akses'] != 1) { ?>
+          <li class="nav-item dropdown bg_red">
+            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+            <span class="profile-text nav_properti"><?= $properti->nama_properti ?></span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-              <a class="dropdown-item p-0">
-                <div class="d-flex border-bottom">
-                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
-                    <i class="mdi mdi-bookmark-plus-outline mr-0 text-gray"></i>
-                  </div>
-                  <div class="py-3 px-4 d-flex align-items-center justify-content-center border-left border-right">
-                    <i class="mdi mdi-account-outline mr-0 text-gray"></i>
-                  </div>
-                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
-                    <i class="mdi mdi-alarm-check mr-0 text-gray"></i>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+              <a class="dropdown-item">
+                <p class="mb-0 font-weight-normal float-left">Pilih perumahan yang mau dikelola :</p>
+              </a>
+              <?php $session = $_SESSION['id_properti']; foreach ($assign_properti as $key => $p_item) : 
+                $selected = ($session == $p_item->id_properti) ? 'assign' : '' ;?>
+              <div class="dropdown-divider"></div>
+              <a href="<?= base_url().'auth/reselectproperti/'.$p_item->id_properti ?>" class="<?= $selected ?> dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-success">
+                    <img src="<?= base_url().'assets/uploads/images/properti/'.$p_item->foto_properti ?>" alt="">
                   </div>
                 </div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject font-weight-medium text-dark"><?= $p_item->nama_properti ?></h6>
+                  <p class="font-weight-light small-text">Assign Properti</p>
+                </div>
               </a>
-              <a class="dropdown-item mt-2">
-                Manage Accounts
+              <?php endforeach; ?>
+            </div>
+          </li>
+          <?php } ?>
+          <li class="nav-item dropdown d-none d-xl-inline-block">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+              <span class="profile-text">Setting User !</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+              <div class="bg-setting padding-setting">
+                <small class="text-setting">Pilih Setting</small>
+              </div>
+              <a href="<?= base_url().'profiluser' ?>" class="dropdown-item mt-2">Manage Accounts
               </a>
-              <a class="dropdown-item">
-                Change Password
+              <a href="<?= base_url().'profil/user' ?>" class="dropdown-item">Change Password
               </a>
-              <a class="dropdown-item">
-                Check Inbox
-              </a>
-              <a href="<?= base_url() ?>auth/logout" class="dropdown-item">
-                Sign Out
+              <a href="<?= base_url() ?>auth/logout" class="dropdown-item">Sign Out
               </a>
             </div>
           </li>

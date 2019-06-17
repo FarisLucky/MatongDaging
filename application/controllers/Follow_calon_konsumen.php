@@ -8,6 +8,7 @@ class Follow_calon_konsumen extends CI_Controller
         parent::__construct();
         $this->load->model('M_follow_calon_konsumen');
         $this->load->library('form_validation');
+        $this->rolemenu->init();
     }
 
     public function index()

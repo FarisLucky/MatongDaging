@@ -1,8 +1,3 @@
-<?php
-// echo "<pre>";
-// print_r($jenispembayaran);
-// echo "</pre>";
-?>
 <div class="content-wrapper">
     <div class="container">
         <div class="row">
@@ -13,7 +8,7 @@
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Edit Jenis Pembayaran</h4>
                             </div>
-                        </div>
+                      </div>
                     </div>
                 </div>
             </div>

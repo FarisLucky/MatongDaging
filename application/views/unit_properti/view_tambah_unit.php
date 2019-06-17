@@ -21,7 +21,6 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block">Tambah Unit Properti</h5>
-                                <button type="button" class="btn btn-success float-right">Lihat Blok</button>
                             </div>
                         </div>
                         <hr>
@@ -59,7 +58,7 @@
                                                 <textarea class="form-control" name="txt_desc" id="txt_desc" rows="3"></textarea>
                                             </div> 
                                             <div class="form-group">
-                                                <label for="txt_foto" class="d-flex">Foto Properti</label><input type="file" name="foto" class="form-control col-sm-4">
+                                                <label for="txt_foto" class="d-flex">Foto Unit</label><input type="file" name="foto" class="form-control col-sm-4">
                                             </div>
                                         </div>
                                     </div>                                

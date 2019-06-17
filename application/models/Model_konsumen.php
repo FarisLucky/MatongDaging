@@ -5,36 +5,29 @@ class Model_konsumen extends CI_Model
 {
     public $image = "default.jpg";
 
-    public function ambildata()
-    {
-        // mysqli_query ("select * from barang where kode_barang='.$kode_barang'")
-        return $this->db->get('tbl_konsumen');
-    }
-
     public function getData($tb) //untuk ngambil type
     {
         return $this->db->get($tb);
     }
 
-    public function getSelectionData($id)
+    public function getSelectionData($table,$where)
     {
-        $data = $this->db->get_where('konsumen', ['id_konsumen' => $id]);
-        return $data->result_array();
+        $data = $this->db->get_where($table, $where);
+        return $data;
     }
 
     public function updateDataKonsumen($data, $id)
     {
-        $this->db->update('konsumen', $data, ['id_konsumen' => $id]); //WHERE id_konsumnen = $id
+        $this->db->update('konsumen', $data, ['id_konsumen' => $id]); 
     }
 
-    public function delete($id)
+    public function delete($table,$where)
     {
-        $input = ['id_konsumen' => $id['id_konsumen']];
-        $this->db->where($input);
-        $this->db->delete('konsumen');
+        $this->db->where($where);
+        $this->db->delete($table);
     }
-    public function insertDataKonsumen($data)
+    public function insertDataKonsumen($table,$data)
     {
-        $this->db->insert("konsumen", $data);
+        $this->db->insert($table, $data);
     }
 }

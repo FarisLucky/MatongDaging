@@ -31,13 +31,11 @@
                                     <thead>
                                         <th>Nama</th>
                                         <th>Type Rumah</th>
+                                        <th>Tanah</th>
+                                        <th>Bangunan</th>
                                         <th>Harga</th>
                                         <th>Status</th>
                                         <th>Foto</th>
-                                        <th>Alamat</th>
-                                        <th>Luas Tanah</th>
-                                        <th>Luas Bangunan</th>
-                                        <th>Deskripsi</th>
                                         <th>Aksi</th>
                                     </thead>
                                 </table>                                 

@@ -16,9 +16,7 @@ $(document).ready(function () {
     const unit = $('#tbl_unit').DataTable ({
         "processing": true,
         "responsive": true,
-        "scrollX": true,
         "fixColumns": false,
-        "autoWidth": false,
         "serverSide": true,
         "order": [],
         "ajax": {
@@ -67,9 +65,7 @@ $(document).ready(function () {
                         window.location.href = url;
                     })
                 } else if ((response.success == false) && (response.error)) {
-                    swallSuccess(response.title, response.text, response.type, function () {
-                        window.location.href = url;
-                    })
+                    swallSuccess(response.title, response.error, response.type, null)
                 } else {
                     $.each(response.msg, function (key, val) {
                         let el = $('#' + key)

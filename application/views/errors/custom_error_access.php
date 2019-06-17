@@ -34,7 +34,7 @@
             </div>
             <div class="row mt-5">
               <div class="col-12 text-center mt-xl-2">
-                <a class="text-white font-weight-medium" href="<?= base_url() ?>dashboard">Back to home</a>
+                <a class="text-white font-weight-medium" href="<?= $redirect ?>">Kembali Ke Dashboard</a>
               </div>
             </div>
             <div class="row mt-5">

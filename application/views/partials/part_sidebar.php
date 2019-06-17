@@ -1,25 +1,20 @@
 <!-- partial Main Menu -->
+<?php $user = get_where('tbl_users',['id_user'=>$this->session->userdata['id_user']])->row(); ?>
 <div class="container-fluid page-body-wrapper">
 
   <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
       <li class="nav-item nav-profile">
         <div class="nav-link">
-          <div class="user-wrapper">
+          <div class="profile-icon">
             <div class="profile-image">
-              <img src="<?= base_url() ?>assets/images/faces/face1.jpg" alt="profile image">
+              <img src="<?= base_url() ?>assets/uploads/images/profil/user/<?= $user->foto_user ?>" class="img-profil" >
             </div>
             <div class="text-wrapper">
-              <p class="profile-name">Richard V.Welsh</p>
-              <div>
-                <small class="designation text-muted">Manager</small>
-                <span class="status-indicator online"></span>
-              </div>
+              <p class="profile-name"><?= $user->nama_lengkap ?></p>
             </div>
           </div>
-          <button class="btn btn-success btn-block">New Project
-            <i class="mdi mdi-plus"></i>
-          </button>
+          <small class="badge badge-success akses_title"><?= $user->akses ?></small>
         </div>
       </li>
       <?php echo $menus ?>

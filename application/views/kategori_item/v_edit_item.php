@@ -25,7 +25,7 @@
                             <div class="col-sm-12">
                                 <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
 			                    <div class="form-group">
-			                      <label for="exampleInputName1">nama_kelompok</label>
+			                      <label for="exampleInputName1">nama kelompok</label>
 			                        <input type="hidden" name = "id_kelompok" value = "<?php echo $k->id_kelompok ?>"class="form-control" id="exampleInputName1" placeholder="">
 			                      <input type="text" name = "nama_kelompok" value = "<?php echo $k->nama_kelompok ?>"class="form-control" id="exampleInputName1" placeholder="">
 			                    </div>

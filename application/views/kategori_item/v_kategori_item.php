@@ -30,9 +30,9 @@
                                 <table class="table table-hover" id="tbl_users">
                                     <thead>
                                         <th>No</th>
-                                        <th>Nama_kelompok</th>
-                                        <th>Id_user</th>
-                                        <th>Id_kategori</th>
+                                        <th>Nama Kelompok</th>
+                                        <th>Id User</th>
+                                        <th>Id Kategori</th>
                                         <th>Aksi</th>
                                     </thead>
                                     <tbody>

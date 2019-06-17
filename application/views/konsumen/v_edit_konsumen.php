@@ -66,7 +66,7 @@
                                 <div class="form-group">
                                     <div class="form-label-group">
                                         <label for="input_alamat">Alamat</label>
-                                        <input type="text" class="form-control" id="input_alamat" name="edit_alamat" value="<?= $konsumen[0]['alamat'] ?>" placeholder="Masukan Alamat" required><br>
+                                        <textarea type="text" class="form-control" id="input_alamat" name="edit_alamat" rows="3" placeholder="Masukan Alamat" required><?= $konsumen[0]['alamat'] ?></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
                                 <div class="form-group">
                                     <div class="form-label-group">
                                         <label for="input_alamatkantor">Alamat Kantor</label>
-                                        <input type="text" class="form-control" id="input_alamatkantor" name="edit_alamat_kantor" value="<?= $konsumen[0]['alamat_kantor'] ?>" placeholder="Masukan Alamat Kantor" required><br>
+                                        <textarea type="text" class="form-control" id="input_alamatkantor" name="edit_alamat_kantor" rows="3" placeholder="Masukan Alamat Kantor" required> <?= $konsumen[0]['alamat_kantor'] ?></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -131,11 +131,10 @@
                                 <input type="file" class="form-control col-sm-6" name="img_foto">
                             </div>
                         </div>
-
                         <!-- foto-->
                     </div>
                     <button type="submit" class="btn btn-success mr-2">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <a href="<?= site_url("konsumen/calonkonsumen") ?>" class="btn btn-light">Cancel</a>
                 </form>
                 <div>
                 </div>
