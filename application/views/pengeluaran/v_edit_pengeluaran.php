@@ -39,7 +39,7 @@
                             </div>
                             <div class="form-group">
                               <label for="exampleInputName1">harga_satuan</label>
-                              <input type="text" name = "harga_satuan" value = "<?php echo $p->harga_satuan ?>"class="form-control" id="exampleInputName1" placeholder="">
+                              <input type="text" name = "harga_satuan" value = "<?php echo $->harga_satuan ?>"class="form-control" id="exampleInputName1" placeholder="">
                             </div>
                             <div class="form-group">
                               <label for="exampleInputName1">bukti_kwitansi</label>
