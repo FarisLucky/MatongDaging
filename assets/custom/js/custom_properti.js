@@ -1,7 +1,23 @@
 function reload() {
     location.reload()
 }
-
+function swallQuestion(titles, texts, types, confirm, success) {
+    Swal({
+        title: titles,
+        text: texts,
+        type: types,
+        showCancelButton: true,
+        confirmButtonColor: '#00ce68',
+        cancelButtonColor: '#e65251',
+        confirmButtonText: confirm
+    }).then((result) => {
+        if (result.value) {
+            if (typeof success == 'function') {
+                success();
+            };
+        }
+    })
+}
 function swallSuccess(titles, texts, types, success) {
     Swal({
         title: titles,
@@ -38,16 +54,9 @@ function notifToastr(types, text) {
 }
 
 $(document).ready(function () {
-
-    // if ($("#tambah_properti").length > 0) {
-    //     CKEDITOR.replace('txt_spr');
-    // }
     const properti = $('#tbl_properti').DataTable({
         "processing": true,
         "responsive": true,
-        "fixColumns": false,
-        "autoWidth": false,
-        "scrollX": true,
         "serverSide": true,
         "order": [],
         "ajax": {
@@ -57,10 +66,7 @@ $(document).ready(function () {
         "columnDefs": [{
             "orderable": false,
             "targets": '_all'
-        }, {
-            "responsivePriority": 1,
-            "targets": 0
-        }, ],
+        }],
     });
 
     $("#btn_ubah_properti").click(function (e) {
@@ -213,5 +219,49 @@ $(document).ready(function () {
                 });
             }
         })
+    })
+    $("table#tbl_properti").on("click","#tambah_rab_properti",function (e) { 
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        $("#modal_dialog").modal("show");
+        $("#form_modal").find("button").attr({"id":"rab_properti","data-id":id});
+    });
+    $("table#tbl_properti").on("click","#tambah_rab_unit",function (e) { 
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        $("#modal_dialog").modal("show");
+        $("#form_modal").find("button").attr({"id":"rab_unit","data-id":id});
+    });
+    $(document).on("click","#rab_properti",function(e) {
+        e.preventDefault();
+        let id_properti = $(this).attr("data-id");
+        let nama = $("input[name='txt_name']").val();
+        $.ajax({
+            type: "post",
+            url: "properti/rab",
+            data: {id_properti,nama},
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = response.redirect;
+                }
+            }
+        });
+    })
+    $(document).on("click","#rab_unit",function(e) {
+        e.preventDefault();
+        let id_unit = $(this).attr("data-id");
+        let nama = $("input[name='txt_name']").val();
+        $.ajax({
+            type: "post",
+            url: "properti/rab",
+            data: {id_unit,nama},
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = response.redirect;
+                }
+            }
+        });
     })
 });

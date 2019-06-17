@@ -3,7 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class RoleMenu
 {
     private $CI;
-
+    private $default_role = null;
+	private $system_status = true;
+	private $forbidden_controller = 'deny';
     public function __construct()
     {
         $this->CI = &get_instance();
@@ -37,13 +39,11 @@ class RoleMenu
             $li = '<i class="menu-arrow"></i>';
             $html = '';
             $rows = $val->result();
-            $html .= '<div class="collapse" id="' . ltrim($url_menu, "#") . '">
-            <ul class="nav flex-column sub-menu">';
+            $html .= '<div class="collapse" id="' . ltrim($url_menu, "#") . '"> <ul class="nav flex-column sub-menu">';
             foreach ($rows as $key => $value) {
-                // $active_sub = "";
-                // ($active_sub_menu == $value->name_actived) ? $active_sub = 'hai' : $active_sub;
-                $html .= '<li class="nav-item"><a class="nav-link " href="'.base_url($value->sub_url).'"> '.$value->nama_sub.' </a>
-                    </li>';
+                if (!empty($value->nama_sub)) {
+                    $html .= '<li class="nav-item"><a href="'.base_url($value->sub_url).'" class="nav-link" > '.$value->nama_sub.' </a></li>';
+                }
             }
             $html .= '</ul>
             </div>';
@@ -68,4 +68,84 @@ class RoleMenu
         $hasil = $this->CI->db->get_where('user_menu', ["id_menu" => $id]);
         return $hasil->row_array();
     }
+
+
+    // User Controller
+
+	public function init() {
+
+		return $this->isAccessGranted();
+
+	}
+	/**
+	 * return the ID of logged in user
+	 */
+	public function getLoggedUser() {
+		if ($this->CI->session->userdata('id_user') != null) {
+			return $this->CI->session->userdata('id_user');
+		} else {
+			return false;
+		}
+		
+	}
+
+	/**
+	 * return the current controller accessed by user
+	 */
+	public function getController() {
+		$controller_uri = $this->CI->router->fetch_directory() . $this->CI->router->class;
+		return $controller_uri;
+	}
+
+	/**
+	 * return the role of logged in user
+	 */
+	public function getUserRole() {
+
+		if ($this->getLoggedUser()) {
+		
+			$this->CI->db->select('id_akses');
+			$this->CI->db->where('id_user', $this->getLoggedUser());
+			$result = $this->CI->db->get('user')->row();
+			return $result->id_akses;
+
+		} else {
+
+			return $this->default_role;
+
+		}
+
+	}
+
+	/**
+	 * get User Information to check role
+	 */
+	private function getProperti()
+	{
+		# code...
+	}
+	/**
+	 * if user doesn't have access to the controller, redirect user to somewhere
+	 */
+	public function isAccessGranted() {
+		
+		if ($this->system_status) {
+			if (!isset($_SESSION["login"])) {
+				redirect("auth");
+			}
+			elseif ((!isset($_SESSION['id_properti'])) && ($_SESSION['id_akses'] != 1)) {
+				redirect("auth/kelompokproperti");
+			}else{
+				$this->CI =& get_instance();
+				$this->CI->db->where(array('id_akses' => $this->getUserRole(), 'controller' => $this->getController()));
+				$query = $this->CI->db->get('user_controller');
+				
+				if ($query->num_rows() < 1) {
+	
+					redirect("auth/blocked");
+	
+				} 
+			}
+		}
+	}
 }

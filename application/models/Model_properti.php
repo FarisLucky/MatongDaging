@@ -48,6 +48,11 @@ class Model_properti extends CI_Model {
         $this->db->update('properti',['status'=>"publish"]);
         return $this->db->affected_rows();
     }
+    public function naturalInsert($table,$data)
+    {
+        $this->db->insert($table,$data);
+        return $this->db->affected_rows();
+    }
     public function insertDataProperti($input)
     {
         $data = $this->m_input($input);
@@ -60,6 +65,10 @@ class Model_properti extends CI_Model {
             'nama_properti'=>$params['nama'],'alamat'=>$params['alamat'],'luas_tanah'=>$params['luas'],'jumlah_unit'=>$params['jumlah'],'rekening'=>$params['rekening'],'logo_properti'=>$params['logo'],'foto_properti'=>$params['foto'],'tgl_buat'=>date('Y-m-d'),'status'=>$params['status'],"setting_spr"=>$params['spr']
         ];
         return $data;
+    }
+    public function getDataWhere($table,$where)
+    {
+        return $this->db->get_where($table,$where);
     }
 }
 

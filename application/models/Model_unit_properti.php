@@ -16,7 +16,7 @@ class Model_unit_properti extends CI_Model {
     }
     public function insertUnit($params)
     {
-        $data = ['nama_unit'=>$params['nama'],'type'=>$params['type'],'luas_tanah'=>$params['tanah'],'luas_bangunan'=>$params['bangunan'],'harga_unit'=>$params['harga'],'alamat_unit'=>$params['alamat'],'foto_unit'=>$params['img'],'deskripsi'=>$params['deskripsi'],'tgl_insert'=>date("Y-m-d"),"id_user"=>$this->session->userdata('id_user'),'id_properti'=>1,"status_unit"=>"belum terjual"];
+        $data = ['nama_unit'=>$params['nama'],'type'=>$params['type'],'luas_tanah'=>$params['tanah'],'luas_bangunan'=>$params['bangunan'],'harga_unit'=>$params['harga'],'alamat_unit'=>$params['alamat'],'foto_unit'=>$params['img'],'deskripsi'=>$params['deskripsi'],'tgl_insert'=>date("Y-m-d"),"id_user"=>$this->session->userdata('id_user'),'id_properti'=>$this->session->userdata('id_properti'),"status_unit"=>"belum terjual"];
         $query = $this->db->insert('unit_properti',$data);
         return $this->db->affected_rows();
     }

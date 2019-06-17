@@ -6,7 +6,7 @@
                     <div class="card-body p-4">
                         <div class="row">
                             <div class="col-sm-12">
-                                <h4 class="dark txt_title d-inline-block mt-2">Approve Transaksi</h4>
+                                <h4 class="dark txt_title d-inline-block mt-2">Approve Final</h4>
                                 <img id="logo_perusahaan" width="50px" src="<?php echo base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                                             <td> <?= "Rp. ".number_format($value->uang_muka,2,',','.')." / ".$value->periode_uang_muka ?></td>
                                             <td> <?= "Rp. ".number_format($value->pembayaran,2,',','.')." / ".$value->bayar_periode ?></td>
                                             <td> <?= "Rp. ".number_format($value->total_akhir,2,',','.') ?></td>
-                                            <td><a href="<?= base_url()."approve/transaksi/detail/".$value->id_transaksi ?>" class="btn btn-sm btn-success btn-detail-trans" >Detail</a><button type="button" class="btn btn-sm btn-danger ml-2 btn-confirm-trans" data-id="<?= $value->id_transaksi ?>">Confirm</button></td>
+                                            <td><a href="<?= base_url()."approve/transaksi/detail/".$value->id_transaksi ?>" class="btn btn-sm btn-primary btn-detail-trans" >Detail</a><a href="<?= base_url()."approve/transaksi/detail/".$value->id_transaksi ?>" class="btn btn-sm btn-warning ml-2 btn-detail-trans" >Data Konsumen</a><button type="button" class="btn btn-sm btn-danger ml-2 btn-confirm-trans" data-id="<?= $value->id_transaksi ?>">Confirm</button></td>
                                         </tr>
                                         <?php endforeach; ?>
                                     </tbody>

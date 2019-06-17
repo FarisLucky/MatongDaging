@@ -27,64 +27,58 @@ function swallSuccess(titles, texts, types, success) {
         }
     })
 }
+function dataTables(selector,url,datas) {
+    $(selector).DataTable ({
+        "processing": true,
+        "responsive": true,
+        "fixColumns": false,
+        "serverSide": true,
+        "searching":false,
+        "order": [],
+        "ajax": {
+            url: url,
+            type: "POST",
+            data: datas
+        },
+        "columnDefs": [{
+            "orderable": false,
+            "targets": '_all'
+        }]
+    });
+}
 $(document).ready(function () {
-    const tanda_jadi = $('#tbl_tanda_jadi').DataTable ({
-        "processing": true,
-        "responsive": true,
-        "scrollX": true,
-        "fixColumns": false,
-        "autoWidth": false,
-        "serverSide": true,
-        "order": [],
-        "ajax": {
-            url: 'datatj',
-            type: "POST"
-        },
-        "columnDefs": [{
-            "orderable": false,
-            "targets": '_all'
-        }],
-        "bDestroy": true
-    });
-    const uang_muka = $('#tbl_uang_muka').DataTable ({
-        "processing": true,
-        "responsive": true,
-        "scrollX": true,
-        "fixColumns": false,
-        "autoWidth": false,
-        "serverSide": true,
-        "order": [],
-        "ajax": {
-            url: 'dataum',
-            type: "POST"
-        },
-        "columnDefs": [{
-            "orderable": false,
-            "targets": '_all'
-        }],
-        "bDestroy": true
-    });
-    const transaksi = $('#tbl_transaksi').DataTable ({
-        "processing": true,
-        "responsive": true,
-        "scrollX": true,
-        "fixColumns": false,
-        "autoWidth": false,
-        "serverSide": true,
-        "order": [],
-        "ajax": {
-            url: 'datac',
-            type: "POST"
-        },
-        "columnDefs": [{
-            "orderable": false,
-            "targets": '_all'
-        }],
-        "bDestroy": true
-    });
+    const tanda_jadi = dataTables("#tbl_tanda_jadi","datatj","");
+    const uang_muka = dataTables("#tbl_uang_muka","dataum","");
+    const transaksi = dataTables("#tbl_transaksi","datatransaksi","");
     const tbl_kelola_um = $("#tbl_kelola_um,#tbl_cicilan").DataTable({
         "responsive":true
     });
+    // Filter Pembayaran
+    // FIlter Uang Muka
+    $("#filter_bayar_um").click(function (e) { 
+        e.preventDefault();
+        let id_unit = $("#id_unit").val();
+        if (id_unit == "") {
+            $data = "";
+        }else{
+            $data = {id_unit};
+        }
+        $("#tbl_uang_muka").DataTable().destroy();
+        dataTables("#tbl_uang_muka","dataum",$data);
+    });
+    // Filter Cicilan
+    $("#view_transaksi #filter_bayar_cicilan").click(function (e) { 
+        e.preventDefault();
+        let id_unit = $("#view_transaksi #id_unit").val();
+        if (id_unit == "") {
+            $data = "";
+        }else{
+            $data = {id_unit};
+        }
+        $("#view_transaksi #tbl_transaksi").DataTable().destroy();
+        dataTables("#view_transaksi #tbl_transaksi","datatransaksi",$data);
+    });
+
     $("#tbl_tanda_jadi").on("click",".bayar_tj",function (e) { 
         e.preventDefault();
         let id = $(this).attr("data-id");
@@ -160,8 +154,8 @@ $(document).ready(function () {
                 if (response.success == true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid');
                     swallSuccess("Sukses", "Berhasil ditambahkan", "success", function () {
-                        tanda_jadi.ajax.reload();
                         $("#modal_tanda_jadi").modal("hide");
+                        location.reload();
                     })
                 } else if ((response.success == false) && (response.error)) {
                     toastr.error(error);
@@ -209,8 +203,8 @@ $(document).ready(function () {
                 if (response.success == true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid');
                     swallSuccess("Sukses", "Berhasil ditambahkan", "success", function () {
-                        tbl_kelola_um.ajax.reload();
                         $("#modal_uang_muka").modal("hide");
+                        Window.location.reload();
                     })
                 } else if ((response.success == false) && (response.error)) {
                     toastr.error(error);
