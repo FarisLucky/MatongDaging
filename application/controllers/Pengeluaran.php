@@ -5,6 +5,7 @@ class Pengeluaran extends CI_Controller
 {
 	function __construct(){
 	parent::__construct();
+	$this->load->library('form_validation');
 	$this->load->model('M_pengeluaran');	
 	$this->load->library('form_validation');
 	
@@ -18,11 +19,11 @@ class Pengeluaran extends CI_Controller
 		$data['menus'] = $this->rolemenu->getMenus();
 		$data['img'] = getCompanyLogo();
         // $data['js'] = $this->rolemenu->getJavascript(4); //Jangan DIUbah !!
+		$data['img'] = getCompanyLogo();
         $this->load->view('partials/part_navbar',$data);
         $this->load->view('partials/part_sidebar',$data);
 		$this->load->view('pengeluaran/v_pengeluaran',$data);
         $this->load->view('partials/part_footer',$data);
-       	
 	}
 	function tambah()
 	{

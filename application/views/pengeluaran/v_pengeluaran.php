@@ -39,7 +39,6 @@
                                         <th>Aksi</th>
                                     </thead>
                                     <tbody>
-                                        <tr>
                                 <?php 
                                 $no = 1;
                                 foreach($pengeluaran as $p){ 
