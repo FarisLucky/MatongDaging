@@ -6,9 +6,9 @@ class ProfilPerusahaan extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->rolemenu->init();
         $this->load->library('encryption');
         $this->load->model('Model_profil_perusahaan','Mperusahaan');
-        checkSession();
     }
     
     public function index()

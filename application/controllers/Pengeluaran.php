@@ -7,12 +7,17 @@ class Pengeluaran extends CI_Controller
 	parent::__construct();
 	$this->load->library('form_validation');
 	$this->load->model('M_pengeluaran');	
+	$this->load->library('form_validation');
+	
+	$this->load->helper('date');
+	
 }
 	public function index()
 	{
-		$active = "pengeluaran";
+		$data["title"] = "Pengeluaran";
 		$data['pengeluaran'] = $this->M_pengeluaran->tampil_data()->result();
-        $data['menus'] = $this->rolemenu->getMenus($active);
+		$data['menus'] = $this->rolemenu->getMenus();
+		$data['img'] = getCompanyLogo();
         // $data['js'] = $this->rolemenu->getJavascript(4); //Jangan DIUbah !!
 		$data['img'] = getCompanyLogo();
         $this->load->view('partials/part_navbar',$data);
@@ -22,9 +27,10 @@ class Pengeluaran extends CI_Controller
 	}
 	function tambah()
 	{
-		$active = "pengeluaran";
+		$active = "Tambah";
+		$data['menus'] = $this->rolemenu->getMenus();
 		$data['img'] = getCompanyLogo();
-		$data['menus'] = $this->rolemenu->getMenus($active);
+		$data["kelompok"] = $this->m_pengeluaran->edit_data("kelompok_item",['id_kategori'=>3])->result();
 		$this->load->view('partials/part_navbar',$data);
 	    $this->load->view('partials/part_sidebar',$data);
 	    $this->load->view('pengeluaran/v_tambah_pengeluaran');
@@ -38,32 +44,43 @@ class Pengeluaran extends CI_Controller
 		$this->load->view('partials/part_sidebar',$data);
 		$this->load->view('pengeluaran/v_tambah_pengeluaran');
 		$this->load->view('partials/part_footer',$data);
-		$config['uploads_path'] = './upload/foto/';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['overwrite'] = true;
-		$config['file_name'] = $_FILES['bukti_kwitansi']['name'];
-		$config['max_size'] = 0;
-		$config['max_width'] = 0;
-		$config['max_height'] = 0;
+		$config['upload_path'] = './assets/uploads/images/pengeluaran';
+		$config['allowed_types'] = 'jpg|jpeg|png';
+		$config['encrypt_name'] = true;
+		$config['max_size']  = '2048';
+		$config['max_width']  = '1024';
+		$config['max_height']  = '768';
 		$this->load->library('upload', $config);
-		$this->upload->initialize($config);
-		$nama_pengeluaran = $this->input->post('nama_pengeluaran');
-		$volume = $this->input->post('volume');
-		$satuan = $this->input->post('satuan');
-		$harga_satuan = $this->input->post('harga_satuan');
-		$tgl_buat = date("Y-m-d H:i:s");
+		if ($this->upload->do_upload('bukti_kwitansi')) {
+			$img = $this->upload->data();
+		}
+		else{
+			$data["error"] = $this->upload->display_errors();
+		}
+		$nama_pengeluaran = $this->input->post('nama_pengeluaran',true);
+		$volume = $this->input->post('volume',true);
+		$satuan = $this->input->post('satuan',true);
+		$harga_satuan = $this->input->post('harga_satuan',true);
+		$tgl_buat = date("Y-m-d");
+		$kelompok = $this->input->post('kelompok',true);
+		$total = $volume * $harga_satuan;
 		$file = $this->upload->data();
-		$gambar = $file['file_name'];
+		$gambar = $img['file_name'];
 		$data = array(
 			'nama_pengeluaran' => $nama_pengeluaran,
 			'volume' => $volume,
 			'satuan' => $satuan,
 			'harga_satuan' => $harga_satuan,
-			'tgl_buat' => $tgl_buat,
-			'bukti_kwitansi' => $gambar
+			'total_harga' => $total,
+			'created_at' => $tgl_buat,
+			'status_manager' => "pending",
+			'bukti_kwitansi' => $gambar,
+			'id_user'=>$this->session->userdata("id_user"),
+			'id_properti'=>$this->session->userdata('id_properti'),
+			'id_kelompok'=>$kelompok
 			);
 		$this->M_pengeluaran->input_data($data,'pengeluaran');
-		redirect('pengeluaran/index');
+		redirect('pengeluaran');
 	}
 	function hapus($id_pengeluaran)
 	{

@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<div class="content-wrapper" id="laporan_view_unit">
     <div class="container">
         <div class="card">
             <div class="card-body p-4">
@@ -10,24 +10,43 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <form action="<?= base_url().'laporanunit/search' ?>" method="post">
-                                <div class="form-group">
-                                    <label for="id_status">Pilih Status</label>
-                                    <select name="status_item" id="id_status" class="form-control">
-                                        <option value=""> -- Pilih Status -- </option>
-                                        <option value="Sudah Terjual" <?php echo ($id == "Sudah Terjual") ? "Selected" : "" ; ?> >Sudah Terjual</option>
-                                        <option value="Belum Terjual" <?php echo ($id == "Belum Terjual") ? "Selected" : "" ; ?> >Belum Terjual</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 mt-4 pl-0">
-                                <button type="submit" class="btn btn-primary mr-2" id="btn_search"><i class="fa fa-search"></i>Search</button>
-                                </form>
-                            </div>
+                    <div class="col-sm-3">
+                        <form action="<?= base_url().'laporanunit/search' ?>" method="post">
+                        <div class="form-group">
+                            <label for="id_status">Pilih Status</label>
+                            <select name="status_item" id="id_status" class="form-control">
+                                <option value=""> -- Pilih Status -- </option>
+                                <option value="Sudah Terjual" <?php echo ($id == "Sudah Terjual") ? "Selected" : "" ; ?> >Sudah Terjual</option>
+                                <option value="Belum Terjual" <?php echo ($id == "Belum Terjual") ? "Selected" : "" ; ?> >Belum Terjual</option>
+                            </select>
                         </div>
+                    </div>
+                    
+                    <?php if ($_SESSION['id_akses'] === "1") { ?>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="properti_id">Pilih Properti</label>
+                            <select name="properti" id="id_properti" class="form-control text-center">
+                                <option value=""> -- Properti -- </option>
+                                <?php foreach ($properti as $key => $value) { ?>
+                                    <option value="<?= $value->id_properti ?>"  <?php echo ($id_properti == $value->id_properti) ? "Selected" : "" ; ?>><?= $value->nama_properti ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="unit_id">Pilih Unit</label>
+                            <select name="id_unit" id="id_unit" class="form-control text-center">
+                                <option value=""> -- Unit -- </option>
+                            </select>
+                        </div>
+                    </div>
+                    <?php } ?>
+                        
+                    <div class="col-sm-3 mt-4 pl-0">
+                        <button type="submit" class="btn btn-primary mr-2" id="btn_search"><i class="fa fa-search"></i>Search</button>
+                        </form>
                     </div>
                 </div>
                 <hr>
@@ -65,12 +84,12 @@
                                         <td><?= $value->luas_bangunan ?></td>
                                         <td><?= $value->harga_unit ?></td>
                                         <td><div class="badge <?= $badge ?>"><?= $value->status_unit ?></div></td>
-                                        <td><img src="<?= base_url()."assets/uploads/images/unit_properti/".$value->foto_unit ?>" alt="" width="50px"></td>
-                                        <?php if ($_SESSION['id_akses'] != 3) {
-                                            $td = '<td><button>Detail</button><td>';
+                                        <td><img src="<?= base_url()."assets/uploads/images/unit_properti/".$value->foto_unit ?>" width="50px"></td>
+                                        <?php if ($_SESSION['id_akses'] == 3) {
+                                            $td = '<td><button class="btn btn-info" data-id="'.$value->id_unit.'">Detail</button></td>';
                                         }else {
-                                            $td = '<td><button>Edit</button></td>';
-                                        } ?>
+                                            $td = '<td><button class="btn btn-info btn-edit" data-id="'.$value->id_unit.'">Edit</button></td>';
+                                        } echo $td; ?>
                                     </tr>
                                 <?php $no++; } ?>
                             </tbody>
@@ -80,4 +99,37 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_laporan_calon">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Detail Unit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body m-3">
+        <div class="row">
+
+        <?php foreach ($syarat_unit as $key => $value) { ?>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="form-check form-check-flat">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="detail" id="sasaran_<?= $value->id_sasaran ?>" value="<?= $value->id_sasaran ?>" ><?php echo $value->nama_persyaratan ?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

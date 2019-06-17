@@ -3,7 +3,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ApproveList extends CI_Controller {
-
     
     public function __construct()
     {
@@ -12,10 +11,6 @@ class ApproveList extends CI_Controller {
         $this->load->model('Model_approve','MApprove');
     }
     public function index()
-    {
-        redirect("dashboard");
-    }
-    public function transaksi()
     {
         $data['title'] = 'Approve Transaksi';
         $data['menus'] = $this->rolemenu->getMenus();
@@ -26,8 +21,6 @@ class ApproveList extends CI_Controller {
     }
     public function search()
     {
-        $this->input->post('');
-        
         $data['title'] = 'Approve Transaksi';
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(23); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
@@ -67,39 +60,26 @@ class ApproveList extends CI_Controller {
         }
         $this->output->set_output(json_encode($data));
     }
-    public function penjualan()
-    {
-        $id = $this->session->userdata('id_properti');
-        $data['title'] = 'Approve Transaksi';
-        $data['menus'] = $this->rolemenu->getMenus();
-        $data['js'] = $this->rolemenu->getJavascript(10); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
-        $data['img'] = getCompanyLogo();
-        $data['approve_trans'] = $this->MApprove->getDataWhere("*","tbl_transaksi",["status_transaksi"=>"lunas"])->result();
-        $this->pages("approve/view_approve_transaksi",$data);
-    }
-    public function detail($id)
-    {
-        $data['title'] = 'Approve Transaksi';
-        $data['menus'] = $this->rolemenu->getMenus();
-        $data['js'] = $this->rolemenu->getJavascript(10); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
-        $data['img'] = getCompanyLogo();
-        $data['detail_trans'] = $this->MApprove->getDataWhere("*","detail_transaksi",["id_transaksi"=>$id])->result();
-        $data['data_pembayaran'] = $this->MApprove->getDataWhere("*","tbl_pembayaran",["id_transaksi"=>$id,"status"=>"selesai"])->result();
-        $data['data_transaksi'] = $this->MApprove->getDataWhere("*","tbl_transaksi",["id_transaksi"=>$id])->row();
-        $data['hutang_um'] = $this->MApprove->getHutang($id,2);
-        $data['bayar_um'] = $this->MApprove->getBayar($id,2);
-        $data['hutang_ccl'] = $this->MApprove->getHutang($id,3);
-        $data['bayar_ccl'] = $this->MApprove->getBayar($id,3);
-
-        $this->pages("approve/view_detail_approve",$data);
-    }
-    public function getDataModal()
+    public function getModal()
     {
         $data = ["success"=>false];
-        $dataId = $this->input->post('id');
+        $dataId = $this->input->post('params');
         if (!empty($dataId)) {
             $data["success"] = true;
-            $data ["pembayaran"] = $this->MApprove->getDataWhere("*","tbl_pembayaran",["id_pembayaran"=>$dataId])->row();
+            $query = $this->MApprove->getDataWhere("bukti_kwitansi","pengeluaran",["id_pengeluaran"=>$dataId]);
+            if ($query->num_rows() > 0) {
+                $rs_img = $query->row();
+                $img = base_url()."assets/uploads/images/pengeluaran/".$rs_img->bukti_kwitansi;
+                if (file_exists($img)) {
+                    $data['bukti_kwitansi'] = $img;
+                }else{
+                    $data["img"] = "gambar_kosong";
+                    $data["bukti_kwitansi"] = "Gambar Tidak ditemukan";
+                }
+            }else{
+                $data["img"] = "belum_upload";
+                $data["bukti_kwitansi"] = "Gambar belum di upload";
+            }
         }
         return $this->output->set_output(json_encode($data));
     }
