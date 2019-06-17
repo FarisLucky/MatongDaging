@@ -20,7 +20,7 @@ $(document).ready(function () {
         "serverSide": true,
         "order": [],
         "ajax": {
-            url: 'unit_properti/dataunit',
+            url: 'unitproperti/dataunit',
             type: "POST"
         },
         "columnDefs": [{
@@ -129,7 +129,7 @@ $(document).ready(function () {
                 let id = $(this).attr('data-id');
                 $.ajax({
                     type: "post",
-                    url: "unit_properti/core_hapus",
+                    url: "unitproperti/core_hapus",
                     data: {
                         id_unit: id
                     },

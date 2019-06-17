@@ -42,7 +42,6 @@
                                 <div class="form-group">
                                   <label for="id_bukti">bukti_kwitansi</label>
                                   <input type="file" name = "bukti_kwitansi" class="form-control" id="id_bukti">
-                                  <small class="form-text text-danger"><?= $error ?></small>
                                 </div>
 			                    <td>  
                           </td>

@@ -36,11 +36,6 @@
                                         <th>Aksi</th>
                                     </thead>
                                     <tbody>
-                                        <?php 
-                                        $no = 1;
-                                        foreach($pengeluaran as $p){ 
-                                        ?>
-                                        <tr>
                                 <?php 
                                 $no = 1;
                                 foreach($pengeluaran as $p){ 
@@ -51,9 +46,9 @@
                                     <td><?php echo $p->volume ?></td>
                                     <td><?php echo $p->satuan ?></td>
                                     <td><?php echo $p->harga_satuan ?></td>
-                                    <td><?php echo $p->tgl_buat ?></td>
+                                    <td><?php echo $p->created_at ?></td>
                                     <td>
-                                    <img src="<?=base_url('upload/foto/'.$p->bukti_kwitansi)?>" style="width:300px; height:150">
+                                    <img src="<?=base_url('assets/uploads/images/pengeluaran/'.$p->bukti_kwitansi)?>" style="max-width:80px;">
                                     </td>
                                     <td>
                                     <a href="<?= base_url() .'pengeluaran/edit'?>/<?= $p->id_pengeluaran ?>" class="btn btn-primary">Edit</a>

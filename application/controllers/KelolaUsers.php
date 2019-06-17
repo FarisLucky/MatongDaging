@@ -127,9 +127,9 @@ class KelolaUsers extends CI_Controller
         foreach ($fetch_values as $value) {
             if ($value->akses != 'owner') {
                 if ($value->status_user == 'aktif') {
-                    $this->status = '<a href="' . base_url() . 'kelola_users/detailuser/' . $value->id_user . '" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="' . $value->id_user . '">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="nonaktif_data_user" data-id="' . $value->id_user . '">Nonaktif</button>';
+                    $this->status = '<a href="' . base_url() . 'kelolausers/detailuser/' . $value->id_user . '" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="' . $value->id_user . '">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="nonaktif_data_user" data-id="' . $value->id_user . '">Nonaktif</button>';
                 } else {
-                    $this->status = '<a href="' . base_url() . 'kelola_users/detailuser/' . $value->id_user . '" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="' . $value->id_user . '">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="aktif_data_user" data-id="' . $value->id_user . '">Aktifkan</button>';
+                    $this->status = '<a href="' . base_url() . 'kelolausers/detailuser/' . $value->id_user . '" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="' . $value->id_user . '">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="aktif_data_user" data-id="' . $value->id_user . '">Aktifkan</button>';
                 }
             } else {
                 $this->status = '-';
