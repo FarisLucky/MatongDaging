@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <hr>
-                        <form id="form_tambah_unit" action="<?= base_url() ?>unit_properti" method="post" enctype="multipart/form-data">
+                        <form id="form_tambah_unit" action="<?= base_url() ?>unitproperti" method="post" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-sm-12">
                                     <div class="row">
@@ -68,7 +68,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <button type="submit" id="btn_simpan_properti" class="btn btn-success mr-2">Simpan</button>
-                                <a href="<?= base_url() ?>unit_properti" id="btn_batal_properti" class="btn btn-dark mr-2">Batal</a>
+                                <a href="<?= base_url() ?>unitproperti" id="btn_batal_properti" class="btn btn-dark mr-2">Batal</a>
                             </div>  
                         </div>
                         </form>  

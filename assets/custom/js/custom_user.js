@@ -72,7 +72,7 @@ $(document).ready(function () {
         "serverSide": true,
         "order": [],
         "ajax": {
-            url: 'kelola_users/datausers',
+            url: 'kelolausers/datausers',
             type: "POST"
         },
         "columnDefs": [{
@@ -86,7 +86,7 @@ $(document).ready(function () {
         e.preventDefault();
         let id = $(this).attr("data-id");
         let btn_status = "aktif";
-        let ajax = ['kelola_users/userstatus', 'post'];
+        let ajax = ['kelolausers/userstatus', 'post'];
         swallQuestion("Yakin ?", "Apakah ingin di Aktifkan ?", "question", 'Aktifkan', function () {
             setDataMethod("", ajax, {
                 id_user: id,
@@ -105,7 +105,7 @@ $(document).ready(function () {
         e.preventDefault();
         let id = $(this).attr("data-id");
         let status = "nonaktif";
-        let ajax = ['kelola_users/userstatus', 'post'];
+        let ajax = ['kelolausers/userstatus', 'post'];
         swallQuestion("Yakin ?", "Apakah ingin Nonaktifkan ?", "question", 'Nonaktifkan', function () {
             setDataMethod("", ajax, {
                 id_user: id,
@@ -146,7 +146,7 @@ $(document).ready(function () {
     $("table#tbl_users").on("click", "#hapus_data_user", function (e) {
         e.preventDefault();
         let id = $(this).attr("data-id");
-        let ajax = ['kelola_users/hapus/', 'get'];
+        let ajax = ['kelolausers/hapus/', 'get'];
         swallQuestion("Yakin ?", "Apakah ingin di hapus ?", "question", 'Hapus', function () {
             setDataMethod(id, ajax, null, function (Parameters) {
                 if (Parameters.success == true) {

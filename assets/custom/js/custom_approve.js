@@ -32,6 +32,7 @@ $(document).ready(function () {
     const approve = $("#tbl_approve_pembayaran,#tbl_approve_transaksi,#tbl_app_detail,#tbl_approve_manager,#tbl_list_approve").DataTable({
         "responsive":true
     }); 
+    const base = $("body").attr("data-base");
     $("table#tbl_approve_pembayaran").on("click",".btn-detail",function (e) { 
         e.preventDefault();
         let id = $(this).attr('data-id');
@@ -82,7 +83,6 @@ $(document).ready(function () {
     $("table#tbl_app_detail").on("click",".btn-transaksi", function (e) {
         e.preventDefault();
         let id = $(this).attr("data-id");
-        let base = $("body").attr("data-base");
         let src ;
         $.ajax({
             type: "post",
@@ -117,7 +117,7 @@ $(document).ready(function () {
         swallQuestion("Konfirmasi ?", "Ingin di Konfirmasi ?", "question", 'confirm', function () {
             $.ajax({
                 type: "post",
-                url: "confirm",
+                url: "approvelist/confirm",
                 data: {id_confirm:id},
                 dataType: "JSON",
                 success: function (response) {
@@ -130,6 +130,29 @@ $(document).ready(function () {
                     }
                 }
             });
+        });
+    });
+    $("#tbl_list_approve").on("click",".btn-detail", function (e) {
+        e.preventDefault();
+        let params = $(this).attr("data-id");
+        $.ajax({
+            type: "post",
+            url: "approvelist/getModal",
+            data: {params},
+            dataType: "JSON",
+            success: function (response) {
+                $("#modal_approve_list .ttl_gambar").remove();
+                if (response.success == true) {
+                    if (response.img == "gambar_kosong") {
+                        $("#img_file").after("<h5 class='ttl_gambar'>Gambar Bukti Kosong</h5>")
+                    }else if(response.img == "belum_upload"){
+                        $("#img_file").after("<h5 class='ttl_gambar'>Belum Upload bukti</h5>")
+                    }else{
+                        $("#img_file").attr("src",response.bukti_kwitansi);
+                    }
+                    $("#modal_approve_list").modal("show");
+                }
+            }
         });
     });
 });

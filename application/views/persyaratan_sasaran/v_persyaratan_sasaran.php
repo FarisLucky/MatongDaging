@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block"><i class="fa fa-m"></i>Kelola Persyaratan</h5>
-                                <a href="<?= base_url() ?>persyaratan_sasaran/tambah"class="btn btn-info btn-sm float-right">Tambah</a>
+                                <a href="<?= base_url() ?>persyaratansasaran/tambah"class="btn btn-info btn-sm float-right">Tambah</a>
                             </div>
                         </div>
                         <hr>
@@ -48,8 +48,8 @@
                                     <td><?php echo $p->poin_penting ?></td>
                                     <td><?php echo $p->keterangan ?></td>
                                     <td>
-                                    <a href="<?= base_url() .'persyaratan_sasaran/edit'?>/<?= $p->id_sasaran ?>" class="btn btn-primary" class="btn btn-primary">Edit</a>
-                                    <a href="<?= base_url() .'persyaratan_sasaran/hapus'?>/<?= $p->id_sasaran?>" class="btn btn-danger" class="btn btn-danger">Delete</a>
+                                    <a href="<?= base_url() .'persyaratansasaran/edit'?>/<?= $p->id_sasaran ?>" class="btn btn-primary" class="btn btn-primary">Edit</a>
+                                    <a href="<?= base_url() .'persyaratansasaran/hapus'?>/<?= $p->id_sasaran?>" class="btn btn-danger" class="btn btn-danger">Delete</a>
                                     </td>
 
                                 </tr>

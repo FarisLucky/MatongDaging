@@ -22,11 +22,11 @@
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block mr-4">Detail Unit Properti</h5>
                                 <small class="badge badge-info"><?= $unit->status_unit ?></small>
-                                <a href="<?= base_url() ?>unit_properti" class="btn btn-dark float-right">Kembali</a>
+                                <a href="<?= base_url() ?>unitproperti" class="btn btn-dark float-right">Kembali</a>
                             </div>
                         </div>
                         <hr>
-                        <form id="form_detail_unit" action="<?= base_url() ?>unit_properti/core_detail_unit" method="post" enctype="multipart/form-data">
+                        <form id="form_detail_unit" action="<?= base_url() ?>unitproperti/core_detail_unit" method="post" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-sm-12">
                                 <input type="hidden" name="txt_id" class="form-control" id="txt_id" value="<?= $unit->id_unit ?>" >

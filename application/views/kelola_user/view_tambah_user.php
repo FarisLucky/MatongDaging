@@ -107,7 +107,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <a href="<?= base_url() ?>kelola_users" id="batal" class="btn btn-sm btn-dark float-right">Batal</a>
+                                            <a href="<?= base_url() ?>kelolausers" id="batal" class="btn btn-sm btn-dark float-right">Batal</a>
                                             <button type="submit" class="btn btn-sm btn-success float-right mr-2">Simpan</button>
                                         </div>
                                     </div>

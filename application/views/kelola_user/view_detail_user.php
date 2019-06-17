@@ -86,7 +86,7 @@
                                 <h6>Silahkan Atur Properti yang akan di Kelola oleh User</h6>
                             </div>
                         </div>
-                        <form id="form_user_properti" action="<?= base_url() ?>kelola_users/userproperti" method="post" >
+                        <form id="form_user_properti" action="<?= base_url() ?>kelolausers/userproperti" method="post" >
                         <input type="hidden" name="txt_id" id="hidden_user" value="<?= $users->id_user ?>">
                         <div class="row">
                         <!-- <?php var_dump($user_properti) ?> -->
@@ -111,7 +111,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <button type="submit" class="btn btn-sm btn-primary mr-2">Simpan</button>
-                                <a href="<?= base_url() ?>kelola_users" class="btn btn-sm btn-dark">Back</a>
+                                <a href="<?= base_url() ?>kelolausers" class="btn btn-sm btn-dark">Back</a>
                             </div>  
                         </div>
                         </form>
