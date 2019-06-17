@@ -41,7 +41,7 @@
                                             <td><?= $value->volume." ".$value->satuan ?></td>
                                             <td><?= $value->harga_satuan ?></td>
                                             <td><?= $value->total_harga ?></td>
-                                            <td><?= $value->bukti_kwitansi ?></td>
+                                            <td><img src="<?= base_url("assets/uploads/images/pengeluaran/".$value->bukti_kwitansi) ?>" alt="" width="50px"></td>
                                             <td><?= $value->nama_kelompok ?></td>
                                             <td><?= $value->created_at ?></td>
                                             <td><?= $value->nama_lengkap ?></td>
@@ -61,7 +61,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modal_approve_pembayaran">
+<div class="modal fade" id="modal_approve_list">
   <div class="modal-dialog ">
     <div class="modal-content">
       <div class="modal-header">
@@ -73,55 +73,8 @@
       <div class="modal-body">
         <div class="row">
             <div class="col-sm-12 text-center">
-                <h6>Angsuran</h6>
-            </div>
-        </div>
-        <div class="row m-3">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="">Nama Properti</label>
-                    <input type="text" class="form-control" name="properti" disabled>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="">Nama Unit</label>
-                    <input type="text" class="form-control" name="unit" disabled>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="">Tanggal Jatuh Tempo</label>
-                    <input type="text" class="form-control" name="tgl_tempo" disabled>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="">Tanggal Bayar</label>
-                    <input type="text" class="form-control" name="tgl_bayar" disabled>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label for="">Total Tagihan</label>
-                    <input type="text" class="form-control" name="tagihan" disabled>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label for="">Jumlah Bayar</label>
-                    <input type="text" class="form-control" name="bayar" disabled>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label for="">Hutang</label>
-                    <input type="text" class="form-control" name="hutang" disabled>
-                </div>
-            </div>
-            <hr>
-            <div class="col-sm-12 image">
-                <img src="" alt="" class="img-responsive gambar_bukti" width="100%">
+                <label>Bukti Kwitansi</label>
+                <img src="" alt="" width="100%" id="img_file">
             </div>
         </div>
       </div>

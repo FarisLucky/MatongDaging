@@ -13,7 +13,6 @@ class Dashboard extends CI_Controller {
         if (empty($session)) {
             redirect('auth');
         }
-        // checkSession();
     }
     public function index()
     {

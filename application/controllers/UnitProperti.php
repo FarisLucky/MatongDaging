@@ -46,7 +46,7 @@ class UnitProperti extends CI_Controller {
             $sub[] = "Rp. ".number_format($value->harga_unit,2,',','.');
             $sub[] = '<small class="badge '.$badge.'">'.$value->status_unit.'</small>';
             $sub[] = '<img id="foto_properti" width="250px" src="'.base_url().'assets/uploads/images/unit_properti/'.$value->foto_unit.'" class="img-thumbnail" alt="">';
-            $sub[] = '<a href="'.base_url().'unit_properti/detail_unit/'.$value->id_unit.'" class="btn btn-sm btn-primary mr-1" id="detail_data_unit">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_unit" data-id="'.$value->id_unit.'">Hapus</button>';
+            $sub[] = '<a href="'.base_url().'unitproperti/detail_unit/'.$value->id_unit.'" class="btn btn-sm btn-primary mr-1" id="detail_data_unit">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_unit" data-id="'.$value->id_unit.'">Hapus</button>';
             $data[] = $sub;
             $no++;
         }

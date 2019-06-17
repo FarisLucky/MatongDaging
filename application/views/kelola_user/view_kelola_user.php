@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block"><i class="fa fa-m"></i>Kelola Perusahaan</h5>
-                                <a href="<?= base_url() ?>kelola_users/tambah"class="btn btn-info btn-sm float-right">Tambah</a>
+                                <a href="<?= base_url() ?>kelolausers/tambah"class="btn btn-info btn-sm float-right">Tambah</a>
                             </div>
                         </div>
                         <hr>

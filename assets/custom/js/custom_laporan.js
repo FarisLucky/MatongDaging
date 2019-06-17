@@ -99,6 +99,7 @@ $(document).ready(function () {
     });
     const kontrol =  dataTables("#tbl_kontrol","kartukontrol/datakontrol","");
     const transaksi_unit =  dataTables("#tbl_transaksi_unit","laporantransaksi/data","");
+
     // Js For Konsumen and calon konsumen
     $("#tbl_laporan_konsumen").on("click",".btn-detail", function (e) {
         e.preventDefault();
@@ -216,17 +217,31 @@ $(document).ready(function () {
             })
         })
     });
+
+    $("#laporan_view_unit #id_properti").change(function (e) { 
+        e.preventDefault();
+        let params1 = $(this).val();
+        let array = ["get","getunit"]
+        setAjax(array,{params1},function (response) {
+            $("#laporan_view_unit #id_unit").html(response.html);
+        });
+    });
+
+    $("#tbl_laporan_unit").on("click",".btn-edit", function (e) {
+        e.preventDefault();
+        let params = $(this).attr("data-id");
+        let array = ["POST","modalkonsumen"];
+        setAjax(array,{id_calon},function (response) {
+            $("#modal_laporan_calon").modal("show");
+            $.each(response.detail_kons, function (ix, value) { 
+                if (value == null) {
+                    value = "Kosong";
+                }
+                $("input[name='"+ix+"_detail']").val(value).attr("readonly",true);
+            });
+        });
+    });
     // End Js for transaksi
     // Js For Konsumen Report
-    $("#view_konsumen #pilih_properti").change(function (e) { 
-        e.preventDefault();
-        let params = $(this).val();
-        $.getJSON("getunit",{params},
-            function (data, textStatus, jqXHR) {
-                console.log(textStatus);
-                $("#view_konsumen #pilih_unit").html(data.html);
-            }
-        );
-    });
     // End Js for Konsumen
 });
