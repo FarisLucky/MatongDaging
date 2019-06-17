@@ -41,17 +41,24 @@
                                         foreach($pengeluaran as $p){ 
                                         ?>
                                         <tr>
-                                            <td><?php echo $no++ ?></td>
-                                            <td><?php echo $p->nama_pengeluaran ?></td>
-                                            <td><?php echo $p->volume ?></td>
-                                            <td><?php echo $p->satuan ?></td>
-                                            <td><?php echo $p->harga_satuan ?></td>
-                                            <td><?php echo $p->tgl_buat ?></td>
-                                            <td><?php echo $p->bukti_kwitansi ?></td>
-                                            <td>
-                                            <a href="<?= base_url() .'pengeluaran/edit'?>/<?= $p->id_pengeluaran ?>" class="btn btn-primary">Edit</a>
-                                            <a href="<?= base_url() .'pengeluaran/hapus'?>/<?= $p->id_pengeluaran ?>" class="btn btn-danger" class="btn btn-danger">Delete</a>
-                                            </td>
+                                <?php 
+                                $no = 1;
+                                foreach($pengeluaran as $p){ 
+                                ?>
+                                <tr>
+                                    <td><?php echo $no++ ?></td>
+                                    <td><?php echo $p->nama_pengeluaran ?></td>
+                                    <td><?php echo $p->volume ?></td>
+                                    <td><?php echo $p->satuan ?></td>
+                                    <td><?php echo $p->harga_satuan ?></td>
+                                    <td><?php echo $p->tgl_buat ?></td>
+                                    <td>
+                                    <img src="<?=base_url('upload/foto/'.$p->bukti_kwitansi)?>" style="width:300px; height:150">
+                                    </td>
+                                    <td>
+                                    <a href="<?= base_url() .'pengeluaran/edit'?>/<?= $p->id_pengeluaran ?>" class="btn btn-primary">Edit</a>
+                                    <a href="<?= base_url() .'pengeluaran/hapus'?>/<?= $p->id_pengeluaran ?>" class="btn btn-danger" class="btn btn-danger">Delete</a>
+                                    </td>
 
                                         </tr>
                                         <?php } ?>

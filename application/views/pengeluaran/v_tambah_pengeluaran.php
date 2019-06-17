@@ -1,3 +1,4 @@
+<form action="<?=base_url('index.php/pengeluaran/tambah_aksi') ?>" method="post" enctype="multipart/form-data">
 <div class="content-wrapper">
     <div class="container">
         <div class="card">
@@ -43,7 +44,8 @@
                                   <input type="file" name = "bukti_kwitansi" class="form-control" id="id_bukti">
                                   <small class="form-text text-danger"><?= $error ?></small>
                                 </div>
-			                    <td></td>
+			                    <td>  
+                          </td>
 			                    <button type="submit" class="btn btn-sm btn-success float-right">Simpan</button>
 	                           </div>
                         </div>
