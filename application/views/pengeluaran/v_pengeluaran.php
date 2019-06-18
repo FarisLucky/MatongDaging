@@ -7,6 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Kelola Pengeluaran</h4>
+                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>
@@ -34,6 +35,7 @@
                                         <th>Volume</th>
                                         <th>Satuan</th>
                                         <th>Harga_satuan</th>
+                                        <th>Kelompok Pengeluaran</th>
                                         <th>Tgl_buat</th>
                                         <th>Bukti_kwitansi</th>
                                         <th>Aksi</th>
@@ -49,19 +51,18 @@
                                     <td><?php echo $p->volume ?></td>
                                     <td><?php echo $p->satuan ?></td>
                                     <td><?php echo $p->harga_satuan ?></td>
+                                    <td><?php echo $p->nama_kelompok ?></td>
                                     <td><?php $date = DateTime::createFromFormat("Y-m-d",$p->created_at); echo tanggal($date->format("d"),$date->format("m"),$date->format("Y")) ?></td>
                                     <td>
                                     <img src="<?= base_url('assets/uploads/images/pengeluaran/'.$p->bukti_kwitansi)?>" style="max-width:50px;">
                                     </td>
                                     <td>
                                     <a href="<?= base_url() .'pengeluaran/edit/'.$p->id_pengeluaran ?>" class="btn btn-primary">Edit</a>
-                                    <a href="<?= base_url() .'pengeluaran/hapus/'.$p->id_pengeluaran ?>" class="btn btn-danger" class="btn btn-danger">Delete</a>
+                                    <button data-id="<?= $p->id_pengeluaran ?>" class="btn btn-danger btn-hapus">Delete</button>
                                     </td>
 
                                 </tr>
                                 <?php } ?>
-                                            
-                                        </tr>
                                     </tbody>
                                 </table>                                 
                                 </div>

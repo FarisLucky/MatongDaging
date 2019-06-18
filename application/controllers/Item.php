@@ -7,13 +7,15 @@ class Item extends CI_Controller
 		parent::__construct();	
 		$this->rolemenu->init();
 		$this->load->library('form_validation');
-		$this->load->model('Model_item',"M_kategori_item");
+		$this->load->model('M_pengeluaran',"M_kategori_item");
 	}
 	public function index()
 	{
 		$data['title'] = "Kategori";
-		$data['kategori_item'] = $this->M_kategori_item->tampil_data('tbl_kelompok_item')->result();
+		$data['kategori_item'] = $this->M_kategori_item->getData("*",'tbl_kelompok_item')->result();
 		$data['menus'] = $this->rolemenu->getMenus();
+		$data['img'] = getCompanyLogo();
+        $data['js'] = $this->rolemenu->getJavascript(15); //Jangan DIUbah !!
 		$this->load->view('partials/part_navbar',$data);
 		$this->load->view('partials/part_sidebar',$data);
 		$this->load->view('item/v_kategori_item',$data);
@@ -21,8 +23,9 @@ class Item extends CI_Controller
 	}
 	function tambah(){
 		$data['title'] = "Tambah Kategori";
+		$data['img'] = getCompanyLogo();
 		$data['menus'] = $this->rolemenu->getMenus();
-		$data['kategori'] = $this->M_kategori_item->tampil_data('kategori_kelompok')->result();
+		$data['kategori'] = $this->M_kategori_item->getData("*",'kategori_kelompok')->result();
 		$this->load->view('partials/part_navbar',$data);
 		$this->load->view('partials/part_sidebar',$data);
 		$this->load->view('item/v_tambah_item',$data);
@@ -47,7 +50,7 @@ class Item extends CI_Controller
 			'id_user' => $this->session->userdata('id_user'),
 			'id_kategori' => $this->input->post('select_kategori')
 			);
-		$this->M_kategori_item->input_data('kelompok_item',$data);
+		$this->M_kategori_item->input_data($data,'kelompok_item');
 		redirect('item');
 	} else {
 		$this->tambah();
@@ -62,9 +65,10 @@ class Item extends CI_Controller
 	function edit($id_kelompok)
 	{
 		$data['menus'] = $this->rolemenu->getMenus();
+		$data['img'] = getCompanyLogo();
 		$where = array('id_kelompok' => $id_kelompok);
 		$data['kategori_item'] = $this->M_kategori_item->edit_data($where,'kelompok_item')->result();
-		$data['kategori'] = $this->M_kategori_item->tampil_data('kategori_kelompok')->result();
+		$data['kategori'] = $this->M_kategori_item->getData("*",'kategori_kelompok')->result();
 		$this->load->view('partials/part_navbar',$data);
 		$this->load->view('partials/part_sidebar',$data);
 		$this->load->view('item/v_edit_item',$data);

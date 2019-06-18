@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Tambah Kelompok Item</h4>
-                                <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
+                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>
@@ -23,14 +23,14 @@
                         <div class="row">
                             <div class="col-sm-6">
 								<div class="form-group">
-                                    <label for="item_name">nama_kelompok</label>
+                                    <label for="item_name">nama Kelompok</label>
                                     <input type="text" name = "nama_kelompok" class="form-control" id="item_name" placeholder="">
                                     <small class="form-text text-danger"><?= form_error ('nama_kelompok'); ?></small>
                                     </div>
                                 </div>
                             <div class="col-sm-6">
 								<div class="form-group">
-                                    <label for="item_name">nama_kelompok</label>
+                                    <label for="item_name">Kategori Kelompok</label>
                                     <select name="select_kategori" class="form-control">
                                         <option value="">-- Pilih Kategori Kelompok</option>
                                         <?php foreach ($kategori as $key => $value) : ?>

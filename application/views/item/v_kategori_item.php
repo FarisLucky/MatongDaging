@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Kelompok Item</h4>
-                                <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
+                                <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
                     </div>
@@ -35,7 +35,6 @@
                                         <th>Aksi</th>
                                     </thead>
                                     <tbody>
-                                        <tr>
                                 <?php 
                                 $no = 1;
                                 foreach($kategori_item as $k){ 
@@ -65,8 +64,6 @@
 
                                 </tr>
                                 <?php } ?>
-                                            
-                                        </tr>
                                     </tbody>
                                 </table>                                 
                             </div>
