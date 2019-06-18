@@ -16,7 +16,7 @@ class Dashboard extends CI_Controller {
     }
     public function index()
     {
-        if (empty($this->session->userdata('login'))) {
+        if ($this->session->userdata('login') == null) {
             redirect('auth');
         }else{
             $id_user = $this->session->userdata('id_user');
