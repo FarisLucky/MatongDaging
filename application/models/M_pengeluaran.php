@@ -1,10 +1,21 @@
 <?php 
  
 class M_pengeluaran extends CI_Model{
-	function tampil_data()
-	{
-	return $this->db->get('pengeluaran');
-	}
+	
+	public function getData($select,$tbl)
+    {
+		$this->db->select($select);
+        return $this->db->get($tbl);
+    }
+    public function getDataWhere($select,$tbl,$where,$column_order = null,$type_order = null)
+    {
+        $this->db->select($select);
+        $this->db->where($where);
+        if (($column_order != null) && ($type_order != null)) {
+            $this->db->order_by($column_order, $type_order);
+        }
+        return $this->db->get($tbl);
+    }
 	function input_data($data,$table)
 	{
 	$this->db->insert($table,$data);
@@ -13,6 +24,8 @@ class M_pengeluaran extends CI_Model{
 	{
 	$this->db->where($where);
 	$this->db->delete($table);
+	return $this->db->affected_rows();
+	
 	}
 	function edit_data($where,$table)
 	{		

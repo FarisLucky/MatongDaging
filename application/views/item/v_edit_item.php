@@ -25,13 +25,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                <label for="exampleInputName1">nama_kelompok</label>
+                                <label for="exampleInputName1">Nama Kelompok</label>
                                     <input type="text" name = "nama_kelompok" value = "<?php echo $k->nama_kelompok ?>"class="form-control" id="exampleInputName1" placeholder="">
                                 </div>
                             </div>
                             <div class="col-sm-6">
 								<div class="form-group">
-                                    <label for="item_name">nama_kelompok</label>
+                                    <label for="item_name">Kategori Kelompok</label>
                                     <select name="select_kategori" class="form-control">
                                         <option value="">-- Pilih Kategori Kelompok</option>
                                         <?php $select = ""; foreach ($kategori as $key => $value) :
