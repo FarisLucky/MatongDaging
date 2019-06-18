@@ -139,7 +139,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" class="form_uang_muka" action="<?= base_url() ?>pembayaran/transaksi/submitbayar" enctype="multipart/formdata">
+      <form method="post" class="form_cicilan" action="<?= base_url() ?>pembayaran/transaksi/submitbayar" enctype="multipart/formdata">
       <input type="hidden" name="input_hidden">
       <div class="modal-body">
         <div class="row m-3">

@@ -43,8 +43,8 @@
                                     <th>Nama Perumahan</th>
                                     <th>Nama Rumah</th>
                                     <th>Tanggal Uang Muka</th>
-                                    <th>Periode</th>
                                     <th>Status</th>
+                                    <th>Periode</th>
                                     <th>Uang Muka</th>
                                     <th>Total Kesepakatan</th>
                                     <th>Total Transaksi</th>

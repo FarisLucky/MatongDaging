@@ -49,27 +49,28 @@ class Pembayaran extends CI_Controller {
         $tbl = "tbl_transaksi";
         $order = "nama_lengkap";
         $id_properti = $this->session->userdata("id_properti");
-        $column_where = ["id_properti"=>$id_properti,"status_transaksi"=>"pending"];
+        $column_where = ["id_properti"=>$id_properti,"status_transaksi !="=>"sementara"];
         $search = ['nama_lengkap','nama_properti','nama_unit'];
         $fetch_values = $this->ssd->makeDataTables($column,$tbl,$search,$order,$column_where);
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
-            $tanda_jadi = $this->Mpembayaran->getDataWhere("status","tbl_pembayaran",["id_transaksi"=>$value->id_transaksi,"id_jenis"=>1])->row();
-            if ($tanda_jadi->status == "belum bayar") {
-                $badge = "badge-primary";
+            // $tanda_jadi = $this->Mpembayaran->getDataWhere("status","tbl_pembayaran",["id_transaksi"=>$value->id_transaksi,"id_jenis"=>1])->row();
+            if ($value->status_tj == "belum lunas") {
+                $badge = "badge-danger";
                 $button = '<button type="button" class="btn btn-sm btn-primary mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Bayar</button>';
             }
             else{
-                $badge="badge-success";
+                $badge = "badge-success";
                 $button = '<button type="button" class="btn btn-sm btn-warning mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Cetak</button>';
             }
+
             $sub = array();
             $sub[] = $value->nama_lengkap;
             $sub[] = $value->nama_properti;
             $sub[] = $value->nama_unit;
             $sub[] = $value->tempo_tanda_jadi;
-            $sub[] = '<span class="badge '.$badge.'">'.$value->status_transaksi.'</span>';
+            $sub[] = '<span class="badge '.$badge.'">'.$value->status_tj.'</span>';
             $sub[] = "Rp. ".number_format($value->tanda_jadi,2,',','.');
             $sub[] = "Rp. ".number_format($value->total_kesepakatan,2,',','.');
             $sub[] = "Rp. ".number_format($value->total_transaksi,2,',','.');
@@ -89,9 +90,9 @@ class Pembayaran extends CI_Controller {
     {
         $id_properti = $_SESSION["id_properti"];
         if (isset($_POST['id_unit'])) {
-            $column_where = ["id_properti"=>$id_properti,"id_unit"=>$_POST["id_unit"],"status_transaksi"=>"progress","status_um != "=>"selesai"];
+            $column_where = ["id_properti"=>$id_properti,"id_unit"=>$_POST["id_unit"],"status_transaksi"=>"progress"];
         }else{
-            $column_where = ["id_properti"=>$id_properti,"status_transaksi"=>"progress","status_um != "=>"selesai"];
+            $column_where = ["id_properti"=>$id_properti,"status_transaksi"=>"progress"];
         }
         $this->load->model('Server_side','ssd');
         $column = "*";
@@ -101,24 +102,20 @@ class Pembayaran extends CI_Controller {
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
-            if ($value->status_transaksi == "progress") {
+            if ($value->status_um == "belum lunas") {
                 $badge = "badge-info";
-                $button = '<a href="'.base_url()."pembayaran/uangmuka/kelola/".$value->id_transaksi.'" class="btn btn-sm btn-success mr-1 bayar_tj" >Bayar</button>';
-            }
-            else if ($value->status_transaksi == "progress") {
-                $badge = "badge-info";
-                $button = " - ";
+                $button = '<a href="'.base_url()."pembayaran/uangmuka/kelola/".$value->id_transaksi.'" class="btn btn-sm btn-primary mr-1 bayar_tj" >Bayar</button>';
             }else{
                 $badge="badge-success";
-                $button = '<button type="button" class="btn btn-sm btn-primary mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Print</button>';
+                $button = '<button type="button" class="btn btn-sm btn-warning mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Print</button>';
             }
             $sub = array();
             $sub[] = $value->nama_lengkap;
             $sub[] = $value->nama_properti;
             $sub[] = $value->nama_unit;
             $sub[] = $value->tempo_uang_muka;
+            $sub[] = '<span class="badge '.$badge.'">'.$value->status_um.'</span>';
             $sub[] = $value->periode_uang_muka;
-            $sub[] = '<span class="badge '.$badge.'">'.$value->status_transaksi.'</span>';
             $sub[] = "Rp. ".number_format($value->uang_muka,2,',','.');
             $sub[] = "Rp. ".number_format($value->total_kesepakatan,2,',','.');
             $sub[] = "Rp. ".number_format($value->total_transaksi,2,',','.');
@@ -151,23 +148,19 @@ class Pembayaran extends CI_Controller {
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
-            if ($value->status_transaksi == "progress") {
+            if ($value->status_cicilan == "belum lunas") {
                 $badge = "badge-info";
-                $button = '<a href="'.base_url()."pembayaran/transaksi/bayar/".$value->id_transaksi.'" class="btn btn-sm btn-success mr-1 bayar_tj" >Bayar</button>';
-            }
-            else if ($value->status_transaksi == "progress") {
-                $badge = "badge-info";
-                $button = " - ";
+                $button = '<a href="'.base_url()."pembayaran/transaksi/bayar/".$value->id_transaksi.'" class="btn btn-sm btn-primary mr-1 bayar_tj" >Bayar</button>';
             }else{
                 $badge="badge-success";
-                $button = '<button type="button" class="btn btn-sm btn-primary mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Print</button>';
+                $button = '<button type="button" class="btn btn-sm btn-warning mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Print</button>';
             }
             $sub = array();
             $sub[] = $value->nama_lengkap;
             $sub[] = $value->nama_properti;
             $sub[] = $value->nama_unit;
             $sub[] = $value->tempo_bayar;
-            $sub[] = '<span class="badge '.$badge.'">'.$value->status_transaksi.'</span>';
+            $sub[] = '<span class="badge '.$badge.'">'.$value->status_cicilan.'</span>';
             $sub[] = $value->type_pembayaran;
             $sub[] = "Rp. ".number_format($value->pembayaran,2,',','.');
             $sub[] = "Rp. ".number_format($value->total_kesepakatan,2,',','.');
@@ -350,9 +343,7 @@ class Pembayaran extends CI_Controller {
             $id_bayar_cicilan = $this->input->post('input_hidden',true);
             $bayar = str_replace('.','',$this->input->post('bayar',true));
             $ttl_tgh = $this->Mpembayaran->getDataWhere("total_tagihan","tbl_pembayaran",["id_pembayaran"=>$id_bayar_cicilan])->row_array();
-            $hutang = ($ttl_tgh['total_tagihan'] - $bayar); 
-            
-            $input['hutang'] = ($ttl_tgh['total_tagihan'] - $input['bayar']); 
+            $hutang = ($ttl_tgh['total_tagihan'] - $bayar);  
             $config['upload_path'] = './assets/uploads/images/pembayaran/cicilan/';
             $config['allowed_types'] = 'gif|jpg|png';
             $config['encrypt_name'] = true;
