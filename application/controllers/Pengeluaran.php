@@ -5,6 +5,7 @@ class Pengeluaran extends CI_Controller
 {
 	function __construct(){
 	parent::__construct();
+	$this->load->library('form_validation');
 	$this->load->model('M_pengeluaran');	
 	$this->load->library('form_validation');
 	
@@ -22,7 +23,6 @@ class Pengeluaran extends CI_Controller
         $this->load->view('partials/part_sidebar',$data);
 		$this->load->view('pengeluaran/v_pengeluaran',$data);
         $this->load->view('partials/part_footer',$data);
-       	
 	}
 	function tambah($params = null)
 	{
