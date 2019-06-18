@@ -236,4 +236,36 @@ $(document).ready(function () {
             }
         });
     });
+    $(".form_cicilan").submit(function (e) { 
+        e.preventDefault();
+        let form = new FormData($(this)[0]);
+        let act = $(this).attr('action');
+        $.ajax({
+            type: "post",
+            url: act,
+            data: form,
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success == true) {
+                    $('input.form-group').removeClass('is-invalid').removeClass('is-valid');
+                    swallSuccess("Sukses", "Berhasil ditambahkan", "success", function () {
+                        $("#modal_uang_muka").modal("hide");
+                        Window.location.reload();
+                    })
+                } else if ((response.success == false) && (response.error)) {
+                    toastr.error(error);
+                } else {
+                    $.each(response.msg, function (key, val) {
+                        let el = $('input[name=' + key +']')
+                        el.removeClass('is-invalid')
+                            .addClass(val.length > 0 ? 'is-invalid' : 'is-valid')
+                            .next('.invalid-feedback').remove();
+                        el.after(val);
+                    });
+                }
+            }
+        });
+    });
 });

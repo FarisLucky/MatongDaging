@@ -43,7 +43,7 @@ class Rab extends CI_Controller
 		$data['kembali'] = $getProperti->id_properti;
 		$data['menus'] = $this->rolemenu->getMenus();
 		$data['js'] = $this->rolemenu->getJavascript(16); //Jangan DIUbah !!
-		$data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere('kelompok_item',['id_kategori'=> 4])->result();
+		$data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere('kelompok_item',['id_kategori'=> 4,"status"=>"aktif"])->result();
 		$this->pages('kelola_rab/v_tambah_rab',$data);
 	}
 	public function tambahUnit($id)
@@ -54,7 +54,7 @@ class Rab extends CI_Controller
 		$data['kembali'] = $getProperti->id_properti;
 		$data['menus'] = $this->rolemenu->getMenus();
 		$data['js'] = $this->rolemenu->getJavascript(16); //Jangan DIUbah !!
-		$data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere('kelompok_item',['id_kategori'=> 1])->result();
+		$data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere('kelompok_item',['id_kategori'=> 1,"status"=>"aktif"])->result();
 		$this->pages('kelola_rab/view_tambah_rab_unit',$data);
 	}
 	public function tambah_aksi(){
@@ -163,7 +163,7 @@ class Rab extends CI_Controller
 		$data['k'] = $this->M_kelola_rab->getDataWhere('detail_rab',$where)->row();
 		$getProperti = $this->M_kelola_rab->getDataWhere('rab_properti',['id_rab'=>$data['k']->id_rab])->row();
 		$data['kembali'] = $getProperti->id_properti;
-		$data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere('kelompok_item',['id_kategori'=> 4])->result();
+		$data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere('kelompok_item',['id_kategori'=> 4,"status"=>"aktif"])->result();
 		$this->pages('kelola_rab/v_edit_rab',$data);
 	}
 	public function editUnit($id_detail)
@@ -175,7 +175,7 @@ class Rab extends CI_Controller
 		$data['k'] = $this->M_kelola_rab->getDataWhere('detail_rab',$where)->row();
 		$getProperti = $this->M_kelola_rab->getDataWhere('rab_properti',['id_rab'=>$data['k']->id_rab])->row();
 		$data['kembali'] = $getProperti->id_properti;
-		$data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere('kelompok_item',['id_kategori'=> 1])->result();
+		$data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere('kelompok_item',['id_kategori'=> 1,"status"=>"aktif"])->result();
 		$this->pages('kelola_rab/view_edit_rab_unit',$data);
 	}
 	function update(){

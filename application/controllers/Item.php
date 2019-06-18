@@ -89,5 +89,21 @@ class Item extends CI_Controller
 		$this->M_kategori_item->update_data($where,$data,'kelompok_item');
 		redirect('item');
 	}
+	public function status()
+	{
+		$data = ["success"=>false];
+		if (isset($_POST['params'])) {
+			$id = $this->input->post('params');
+			$p = "aktif";
+		}else{
+			$id = $this->input->post('params1');
+			$p = "tidak aktif";
+		}
+		$kelompok = $this->M_kategori_item->update_data(["id_kelompok"=>$id],["status"=>$p],"kelompok_item");
+		if ($kelompok) {
+			$data["success"] = true;
+		}
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
 }
 

@@ -32,6 +32,7 @@
                                         <th>No</th>
                                         <th>Nama Kelompok</th>
                                         <th>Kategori</th>
+                                        <th>status</th>
                                         <th>Aksi</th>
                                     </thead>
                                     <tbody>
@@ -57,9 +58,14 @@
                                     <td><?php echo $no++ ?></td>
                                     <td><?php echo $k->nama_kelompok ?></td>
                                     <td><div class="badge <?= $badge ?>"><?php echo $k->kategori_pengeluaran ?></td>
+                                    <td><div class="badge badge-dark"><?php echo $k->status ?></td>
                                     <td>
                                     <a href="<?= base_url() .'item/edit'?>/<?= $k->id_kelompok ?>" class="btn btn-sm btn-primary" class="btn btn-primary">Edit</a>
-                                    <a href="<?= base_url() .'item/hapus'?>/<?= $k->id_kelompok ?>" class="btn btn-sm btn-danger" class="btn btn-danger">Delete</a>
+                                    <?php if ($k->status == "aktif") { ?>
+                                        <button class="btn btn-sm btn-danger btn-nonaktif" data-id="<?= $k->id_kelompok ?>" class="btn btn-danger">Non Aktifkan</button>
+                                    <?php }else{ ?>
+                                        <button class="btn btn-sm btn-danger btn-aktif" data-id="<?= $k->id_kelompok ?>" class="btn btn-danger">Aktifkan</button>
+                                    <?php } ?>
                                     </td>
 
                                 </tr>

@@ -29,7 +29,7 @@ class Pengeluaran extends CI_Controller
 		$active = "Tambah";
 		$data['menus'] = $this->rolemenu->getMenus();
 		$data['img'] = getCompanyLogo();
-		$data["kelompok"] = $this->M_pengeluaran->edit_data(['id_kategori'=>3],"kelompok_item")->result();
+		$data["kelompok"] = $this->M_pengeluaran->edit_data(['id_kategori'=>3,"status"=>"aktif"],"kelompok_item")->result();
 		$data["error"] = $params;
 		$this->load->view('partials/part_navbar',$data);
 	    $this->load->view('partials/part_sidebar',$data);
@@ -122,7 +122,7 @@ class Pengeluaran extends CI_Controller
 		$active = "pengeluaran";
 		$data['menus'] = $this->rolemenu->getMenus($active);
 		$where = array('id_pengeluaran' => $id_pengeluaran);
-		$data["kelompok"] = $this->M_pengeluaran->edit_data(['id_kategori'=>3],"kelompok_item")->result();
+		$data["kelompok"] = $this->M_pengeluaran->edit_data(['id_kategori'=>3,"status"=>"aktif"],"kelompok_item")->result();
 		$data['pengeluaran'] = $this->M_pengeluaran->edit_data($where,'pengeluaran')->result();
 		$data["error"] = $params;
 		$this->load->view('partials/part_navbar',$data);

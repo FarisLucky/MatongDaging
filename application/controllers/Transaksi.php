@@ -385,7 +385,7 @@ class Transaksi extends CI_Controller {
         $id = $this->input->post('id_transaksi');
         $status = $this->Mtransaksi->getDataWhere("status_transaksi","tbl_transaksi",["id_transaksi"=>$id])->row();
         if ($status->status_transaksi == "sementara") {
-            $query = $this->Mtransaksi->updateData(["status"=>"pending","kunci"=>"lock"],"transaksi_unit",["id_transaksi"=>$id]);       
+            $query = $this->Mtransaksi->updateData(["status_transaksi"=>"progress","kunci"=>"lock"],"transaksi_unit",["id_transaksi"=>$id]);       
             $data['success'] = true;
         }else{
             $query = $this->Mtransaksi->updateData(["kunci"=>"lock"],"transaksi_unit",["id_transaksi"=>$id]);       
