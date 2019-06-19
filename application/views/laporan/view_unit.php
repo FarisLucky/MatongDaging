@@ -64,9 +64,7 @@
                                     <th>Harga</th>
                                     <th>Status</th>
                                     <th>Foto</th>
-                                    <?php $aksi=""; if ($_SESSION["id_akses"] != 3) {
-                                        $aksi = "<th>Aksi</th>";
-                                    }; echo $aksi ;?>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,9 +84,9 @@
                                         <td><div class="badge <?= $badge ?>"><?= $value->status_unit ?></div></td>
                                         <td><img src="<?= base_url()."assets/uploads/images/unit_properti/".$value->foto_unit ?>" width="50px"></td>
                                         <?php if ($_SESSION['id_akses'] == 3) {
-                                            $td = '<td><button class="btn btn-info" data-id="'.$value->id_unit.'">Detail</button></td>';
+                                            $td = '<td><a href="'.base_url('laporanunit/detail/'.$value->id_unit).'" class="btn btn-success mx-2">Detail</a><button class="btn btn-info" id="btn-edit" data-id="'.$value->id_unit.'">Edit</button></td>';
                                         }else {
-                                            $td = '<td><button class="btn btn-info btn-edit" data-id="'.$value->id_unit.'">Edit</button></td>';
+                                            $td = '<td><a href="'.base_url('laporanunit/detail/'.$value->id_unit).'" class="btn btn-success">Detail</a></td>';
                                         } echo $td; ?>
                                     </tr>
                                 <?php $no++; } ?>
@@ -102,7 +100,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modal_laporan_calon">
+<div class="modal fade" id="modal_laporan_unit">
   <div class="modal-dialog ">
     <div class="modal-content">
       <div class="modal-header">
@@ -111,25 +109,27 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form action="<?= base_url('laporanunit/syaratunit') ?>" method="POST" id="form_modal">
+      <input type="hidden" name="input_hidden">
       <div class="modal-body m-3">
         <div class="row">
-
-        <?php foreach ($syarat_unit as $key => $value) { ?>
-            <div class="col-sm-12">
+            <?php foreach ($sasaran_unit as $key => $value) { ?>
+            <div class="col-sm-6">
                 <div class="form-group">
-                    <div class="col-sm-12">
-                        <div class="form-check form-check-flat">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="detail" id="sasaran_<?= $value->id_sasaran ?>" value="<?= $value->id_sasaran ?>" ><?php echo $value->nama_persyaratan ?>
-                            </label>
-                        </div>
+                    <div class="form-check form-check-flat">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="detail_unit[]" id="sasaran_<?= $value->id_sasaran ?>" value="<?= $value->id_sasaran ?>" ><?php echo $value->nama_persyaratan ?>
+                        </label>
                     </div>
                 </div>
             </div>
-        <?php } ?>
-
+            <?php } ?>
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary float-right">Simpan</button>
+      </div>
+      </form>
     </div>
   </div>
 </div>

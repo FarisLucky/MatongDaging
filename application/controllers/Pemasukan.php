@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Pengeluaran extends CI_Controller 
+class Pemasukan extends CI_Controller 
 {
 	function __construct(){
 		parent::__construct();
@@ -10,7 +10,8 @@ class Pengeluaran extends CI_Controller
 		$this->load->model('M_pengeluaran');	
 		$this->load->library('form_validation');
 		$this->load->helper('date');
-	}
+	
+}
 	public function index()
 	{
 		$data["title"] = "Pengeluaran";

@@ -19,6 +19,17 @@ function getProperti($properti,$id)
     }
     return $value;
 }
+function getSasaran($sasaran,$unit)
+{
+    $CI =& get_instance();
+    $query = $CI->db->get_where('persyaratan_unit',['id_sasaran'=>"$sasaran",'id_unit'=>$unit]);
+    if ($query->num_rows() > 0) {
+        $value = "checked";
+    }else{
+        $value = "";
+    }
+    return $value;
+}
 
 function addMonths($date,$months) {
     $orig_day = $date->format("d");

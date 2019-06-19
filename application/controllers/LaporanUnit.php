@@ -27,7 +27,7 @@ class LaporanUnit extends CI_Controller {
         }else{
             $data['unit'] = $this->Mlaporan->getDataWhere("*","tbl_unit_properti",['id_properti'=>$this->session->userdata("id_properti")])->result();
         }
-        $data['sasaran_unit'] = $this->Mlaporan->getDataWhere("id_sasaran","persyaratan_sasaran",['id_kategori_persyaratan'=>2])->result();
+        $data['sasaran_unit'] = $this->Mlaporan->getDataWhere("id_sasaran,nama_persyaratan","persyaratan_sasaran",['id_kategori_persyaratan'=>2])->result();
         $data["properti"] = $this->Mlaporan->getData("tbl_properti")->result();
         $this->pages("laporan/view_unit",$data);
     }
@@ -76,10 +76,13 @@ class LaporanUnit extends CI_Controller {
 
     public function getModal()
     {
-        $id = $this->input->get('params1');
+        $data=["success"=>false];
+        $id = $this->input->get('params');
         if (!empty($id)) {
-            // $this->Mlaporan->getDataWhere("*","");
+            $data["success"] = true;
+            $data["persyaratan"] = $this->Mlaporan->getDataWhere("*","persyaratan_unit",["id_unit"=>$id])->result();
         }
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
     public function getUnit()
@@ -94,7 +97,32 @@ class LaporanUnit extends CI_Controller {
         }
         $this->output->set_output(json_encode($data));
     }
-
+    public function syaratUnit()
+    {
+        $data = ["success"=>false];
+        $id = $this->input->post("input_hidden",true);
+        if (isset($_POST['detail_unit'])) {
+            $this->Mlaporan->deleteData("persyaratan_unit",["id_unit"=>$id]);
+            foreach ($this->input->post("detail_unit[]",true) as $key => $value) {
+                $this->Mlaporan->insertData(["id_sasaran"=>$value,"id_unit"=>$id,"id_user"=>$this->session->userdata('id_user')],"persyaratan_unit"); 
+            }
+            redirect("laporanunit");
+                // $data['success'] = true;
+        }
+        // $this->output->set_output(json_encode($data));
+    }
+    
+    public function detail($id) //Menampilkan Form Tambah
+    {
+        $data['title'] = 'Detail Unit';
+        $data['menus'] = $this->rolemenu->getMenus();
+        $data['js'] = $this->rolemenu->getJavascript(17); //Jangan DIUbah !!
+        $data['img'] = getCompanyLogo();
+        $data['unit'] = $this->Mlaporan->getDataWhere("*","tbl_unit_properti",["id_unit"=>$id])->row();
+        $data['detail_unit'] = $this->Mlaporan->getDataWhere("*","persyaratan_sasaran",["id_kategori_persyaratan"=>2])->result();
+        $data['get_unit'] = $this->Mlaporan->getDataWhere("*","persyaratan_unit",["id_unit"=>$id])->result();
+        $this->pages("laporan/view_detail_unit",$data); 
+    }
     private function pages($url ,$data)
     {
         $this->load->view('partials/part_navbar', $data);
