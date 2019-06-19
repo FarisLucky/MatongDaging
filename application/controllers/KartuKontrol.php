@@ -29,21 +29,21 @@ class KartuKontrol extends CI_Controller {
         if (isset($_POST["id_properti"]) || isset($_POST["id_unit"]) || isset($_POST["tgl_mulai"]) || isset($_POST["tgl_akhir"])) {
             $where = "";
             if (!empty($_POST["id_properti"])) {
-                $where .= "id_properti = '".$this->db->escape_str($_POST['id_properti'])."' ";
+                $where .= "id_properti = '".$this->db->escape_str($_POST['id_properti'])."' and ";
             }
             if (!empty($_POST["id_unit"])) {
-                $where .= "and id_unit = '".$this->db->escape_str($_POST['id_unit'])."' ";
+                $where .= "id_unit = '".$this->db->escape_str($_POST['id_unit'])."' and ";
             }
             if ((!empty($_POST["tgl_mulai"])) && (empty($_POST["tgl_akhir"]))) {
-                $where .= "and tgl_transaksi >= '".$this->db->escape_str($_POST['tgl_mulai'])."' ";
+                $where .= "tgl_transaksi >= '".$this->db->escape_str($_POST['tgl_mulai'])."' and ";
             }
             else if ((!empty($_POST["tgl_akhir"])) && (empty($_POST["tgl_mulai"]))) {
-                $where .= "and tgl_transaksi <= '".$this->db->escape_str($_POST['tgl_akhir'])."' ";
+                $where .= "tgl_transaksi <= '".$this->db->escape_str($_POST['tgl_akhir'])."' and ";
             }
             else if((!empty($_POST['tgl_mulai'])) && (!empty($_POST['tgl_akhir']))){
-                $where .= "tgl_transaksi BETWEEN '".$this->db->escape_str($_POST['tgl_mulai'])."' and '".$this->db->escape_str($_POST['tgl_akhir'])."' ";
+                $where .= "tgl_transaksi BETWEEN '".$this->db->escape_str($_POST['tgl_mulai'])."' and '".$this->db->escape_str($_POST['tgl_akhir'])."' and ";
             }
-            $where .= "and status_transaksi != 'sementara'";
+            $where .= "status_transaksi != 'sementara'";
         }else{
             $where = "status_transaksi != 'sementara'";
         }

@@ -18,10 +18,21 @@ class Model_laporan extends CI_Model {
         }
         return $this->db->get($tbl);
     }
+    public function insertData($data,$tbl)
+    {
+        $this->db->insert($tbl, $data);
+        return $this->db->affected_rows();
+    }
     public function updateData($column,$tbl,$where)
     {
         $this->db->where($where);
         $this->db->update($tbl, $column);
+        return $this->db->affected_rows();
+    }
+    public function deleteData($tbl,$where)
+    {
+        $this->db->where($where);
+        $this->db->delete($tbl);
         return $this->db->affected_rows();
     }
 }

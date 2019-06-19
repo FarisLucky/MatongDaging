@@ -44,7 +44,7 @@ class Konsumen extends CI_Controller
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(14); //Jangan DIUbah !!
         $data['konsumen'] = $this->M_konsumen->getSelectionData('konsumen',['id_konsumen' => $id])->result_array();
-        $data['persyaratan'] = $this->M_konsumen->getData("persyaratan_sasaran")->result_array();
+        $data['persyaratan'] = $this->M_konsumen->getSelectionData("persyaratan_sasaran",["id_kategori_persyaratan"=>1])->result_array();
         $data['check_syarat'] = $this->M_konsumen->getSelectionData('persyaratan_kelompok_sasaran',['id_konsumen' => $id])->result_array();
         $data['id_type'] = $this->M_konsumen->getData("type_id_card")->result_array();
         $this->load->view('partials/part_navbar', $data);
@@ -55,7 +55,6 @@ class Konsumen extends CI_Controller
 
     public function edit($id)
     {
-        $active = 'Edit Konsumen';
         $data['title'] = 'Edit Data Konsumen';
         $data['js'] = $this->rolemenu->getJavascript(13); //Jangan DIUbah !!
         $data['menus'] = $this->rolemenu->getMenus();

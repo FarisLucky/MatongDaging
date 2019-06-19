@@ -12,13 +12,16 @@ class Dashboard extends CI_Controller {
         $session = $this->session->userdata('id_user');
         if (empty($session)) {
             redirect('auth');
+        }else if($this->session->userdata('id_properti') == null){
+            redirect("auth/kelompokproperti");
         }
     }
     public function index()
     {
-        if ($this->session->userdata('login') == null) {
+        if (($this->session->userdata('login') == null)) {
             redirect('auth');
-        }else{
+        }
+        else{
             $id_user = $this->session->userdata('id_user');
             $query = $this->Model_dashboard->getDataWhere('user',['id_user'=>$id_user])->row();
             if ($query->id_akses == 1) {

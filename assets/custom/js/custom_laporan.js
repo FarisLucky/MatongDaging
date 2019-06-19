@@ -98,6 +98,7 @@ $(document).ready(function () {
         "bDestroy": true
     });
     const kontrol =  dataTables("#tbl_kontrol","kartukontrol/datakontrol","");
+    const pengeluaran =  dataTables("#tbl_laporan_pengeluaran","laporanpengeluaran/data","");
     const transaksi_unit =  dataTables("#tbl_transaksi_unit","laporantransaksi/data","");
 
     // Js For Konsumen and calon konsumen
@@ -134,7 +135,16 @@ $(document).ready(function () {
             });
         });
     });
+    $("#tbl_laporan_konsumen").on("click","#prasyarat", function (e) {
+        e.preventDefault();
+        let params = $(this).attr("data-id");
+        let array = ["GET","syaratkonsumen"];
+        setAjax(array,{params},function (params) {
+            let modal = $("#modal_laporan_konsumen #body_konsumen").html();
+        })
+    });
     // Lasst Js for Konsumen;
+
     // Js for Kartu Kontroll
     $("#detail_kontrol #tbl_detail_kontrol").on("click",".btn-detail",function (e) { 
         e.preventDefault();
@@ -172,11 +182,10 @@ $(document).ready(function () {
 
     $("#view_kontrol #search_kontrol").on("click", function (e) {
         e.preventDefault();
-        let id_properti = $("#view_kontrol #form_kontrol #id_properti").val();
+        let id_properti = $("#view_kontrol #id_properti").val();
         let id_unit = $("#view_kontrol #id_unit").val();
         let tgl_mulai = $("#view_kontrol #id_mulai").val();
         let tgl_akhir = $("#view_kontrol #id_akhir").val();
-        console.log(id_properti+"/"+id_unit);
         $("#view_kontrol #tbl_kontrol").DataTable().destroy();
         dataTables("#view_kontrol #tbl_kontrol","kartukontrol/datakontrol",{id_properti,id_unit,tgl_mulai,tgl_akhir});
     });
@@ -227,21 +236,30 @@ $(document).ready(function () {
         });
     });
 
-    $("#tbl_laporan_unit").on("click",".btn-edit", function (e) {
+    $("#tbl_laporan_unit").on("click","#btn-edit", function (e) {
         e.preventDefault();
         let params = $(this).attr("data-id");
-        let array = ["POST","modalkonsumen"];
-        setAjax(array,{id_calon},function (response) {
-            $("#modal_laporan_calon").modal("show");
-            $.each(response.detail_kons, function (ix, value) { 
-                if (value == null) {
-                    value = "Kosong";
-                }
-                $("input[name='"+ix+"_detail']").val(value).attr("readonly",true);
+        let array = ["GET","laporanunit/getmodal"];
+        setAjax(array,{params},function (response) {
+            $.each(response.persyaratan, function (ix, value) { 
+                $("#modal_laporan_unit #sasaran_"+value.id_sasaran+"").attr("checked",true);
             });
+            $("input[name = 'input_hidden']").val(params);
+            $("#modal_laporan_unit").modal("show");
         });
     });
-    // End Js for transaksi
+    // End Js for unit transaksi
     // Js For Konsumen Report
     // End Js for Konsumen
+
+    // Js for Laporan Pengeluaran
+    $("#view_pengeluaran #search_kontrol").on("click", function (e) {
+        e.preventDefault();
+        let id_kelompok = $("#view_pengeluaran #id_kelompok").val();
+        let tgl_mulai = $("#view_pengeluaran #id_mulai").val();
+        let tgl_akhir = $("#view_pengeluaran #id_akhir").val();
+        $("#view_pengeluaran #tbl_laporan_pengeluaran").DataTable().destroy();
+        dataTables("#view_pengeluaran #tbl_laporan_pengeluaran","laporanpengeluaran/data",{id_kelompok,tgl_mulai,tgl_akhir});
+    });
+    // End Js For Laporan Konsumen
 });

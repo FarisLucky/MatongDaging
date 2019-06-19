@@ -46,7 +46,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body m-3">
+      <div class="modal-body m-3 " id="body_konsumen">
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-input">
