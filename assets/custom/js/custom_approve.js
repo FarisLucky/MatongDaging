@@ -29,7 +29,7 @@ function swallSuccess(titles, texts, types, success) {
     })
 }
 $(document).ready(function () {
-    const approve = $("#tbl_approve_pembayaran,#tbl_approve_transaksi,#tbl_app_detail").DataTable({
+    const approve = $("#tbl_approve_pembayaran,#tbl_approve_transaksi,#tbl_app_detail,#tbl_approve_manager,#tbl_list_approve").DataTable({
         "responsive":true
     }); 
     $("table#tbl_approve_pembayaran").on("click",".btn-detail",function (e) { 
@@ -56,11 +56,11 @@ $(document).ready(function () {
             }
         });
     });
+
     $('table#tbl_approve_pembayaran').on('click','.btn-confirm',function (e) { 
         e.preventDefault();
         let id = $(this).attr('data-id');
         swallQuestion("Konfirmasi ?", "Ingin di Konfirmasi ?", "question", 'confirm', function () {
-            console.log(id);
             $.ajax({
                 type: "post",
                 url: "confirm",
@@ -68,7 +68,61 @@ $(document).ready(function () {
                 dataType: "JSON",
                 success: function (response) {
                     if (response.success == true) {
-                        swallSuccess("Berhasi", "berhasil di konfirmasi", "success", function () {
+                        swallSuccess("Berhasil", "berhasil di konfirmasi", "success", function () {
+                            location.reload();
+                        });
+                    }else{
+                        swallSuccess("Gagal", 'gagal di konfirmasi', 'error', '');
+                    }
+                }
+            });
+        });
+    });
+
+    $("table#tbl_app_detail").on("click",".btn-transaksi", function (e) {
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        let base = $("body").attr("data-base");
+        let src ;
+        $.ajax({
+            type: "post",
+            url: "modal",
+            data: {id},
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success == true) {
+                    if (response.pembayaran.id_jenis == 1) {
+                        src = base+"assets/uploads/images/pembayaran/tanda_jadi/"+response.pembayaran.bukti_bayar;
+                    }
+                    else if(response.pembayaran.id_jenis == 2){
+                        src = base+"assets/uploads/images/pembayaran/uang_muka/"+response.pembayaran.bukti_bayar;
+                    }else{
+                        src = base+"assets/uploads/images/pembayaran/cicilan/"+response.pembayaran.bukti_bayar;
+                    }
+                    $("#modal_transaksi .user").text("User : "+response.pembayaran.pembuat);
+                    $("#modal_transaksi .tgl_bayar").text("Tanggal Bayar : "+response.pembayaran.tgl_bayar);
+                    $("#modal_transaksi .tgl_tempo").text("Tanggal Tempo : "+response.pembayaran.tgl_jatuh_tempo);
+                    $("#modal_transaksi .jenis").text("Jenis Pembayaran : "+response.pembayaran.jenis_pembayaran);
+                    $("#modal_transaksi .type_modal").text("Type Pembayaran : "+response.pembayaran.type_bayar);
+                    $("#modal_transaksi .status").text(response.pembayaran.status);
+                    $("#modal_transaksi .img-base").attr("src",src);
+                    $("#modal_transaksi").modal("show");
+                }
+            }
+        });
+    });
+    $("#tbl_list_approve").on("click",".btn-confirm", function (e) {
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+        swallQuestion("Konfirmasi ?", "Ingin di Konfirmasi ?", "question", 'confirm', function () {
+            $.ajax({
+                type: "post",
+                url: "confirm",
+                data: {id_confirm:id},
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.success == true) {
+                        swallSuccess("Berhasil", "berhasil di konfirmasi", "success", function () {
                             location.reload();
                         });
                     }else{

@@ -69,9 +69,6 @@ $(document).ready(function () {
     const user = $('#tbl_users').DataTable({
         "processing": true,
         "responsive": true,
-        "scrollX": true,
-        "fixColumns": false,
-        "autoWidth": false,
         "serverSide": true,
         "order": [],
         "ajax": {
@@ -185,7 +182,12 @@ $(document).ready(function () {
                     swallSuccess("Berhasil", "Data Disimpan", "success", function () {
                         window.location.href = batal;
                     });
-                } else {
+                }else if((success.success == false) && (success.error)){
+                    toastr.remove();
+                    notifToastr("error", "Type foto harus jpg | jpeg | png");
+                    return;
+                } 
+                else {
                     $.each(success.msg, function (key, val) {
                         let el = $('#' + key)
                         el.removeClass('is-invalid')

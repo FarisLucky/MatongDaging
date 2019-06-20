@@ -18,6 +18,10 @@ class Model_auth extends CI_Model {
         $getUser = $this->db->get_where('tbl_properti',['id_properti'=>$input]);
         return $getUser->row();
     }
+    public function getDataWhere($table,$where)
+    {
+        return $this->db->get_where($table,$where);
+    }
 
 }
 

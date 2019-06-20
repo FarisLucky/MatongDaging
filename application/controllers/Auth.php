@@ -8,14 +8,13 @@ class Auth extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('Model_auth');
-        // checkSession();
-        
     }
     
     public function index()
     {
         if ($this->session->userdata('login') == true) {
-            redirect('dashboard');
+            $id_user = $this->session->userdata('id_user');
+            $this->checkDashboard($id_user);
         }
         $this->load->view('auth_login/view_auth');
     }
@@ -28,7 +27,6 @@ class Auth extends CI_Controller {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('auth_user','Username','trim|required');
         $this->form_validation->set_rules('auth_pass','Password','trim|required');
-        // $this->form_validation->set_error_delimiters('<div class="invalid-feedback">','</div>');
         if ($this->form_validation->run() == false) {
             foreach ($_POST as $key => $value) {
                 $data['msg'][$key] = form_error($key);
@@ -80,25 +78,37 @@ class Auth extends CI_Controller {
 
     public function logout()
     {
-        // session_destroy();
         $this->session->sess_destroy();
         redirect('auth');
     }
     public function blocked()
     {
-        $this->load->view('errors/custom_error_access');
+        $this->checkLogin();
+        $id_user = $this->session->userdata('id_user');
+        $query = $this->Model_auth->getDataWhere('user',['id_user'=>$id_user])->row();
+        if ($query->id_akses == 1) {
+            $data['redirect'] = base_url().'dashboard';
+        }elseif ($query->id_akses == 2) {
+            $data['redirect'] = base_url().'dashboard/manager';
+        }elseif ($query->id_akses == 3) {
+            $data['redirect'] = base_url().'dashboard/sekretaris';
+        }elseif ($query->id_akses == 4) {
+            $data['redirect'] = base_url().'dashboard/marketing';
+        }else{
+            $data['redirect'] = base_url().'dashboard/bendahara';
+        }
+        $this->load->view('errors/custom_error_access',$data);
     }
     public function core_auth_properti()
     {
+        $id_user = $this->session->userdata('id_user');
         $id = $this->input->post('value');
         $array = array(
             'id_properti' => $id
         );
         $this->session->set_userdata( $array );
         $data['success'] = true;
-        $data['link'] = 'dashboard';
-        $this->output->set_output(json_encode($data));
-        
+        return $this->output->set_output(json_encode($data));
     }
     public function auth_properti()
     {
@@ -124,7 +134,39 @@ class Auth extends CI_Controller {
             $this->load->view('auth_login/view_auth_properti',$data);
         }
         else{
-            redirect('dashboard');
+            $id_user = $this->session->userdata('id_user');
+            $this->checkDashboard($id_user);
+        }
+    }
+
+    public function reSelectProperti($id)
+    {
+        if (intval($id)) {
+            $_SESSION['id_properti'] = $id;
+        }
+        redirect('dashboard');
+    }
+    private function checkDashboard($id_user)
+    {
+        $query = $this->Model_auth->getDataWhere('user',['id_user'=>$id_user])->row();
+        if ($query->id_akses == 1) {
+            redirect('dashboard/owner');
+        }elseif ($query->id_akses == 2) {
+            redirect('dashboard/manager');
+        }elseif ($query->id_akses == 3) {
+            redirect('dashboard/sekretaris');
+        }elseif ($query->id_akses == 4) {
+            redirect('dashboard/marketing');
+        }else{
+            redirect('dashboard/bendahara');
+        }
+    }
+    private function checkLogin()
+    {
+        $login = $this->session->userdata('login');
+        if ($login == null) {
+            redirect('auth');
+            return false;
         }
     }
 

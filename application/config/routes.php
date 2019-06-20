@@ -60,7 +60,10 @@ $route['pembayaran/transaksi/bayar/(:num)'] = 'pembayaran/bayar_transaksi/$1';
 $route['pembayaran/transaksi/bayar'] = 'pembayaran/transaksi_modal';
 $route['pembayaran/datac'] = 'pembayaran/data_transaksi';
 $route['pembayaran/transaksi/submitbayar'] = 'pembayaran/core_cicilan';
+
+// Approve
 $route['approve/transaksi/detail/(:num)'] = 'approve/detail/$1';
+$route['approve/transaksi/detail/modal'] = 'approve/getdatamodal';
 
 // transaksi
 $route['transaksi/edit/datakonsumen'] = 'transaksi/datakonsumen';
@@ -68,17 +71,9 @@ $route['transaksi/edit/dataunit'] = 'transaksi/dataunit';
 
 // Auth Login
 $route['auth/kelompokproperti'] = 'auth/auth_properti';
-// $route['setting/profilperusahaan'] = 'Profil_perusahaan'; //Route Perumahan
-// $route['setting/user'] = 'Kelola_users'; //Route User
-// $route['setting/datauser'] = 'Kelola_users/datausers'; //Route user
-// $route['setting/userstatus'] = 'Kelola_users/userstatus'; //Route user
-// $route['setting/detailuser/(:num)'] = 'Kelola_users/detailuser/$1'; //Route user
-// $route['setting/userproperti'] = 'Kelola_users/userProperti'; //Route user
-// $route['setting/hapus/(:num)'] = 'Kelola_users/hapus/$1'; //Route user
-// $route['setting/tambahuser'] = 'Kelola_users/tambah'; //Route user
-// $route['setting/coretambah'] = 'Kelola_users/core_tambah'; //Route user
-// Route Login
-// $route['login'] = 'auth'; //Route user
-// $route['core_login'] = 'auth/core_login'; //Route user
+// Laporan
+$route['kartukontrol/detail/datamodal'] = 'kartukontrol/datamodal';
+
+
 
 $route['wc'] = 'Welcome'; //Route Perumahan

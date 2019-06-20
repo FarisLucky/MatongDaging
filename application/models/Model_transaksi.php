@@ -15,6 +15,7 @@ class Model_transaksi extends CI_Model {
     {
         $wh = ['id_properti'=>$params['id_properti'],'id_user'=>$params['id_user']];
         $this->db->where($wh);
+        $this->db->order_by('id_transaksi', 'desc');
         $query = $this->db->get('tbl_transaksi');
         return $query->result();
     }
@@ -54,7 +55,7 @@ class Model_transaksi extends CI_Model {
     }
     public function insertDetail($params)
     {
-        $object = ['penambahan'=>$params['penambahan'],'volume'=>$params['volume'],'satuan'=>$params['satuan'],'harga'=>$params['harga'],'id_transaksi'=>$params['transaksi']];
+        $object = ['penambahan'=>$params['penambahan'],'volume'=>$params['volume'],'satuan'=>$params['satuan'],'harga'=>$params['harga'],'total_harga'=>$params["total"],'id_transaksi'=>$params['transaksi']];
         $this->db->insert('detail_transaksi', $object);
         return $this->db->affected_rows();
     }
@@ -109,7 +110,7 @@ class Model_transaksi extends CI_Model {
             'bayar_periode'=>$params['periode_bayar'],
             'pembayaran'=>$params['total_bayar_periode'],
             'status_transaksi'=>'sementara',
-            'persetujuan_manager'=>'pending',
+            'kunci'=>'default',
             'tempo_tanda_jadi'=>$params['tgl_tanda_jadi'],
             'tempo_uang_muka'=>$params['tgl_uang_muka'],
             'tempo_bayar'=>$params['tgl_pembayaran'],
@@ -119,13 +120,23 @@ class Model_transaksi extends CI_Model {
     }
     public function deleteData($table,$where)
     {
-        $this->db->delete($table,$where);
+        return $this->db->delete($table,$where);
     }
-    public function lock($table,$id)
+    public function updateData($data,$table,$where)
     {
-        $this->db->where('id_transaksi', $id);
-        $this->db->update($table,['status_transaksi'=>'pending']);
+        $this->db->where($where);
+        $this->db->update($table,$data);
         return $this->db->affected_rows();
+    }
+
+    public function getDataWhere($select,$tbl,$where,$column_order = null,$type_order = null)
+    {
+        $this->db->select($select);
+        $this->db->where($where);
+        if (($column_order != null) && ($type_order != null)) {
+            $this->db->order_by($column_order, $type_order);
+        }
+        return $this->db->get($tbl);
     }
 }
 

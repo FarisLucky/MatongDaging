@@ -53,13 +53,11 @@ $(document).ready(function () {
             data: {value},
             dataType: "JSON",
             success: function (response) {
+                console.log(response)
                 if (response.success == true) {
-                    window.location.reload();
+                    location.reload();
                 }
             }
         });
-        // if ( < 1) {
-        //     toastr.error('Pilih Perumahan');
-        // }
     });
 });
