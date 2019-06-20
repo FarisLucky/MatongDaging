@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2019 at 11:07 AM
+-- Generation Time: Jun 20, 2019 at 09:42 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -245,7 +245,12 @@ INSERT INTO `kelompok_item` (`id_kelompok`, `nama_kelompok`, `id_user`, `id_kate
 (8, 'PEKERJAAN LANTAI', 1, 1, 'aktif'),
 (9, 'PEKERJAAN SUMUR', 1, 4, 'tidak aktif'),
 (10, 'PEKERJAAN BODY', 1, 4, 'tidak aktif'),
-(11, 'PEKERJAAN ATAP', 1, 4, 'aktif');
+(11, 'PEKERJAAN ATAP', 1, 4, 'aktif'),
+(12, 'Pemasukan Tanda Jadi', 1, 2, 'aktif'),
+(13, 'Dana dari Orang Lain', 1, 2, 'aktif'),
+(14, 'Batal Uang Muka', 14, 2, 'aktif'),
+(15, 'Makan Untuk Tukangs', 14, 3, 'aktif'),
+(16, 'hanya untuk dinonaktifkan', 14, 3, 'aktif');
 
 -- --------------------------------------------------------
 
@@ -295,10 +300,10 @@ CREATE TABLE `konsumen` (
 --
 
 INSERT INTO `konsumen` (`id_konsumen`, `id_type`, `id_card`, `nama_lengkap`, `alamat`, `telp`, `email`, `foto_ktp`, `npwp`, `pekerjaan`, `alamat_kantor`, `telp_kantor`, `status_konsumen`, `id_user`, `tgl_buat`) VALUES
-(1, 2, '35181402098800099', 'Lampi Pijar', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '082997387997', 'percobaan@gmail.com', 'ceaeb8dd60ef69d9b8851850ee568506.jpg', '97897987', 'Guru', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.', NULL, 'konsumen', 15, '2019-04-11 14:38:48'),
+(1, 2, '35181402098800099', 'Lampi Pijar', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '082997387997', 'percobaan@gmail.com', 'ceaeb8dd60ef69d9b8851850ee568506.jpg', '97897987', 'Guru', '  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.', '082133122459', 'konsumen', 21, '2019-04-11 14:38:48'),
 (2, 2, '35181402098800099', 'Pias Pijar', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468997', 'percobaanlagi@gmail.com', 'a5b95d19bfdcb1e2390c1b97acccec1dsfsd', NULL, NULL, NULL, NULL, 'calon konsumen', 3, '2019-04-11 14:38:48'),
-(4, 2, '35181402098800099', 'Roni', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468932', 'percobaanlagiin@gmail.com', 'a35756f29757ee9fd6965839de73b6ab.png', '435345', 'Petani', 'asdasd', NULL, 'calon konsumen', 15, '2019-04-11 14:38:48'),
-(5, 2, '35181402098800099', 'Ronis', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468939', 'percobaanlagii@gmail.com', '5e31edeba7884319fff2bee7ebcbb273.png', '435345', 'Petani', '       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.', '435345', 'konsumen', 15, '2019-04-11 14:38:48'),
+(4, 2, '35181402098800099', 'Roni', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468932', 'percobaanlagiin@gmail.com', 'a35756f29757ee9fd6965839de73b6ab.png', '4353456', 'Petani', ' asdasd', '082231884957', 'calon konsumen', 15, '2019-04-11 14:38:48'),
+(5, 2, '35181402098800099', 'Ronis', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468939', 'percobaanlagii@gmail.com', '5e31edeba7884319fff2bee7ebcbb273.png', '4353457', 'Petani', '        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.', '435345', 'konsumen', 15, '2019-04-11 14:38:48'),
 (7, 2, '23213', 'Sulaiman', 'asd', '23433', 'asdas@gmail.com', '6b7288d44a5d944d5fffbc1d4732746d.png', '9789798748', 'Guru', '  sdas', '0839176868', 'calon konsumen', 15, '2019-05-29 22:23:20');
 
 -- --------------------------------------------------------
@@ -308,17 +313,28 @@ INSERT INTO `konsumen` (`id_konsumen`, `id_type`, `id_card`, `nama_lengkap`, `al
 --
 
 CREATE TABLE `pemasukan` (
-  `id_pengeluaran` mediumint(9) NOT NULL,
-  `nama_pengeluaran` text NOT NULL,
+  `id_pemasukan` mediumint(9) NOT NULL,
+  `nama_pemasukan` varchar(100) NOT NULL,
   `volume` int(11) NOT NULL,
   `satuan` varchar(15) NOT NULL,
   `harga_satuan` int(11) NOT NULL,
-  `tgl_buat` date NOT NULL,
+  `total_harga` int(11) NOT NULL,
+  `created_at` date NOT NULL,
   `bukti_kwitansi` varchar(255) DEFAULT NULL,
   `id_user` tinyint(4) NOT NULL,
   `id_properti` smallint(6) NOT NULL,
-  `id_kelompok` smallint(5) NOT NULL
+  `id_kelompok` smallint(5) NOT NULL,
+  `status_manager` enum('pending','selesai') NOT NULL,
+  `update_by` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pemasukan`
+--
+
+INSERT INTO `pemasukan` (`id_pemasukan`, `nama_pemasukan`, `volume`, `satuan`, `harga_satuan`, `total_harga`, `created_at`, `bukti_kwitansi`, `id_user`, `id_properti`, `id_kelompok`, `status_manager`, `update_by`) VALUES
+(4, 'percobaan', 10, 'M3', 200000, 2000000, '2019-06-19', 'd4b43aa12ffc9aed340be8ff329291a4.jpg', 20, 1, 13, 'pending', 0),
+(5, 'percobaan', 10, 'M3', 20000, 200000, '2019-06-19', '8f2298c7067819e16bf5642208a43cf8.png', 20, 1, 12, 'pending', 0);
 
 -- --------------------------------------------------------
 
@@ -350,7 +366,7 @@ INSERT INTO `pembayaran_transaksi` (`id_pembayaran`, `id_transaksi`, `nama_pemba
 (126, 10, 'Angsuran 1', 10000000, '2019-05-15', '2019-05-11', 10000000, 0, 'f48067386590373670c03ba0cb24bfee.png', 'selesai', 15, 2, NULL),
 (127, 10, 'Angsuran 2', 10000000, '2019-05-15', '2019-05-10', 10000000, 0, '2e0b0166f0563e085083e0048e834737.png', 'pending', 15, 2, NULL),
 (128, 10, 'Angsuran 3', 10000000, '2019-05-15', '2019-05-14', 0, 10000000, '', 'belum bayar', 15, 2, NULL),
-(129, 10, 'Tanda Jadi Unit SF01', 5000, '2019-05-09', '2019-05-08', 5, 5000, 'a66f60949898abfa0de62d54c4443f31.png', 'belum bayar', 15, 1, NULL),
+(129, 10, 'Tanda Jadi Unit SF01', 5000000, '2019-05-09', '2019-06-12', 5000000, 0, 'd5fb6c8386b5f5ccaabad59fbdffc8fa.png', 'pending', 15, 1, NULL),
 (130, 10, 'Tunai ', 250000000, '2019-05-16', '2019-05-14', 0, 250000000, '', 'belum bayar', 15, 3, 2),
 (131, 11, 'Angsuran 1', 10000000, '2019-05-20', '2019-06-19', 10000000, 0, '5d6377aae012edaffa10344db3a2025d.png', 'selesai', 15, 2, NULL),
 (132, 11, 'Angsuran 2', 10000000, '2019-05-20', '2019-05-14', 10000000, 0, '', 'belum bayar', 15, 2, NULL),
@@ -374,7 +390,7 @@ INSERT INTO `pembayaran_transaksi` (`id_pembayaran`, `id_transaksi`, `nama_pemba
 (183, 16, 'Cicilan 1', 175500000, '2019-06-13', NULL, NULL, 175500000, NULL, 'belum bayar', 15, 3, 3),
 (184, 16, 'Cicilan 2', 175500000, '2019-07-13', NULL, NULL, 175500000, NULL, 'belum bayar', 15, 3, 3),
 (190, 17, 'Angsuran 1', 10000000, '2019-06-14', '2019-06-05', 10000000, 0, '410561dba4ec7d5699cbf76c78dcb405.jpg', 'selesai', 15, 2, NULL),
-(191, 17, 'Tanda Jadi Unit perumahan tegal', 5000000, '2019-05-15', '2019-05-15', 5000000, 5000000, '65bd9c072790102389156bcf98a66485.png', 'selesai', 15, 1, NULL),
+(191, 17, 'Tanda Jadi Unit perumahan tegal', 5000000, '2019-05-15', '2019-06-20', 5000000, 0, '8db87c078010200b8043c0482a8a33c5.png', 'pending', 15, 1, NULL),
 (192, 17, 'Cicilan 1', 227500000, '2019-06-07', NULL, NULL, 227500000, NULL, 'belum bayar', 15, 3, 3),
 (193, 17, 'Cicilan 2', 227500000, '2019-07-07', NULL, NULL, 227500000, NULL, 'belum bayar', 15, 3, 3);
 
@@ -448,9 +464,12 @@ CREATE TABLE `persyaratan_kelompok_sasaran` (
 
 INSERT INTO `persyaratan_kelompok_sasaran` (`id_persyaratan`, `id_sasaran`, `id_konsumen`, `id_user`) VALUES
 (1, 1, 2, 4),
-(17, 1, 5, 15),
-(18, 2, 5, 15),
-(19, 4, 5, 15);
+(22, 1, 5, 15),
+(23, 2, 5, 15),
+(24, 4, 5, 15),
+(25, 1, 1, 21),
+(26, 2, 1, 21),
+(27, 3, 1, 21);
 
 -- --------------------------------------------------------
 
@@ -477,7 +496,32 @@ INSERT INTO `persyaratan_sasaran` (`id_sasaran`, `nama_persyaratan`, `poin_penti
 (4, 'Tidak Memiliki rumah', '*', 'dikecualikan untuk PNS / TNI yang pindah domisili karena kepentingan dinas  dan berlaku hany sekali', 1),
 (5, 'Nomor Pokok Wajib Pajak(NPWP)', '**', 'Berstatus kawin hanya dipersyaratkan suami/istri', 1),
 (6, 'SPT Tahunan Pph Orang Pribadi sesuai peraturan perundang - undangan', '***', 'dikecualikan untuk penghasilan dibawah PTKP', 1),
-(7, 'Penghasilan tidak melebihi batas penghasilan yang ditentukan ', '**', 'berstatus kawin hanya dipersyaratkan suami/istri', 1);
+(7, 'Penghasilan tidak melebihi batas penghasilan yang ditentukan ', '**', 'berstatus kawin hanya dipersyaratkan suami/istri', 1),
+(8, 'Surat Akadi', '*', '', 2),
+(9, 'Surat Tanah', '*', '', 2),
+(10, 'Surat Izin Bangun Rumah', '*', '', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `persyaratan_unit`
+--
+
+CREATE TABLE `persyaratan_unit` (
+  `id` smallint(6) NOT NULL,
+  `id_unit` mediumint(9) DEFAULT NULL,
+  `id_sasaran` tinyint(3) DEFAULT NULL,
+  `id_user` tinyint(3) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `persyaratan_unit`
+--
+
+INSERT INTO `persyaratan_unit` (`id`, `id_unit`, `id_sasaran`, `id_user`) VALUES
+(1, 5, 8, 2),
+(4, 3, 9, 21),
+(5, 3, 10, 21);
 
 -- --------------------------------------------------------
 
@@ -693,6 +737,31 @@ CREATE TABLE `tbl_konsumen` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `tbl_pemasukan`
+-- (See below for the actual view)
+--
+CREATE TABLE `tbl_pemasukan` (
+`id_pemasukan` mediumint(9)
+,`nama_pemasukan` varchar(100)
+,`volume` int(11)
+,`satuan` varchar(15)
+,`harga_satuan` int(11)
+,`total_harga` int(11)
+,`bukti_kwitansi` varchar(255)
+,`id_user` tinyint(4)
+,`nama_lengkap` varchar(100)
+,`id_properti` smallint(6)
+,`nama_properti` varchar(150)
+,`id_kelompok` smallint(5)
+,`nama_kelompok` varchar(50)
+,`created_at` date
+,`status_manager` enum('pending','selesai')
+,`update_by` tinyint(4)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `tbl_pembayaran`
 -- (See below for the actual view)
 --
@@ -859,9 +928,9 @@ CREATE TABLE `tbl_transaksi` (
 ,`id_user` tinyint(4)
 ,`nama_pembuat` varchar(100)
 ,`status_transaksi` enum('sementara','progress','selesai')
-,`status_tj` enum('belum lunas','lunas')
-,`status_um` enum('belum lunas','lunas')
-,`status_cicilan` enum('belum lunas','lunas')
+,`status_tj` enum('belum bayar','progress','selesai')
+,`status_um` enum('belum bayar','progress','selesai')
+,`status_cicilan` enum('belum bayar','progress','selesai')
 ,`tempo_tanda_jadi` date
 ,`tempo_uang_muka` date
 ,`tempo_bayar` date
@@ -972,9 +1041,9 @@ CREATE TABLE `transaksi_unit` (
   `kunci` enum('default','lock','unlock') NOT NULL,
   `id_user` tinyint(4) NOT NULL,
   `status_transaksi` enum('sementara','progress','selesai') NOT NULL,
-  `status_tj` enum('belum lunas','lunas') NOT NULL,
-  `status_um` enum('belum lunas','lunas') NOT NULL,
-  `status_cicilan` enum('belum lunas','lunas') NOT NULL,
+  `status_tj` enum('belum bayar','progress','selesai') NOT NULL,
+  `status_um` enum('belum bayar','progress','selesai') NOT NULL,
+  `status_cicilan` enum('belum bayar','progress','selesai') NOT NULL,
   `tempo_tanda_jadi` date NOT NULL,
   `tempo_uang_muka` date NOT NULL,
   `tempo_bayar` date NOT NULL,
@@ -988,11 +1057,11 @@ CREATE TABLE `transaksi_unit` (
 --
 
 INSERT INTO `transaksi_unit` (`id_transaksi`, `no_ppjb`, `id_konsumen`, `id_unit`, `tgl_transaksi`, `total_kesepakatan`, `total_transaksi`, `tanda_jadi`, `uang_muka`, `periode_uang_muka`, `id_type_bayar`, `bayar_periode`, `pembayaran`, `kunci`, `id_user`, `status_transaksi`, `status_tj`, `status_um`, `status_cicilan`, `tempo_tanda_jadi`, `tempo_uang_muka`, `tempo_bayar`, `total_tambahan`, `total_akhir`, `update_at`) VALUES
-(10, '200927-38974-56', 1, 2, '2019-05-14', 500000000, 501200000, 5000000, 30000000, 3, 2, 1, 127, 'lock', 15, 'progress', 'belum lunas', 'belum lunas', 'belum lunas', '2019-05-09', '2019-05-15', '2019-05-16', 1200000, 436200000, '0000-00-00'),
-(11, '200927-38974-76', 1, 3, '2019-05-14', 500000000, 500000000, 5000000, 30000000, 3, 2, 1, 435000000, 'lock', 15, 'progress', 'lunas', 'belum lunas', 'lunas', '2019-05-19', '2019-05-20', '2019-05-21', 0, 435000000, '0000-00-00'),
-(15, '200927-38974-23', 1, 7, '2019-05-29', 500000000, 500000000, 2000000, 2, 2, 3, 2, 248999997, 'default', 15, 'sementara', 'belum lunas', 'belum lunas', 'belum lunas', '2019-05-17', '2019-05-22', '2019-05-23', 0, 497999995, '0000-00-00'),
-(16, '200927-38974-23', 2, 6, '2019-05-29', 500000000, 503000000, 2000000, 100000000, 2, 3, 2, 175500000, 'default', 15, 'sementara', 'belum lunas', 'belum lunas', 'belum lunas', '2019-05-09', '2019-05-01', '2019-05-13', 3000000, 351000000, '0000-00-00'),
-(17, '200927-38974-76', 7, 7, '2019-05-29', 500000000, 500000000, 5000000, 10000000, 1, 3, 2, 227500000, 'unlock', 15, 'progress', 'belum lunas', 'lunas', 'lunas', '2019-05-15', '2019-05-14', '2019-05-07', 0, 465000000, '0000-00-00');
+(10, '200927-38974-56', 1, 2, '2019-05-14', 500000000, 501200000, 5000000, 30000000, 3, 2, 1, 127, 'lock', 15, 'progress', 'progress', 'belum bayar', 'belum bayar', '2019-05-09', '2019-05-15', '2019-05-16', 1200000, 436200000, '0000-00-00'),
+(11, '200927-38974-76', 1, 3, '2019-05-14', 500000000, 500000000, 5000000, 30000000, 3, 2, 1, 435000000, 'lock', 15, 'progress', 'belum bayar', 'progress', 'selesai', '2019-05-19', '2019-05-20', '2019-05-21', 0, 435000000, '0000-00-00'),
+(15, '200927-38974-23', 1, 7, '2019-05-29', 500000000, 500000000, 2000000, 2, 2, 3, 2, 248999997, 'default', 15, 'sementara', '', '', '', '2019-05-17', '2019-05-22', '2019-05-23', 0, 497999995, '0000-00-00'),
+(16, '200927-38974-23', 2, 6, '2019-05-29', 500000000, 503000000, 2000000, 100000000, 2, 3, 2, 175500000, 'default', 15, 'sementara', '', '', '', '2019-05-09', '2019-05-01', '2019-05-13', 3000000, 351000000, '0000-00-00'),
+(17, '200927-38974-76', 7, 7, '2019-05-29', 500000000, 500000000, 5000000, 10000000, 1, 3, 2, 227500000, 'unlock', 15, 'progress', 'selesai', 'selesai', 'progress', '2019-05-15', '2019-05-14', '2019-05-07', 0, 465000000, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -1100,7 +1169,7 @@ INSERT INTO `user` (`id_user`, `nama_lengkap`, `jenis_kelamin`, `alamat`, `Email
 (16, 'terserah', 'laki-laki', 'terserah', 'farisdevs@gmail.com', '0876752323', 'terserah', '$2y$10$YSuAJWcBX5NNmwegyjviJelyPO/dMn1.yNRO295CO1g5uEQiJoTA2', 5, '380f714943698ce55dcb378e4f5148b4.png', '2019-05-08', 'aktif'),
 (19, 'elsa manora', 'perempuan', 'jember', 'elsa@gmail.com', '0876544567890', 'elsa', '$2y$10$68a.jkptklAX5HT35d5SsurawAbA3lxBD.X9L87g5/p3AjUH/VVI2', 2, 'f0f03c08e781828fe15d13f2c01e0d13.png', '2019-05-29', 'aktif'),
 (20, 'Bendahara', 'perempuan', 'Jl Pakuniran', 'bendahara@gmail.com', '082334678997', 'bendahara', '$2y$10$ee7rSHX4Mpqg8.yQ4vD/6u47QQYbhOmOw0lhp1kUDpR.7Dr3uYwqm', 5, '9268ded5e1507a0a9c06b53d3c014fe9.jpg', '2019-06-07', 'aktif'),
-(21, 'sekretaris', 'perempuan', 'slafjldskf', 'sekretaris@gmail.com', '082213034543', 'sekretaris', '$2y$10$12tMASJqt/OoMZd.KtnMt.ZMbUhU/bAXqP6wNAu2T6/SI0mhS09wS', 3, '7edea68ba17267c9b56179bc61f95f25.png', '2019-06-13', 'nonaktif');
+(21, 'sekretaris', 'perempuan', 'slafjldskf', 'sekretaris@gmail.com', '082213034543', 'sekretaris', '$2y$10$12tMASJqt/OoMZd.KtnMt.ZMbUhU/bAXqP6wNAu2T6/SI0mhS09wS', 3, '7edea68ba17267c9b56179bc61f95f25.png', '2019-06-13', 'aktif');
 
 -- --------------------------------------------------------
 
@@ -1147,7 +1216,11 @@ INSERT INTO `user_assign_properti` (`id_assign`, `id_properti`, `id_user`) VALUE
 (48, 1, 19),
 (49, 14, 19),
 (50, 15, 19),
-(51, 1, 20);
+(51, 1, 20),
+(52, 1, 21),
+(53, 13, 21),
+(54, 14, 21),
+(55, 15, 21);
 
 -- --------------------------------------------------------
 
@@ -1188,7 +1261,11 @@ INSERT INTO `user_controller` (`id`, `id_akses`, `controller`) VALUES
 (20, 1, 'item'),
 (21, 5, 'pengeluaran'),
 (22, 5, 'laporanunit'),
-(23, 5, 'kartukontrol');
+(23, 5, 'kartukontrol'),
+(24, 3, 'laporankonsumen'),
+(25, 5, 'laporanpengeluaran'),
+(26, 5, 'pemasukan'),
+(27, 5, 'laporanpemasukan');
 
 -- --------------------------------------------------------
 
@@ -1225,7 +1302,8 @@ INSERT INTO `user_menu` (`id_menu`, `menu`, `url`, `icon`, `javascript`) VALUES
 (16, 'Data Master', '#master_item', 'menu-icon mdi mdi-briefcase-check', NULL),
 (17, 'Laporan Properti', '#laporan_kontrol', 'menu-icon mdi mdi-briefcase-check', NULL),
 (18, 'Laporan Transaksi', '#laporan_transaksi', 'menu-icon mdi mdi-briefcase-check', NULL),
-(19, 'Approve', '#approve_list', 'menu-icon mdi mdi-briefcase-check', NULL);
+(19, 'Approve', '#approve_list', 'menu-icon mdi mdi-briefcase-check', NULL),
+(20, 'Laporan Keuangan', '#laporan_pengeluaran', 'menu-icon mdi mdi-briefcase-check', NULL);
 
 -- --------------------------------------------------------
 
@@ -1268,6 +1346,7 @@ CREATE TABLE `user_role_menu` (
 INSERT INTO `user_role_menu` (`id_menu_role`, `id_menu`, `id_akses`) VALUES
 (1, 1, 1),
 (2, 2, 1),
+(3, 12, 3),
 (5, 11, 2),
 (6, 4, 2),
 (7, 10, 4),
@@ -1285,7 +1364,9 @@ INSERT INTO `user_role_menu` (`id_menu_role`, `id_menu`, `id_akses`) VALUES
 (23, 15, 2),
 (24, 18, 2),
 (25, 13, 3),
-(27, 17, 5);
+(27, 17, 5),
+(28, 15, 3),
+(29, 20, 5);
 
 -- --------------------------------------------------------
 
@@ -1321,12 +1402,15 @@ INSERT INTO `user_sub_menu` (`id_sub`, `nama_sub`, `sub_url`, `javascript`, `id_
 (16, '', '', 'custom_rab', 2),
 (17, 'List Unit', 'laporanunit', 'custom_laporan', 13),
 (18, 'List Konsumen', 'laporankonsumen/konsumen', 'custom_laporan', 15),
-(19, 'List Calon Konsumen', 'laporankonsumen/calon', 'custom_laporan', 15),
-(20, 'Pengeluaran', 'pengeluaran', 'custom_pengeluaran', 16),
+(19, 'List Calon', 'laporankonsumen/calon', 'custom_laporan', 15),
+(20, 'Data Pengeluaran', 'pengeluaran', 'custom_pengeluaran', 16),
 (21, 'Kartu Kontrol', 'kartukontrol', 'custom_laporan', 17),
 (22, 'Transaksi Unit', 'laporantransaksi', 'custom_laporan', 18),
 (23, 'Transaksi', 'approvelist', 'custom_approve', 19),
-(24, 'List Unit', 'laporanunit', 'custom_laporan', 17);
+(24, 'List Unit', 'laporanunit', 'custom_laporan', 17),
+(25, 'Laporan Pengeluaran', 'laporanpengeluaran', 'custom_laporan', 20),
+(26, 'Data Pemasukan', 'pemasukan', 'custom_pemasukan', 16),
+(27, 'Laporan Pemasukan', 'laporanpemasukan', 'custom_laporan', 20);
 
 -- --------------------------------------------------------
 
@@ -1358,6 +1442,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `tbl_pemasukan`
+--
+DROP TABLE IF EXISTS `tbl_pemasukan`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl_pemasukan`  AS  select `pemasukan`.`id_pemasukan` AS `id_pemasukan`,`pemasukan`.`nama_pemasukan` AS `nama_pemasukan`,`pemasukan`.`volume` AS `volume`,`pemasukan`.`satuan` AS `satuan`,`pemasukan`.`harga_satuan` AS `harga_satuan`,`pemasukan`.`total_harga` AS `total_harga`,`pemasukan`.`bukti_kwitansi` AS `bukti_kwitansi`,`user`.`id_user` AS `id_user`,`user`.`nama_lengkap` AS `nama_lengkap`,`pemasukan`.`id_properti` AS `id_properti`,`properti`.`nama_properti` AS `nama_properti`,`pemasukan`.`id_kelompok` AS `id_kelompok`,`kelompok_item`.`nama_kelompok` AS `nama_kelompok`,`pemasukan`.`created_at` AS `created_at`,`pemasukan`.`status_manager` AS `status_manager`,`pemasukan`.`update_by` AS `update_by` from (((`pemasukan` left join `user` on((`user`.`id_user` = `pemasukan`.`id_user`))) left join `properti` on((`properti`.`id_properti` = `pemasukan`.`id_properti`))) left join `kelompok_item` on((`kelompok_item`.`id_kelompok` = `pemasukan`.`id_kelompok`))) ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `tbl_pembayaran`
 --
 DROP TABLE IF EXISTS `tbl_pembayaran`;
@@ -1371,7 +1464,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `tbl_pengeluaran`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl_pengeluaran`  AS  select `pengeluaran`.`id_pengeluaran` AS `id_pengeluaran`,`pengeluaran`.`nama_pengeluaran` AS `nama_pengeluaran`,`pengeluaran`.`volume` AS `volume`,`pengeluaran`.`satuan` AS `satuan`,`pengeluaran`.`harga_satuan` AS `harga_satuan`,`pengeluaran`.`total_harga` AS `total_harga`,`pengeluaran`.`bukti_kwitansi` AS `bukti_kwitansi`,`user`.`id_user` AS `id_user`,`user`.`nama_lengkap` AS `nama_lengkap`,`pengeluaran`.`id_properti` AS `id_properti`,`properti`.`nama_properti` AS `nama_properti`,`pengeluaran`.`id_kelompok` AS `id_kelompok`,`kelompok_item`.`nama_kelompok` AS `nama_kelompok`,`pengeluaran`.`created_at` AS `created_at`,`pengeluaran`.`status_manager` AS `status_manager`,`pengeluaran`.`update_by` AS `update_by` from (((`pengeluaran` join `user` on((`user`.`id_user` = `pengeluaran`.`id_user`))) join `properti` on((`properti`.`id_properti` = `pengeluaran`.`id_properti`))) join `kelompok_item` on((`kelompok_item`.`id_kelompok` = `pengeluaran`.`id_kelompok`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl_pengeluaran`  AS  select `pengeluaran`.`id_pengeluaran` AS `id_pengeluaran`,`pengeluaran`.`nama_pengeluaran` AS `nama_pengeluaran`,`pengeluaran`.`volume` AS `volume`,`pengeluaran`.`satuan` AS `satuan`,`pengeluaran`.`harga_satuan` AS `harga_satuan`,`pengeluaran`.`total_harga` AS `total_harga`,`pengeluaran`.`bukti_kwitansi` AS `bukti_kwitansi`,`user`.`id_user` AS `id_user`,`user`.`nama_lengkap` AS `nama_lengkap`,`pengeluaran`.`id_properti` AS `id_properti`,`properti`.`nama_properti` AS `nama_properti`,`pengeluaran`.`id_kelompok` AS `id_kelompok`,`kelompok_item`.`nama_kelompok` AS `nama_kelompok`,`pengeluaran`.`created_at` AS `created_at`,`pengeluaran`.`status_manager` AS `status_manager`,`pengeluaran`.`update_by` AS `update_by` from (((`pengeluaran` left join `user` on((`user`.`id_user` = `pengeluaran`.`id_user`))) left join `properti` on((`properti`.`id_properti` = `pengeluaran`.`id_properti`))) left join `kelompok_item` on((`kelompok_item`.`id_kelompok` = `pengeluaran`.`id_kelompok`))) ;
 
 -- --------------------------------------------------------
 
@@ -1452,7 +1545,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `tbl_users`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl_users`  AS  select `users`.`id_user` AS `id_user`,`users`.`nama_lengkap` AS `nama_lengkap`,`users`.`jenis_kelamin` AS `jenis_kelamin`,`users`.`alamat` AS `alamat`,`users`.`Email` AS `Email`,`users`.`no_hp` AS `no_hp`,`users`.`username` AS `username`,`users`.`password` AS `password`,`users`.`id_akses` AS `id_akses`,`users`.`foto_user` AS `foto_user`,`users`.`tanggal_buat` AS `tanggal_buat`,`users`.`status_user` AS `status_user`,`user_role`.`akses` AS `akses` from (`user` `users` join `user_role` on((`users`.`id_akses` = `user_role`.`id_akses`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl_users`  AS  select `users`.`id_user` AS `id_user`,`users`.`nama_lengkap` AS `nama_lengkap`,`users`.`jenis_kelamin` AS `jenis_kelamin`,`users`.`alamat` AS `alamat`,`users`.`Email` AS `Email`,`users`.`no_hp` AS `no_hp`,`users`.`username` AS `username`,`users`.`password` AS `password`,`users`.`id_akses` AS `id_akses`,`users`.`foto_user` AS `foto_user`,`users`.`tanggal_buat` AS `tanggal_buat`,`users`.`status_user` AS `status_user`,`user_role`.`akses` AS `akses` from (`user` `users` left join `user_role` on((`users`.`id_akses` = `user_role`.`id_akses`))) ;
 
 -- --------------------------------------------------------
 
@@ -1544,7 +1637,7 @@ ALTER TABLE `konsumen`
 -- Indexes for table `pemasukan`
 --
 ALTER TABLE `pemasukan`
-  ADD PRIMARY KEY (`id_pengeluaran`),
+  ADD PRIMARY KEY (`id_pemasukan`),
   ADD KEY `id_properti` (`id_properti`),
   ADD KEY `id_kelompok` (`id_kelompok`);
 
@@ -1581,6 +1674,12 @@ ALTER TABLE `persyaratan_kelompok_sasaran`
 ALTER TABLE `persyaratan_sasaran`
   ADD PRIMARY KEY (`id_sasaran`),
   ADD KEY `id_kategori_persyaratan` (`id_kategori_persyaratan`);
+
+--
+-- Indexes for table `persyaratan_unit`
+--
+ALTER TABLE `persyaratan_unit`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `properti`
@@ -1769,7 +1868,7 @@ ALTER TABLE `kategori_kelompok`
 -- AUTO_INCREMENT for table `kelompok_item`
 --
 ALTER TABLE `kelompok_item`
-  MODIFY `id_kelompok` smallint(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_kelompok` smallint(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `kerja_sama_bank`
@@ -1787,7 +1886,7 @@ ALTER TABLE `konsumen`
 -- AUTO_INCREMENT for table `pemasukan`
 --
 ALTER TABLE `pemasukan`
-  MODIFY `id_pengeluaran` mediumint(9) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pemasukan` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `pembayaran_transaksi`
@@ -1811,13 +1910,19 @@ ALTER TABLE `persyaratan_kategori`
 -- AUTO_INCREMENT for table `persyaratan_kelompok_sasaran`
 --
 ALTER TABLE `persyaratan_kelompok_sasaran`
-  MODIFY `id_persyaratan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_persyaratan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `persyaratan_sasaran`
 --
 ALTER TABLE `persyaratan_sasaran`
-  MODIFY `id_sasaran` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_sasaran` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `persyaratan_unit`
+--
+ALTER TABLE `persyaratan_unit`
+  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `properti`
@@ -1895,19 +2000,19 @@ ALTER TABLE `user_activity`
 -- AUTO_INCREMENT for table `user_assign_properti`
 --
 ALTER TABLE `user_assign_properti`
-  MODIFY `id_assign` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id_assign` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `user_controller`
 --
 ALTER TABLE `user_controller`
-  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `user_menu`
 --
 ALTER TABLE `user_menu`
-  MODIFY `id_menu` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_menu` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `user_role`
@@ -1919,13 +2024,13 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `user_role_menu`
 --
 ALTER TABLE `user_role_menu`
-  MODIFY `id_menu_role` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_menu_role` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
-  MODIFY `id_sub` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_sub` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
