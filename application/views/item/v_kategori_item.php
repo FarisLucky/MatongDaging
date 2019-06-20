@@ -62,9 +62,9 @@
                                     <td>
                                     <a href="<?= base_url() .'item/edit'?>/<?= $k->id_kelompok ?>" class="btn btn-sm btn-primary" class="btn btn-primary">Edit</a>
                                     <?php if ($k->status == "aktif") { ?>
-                                        <button class="btn btn-sm btn-danger btn-nonaktif" data-id="<?= $k->id_kelompok ?>" class="btn btn-danger">Non Aktifkan</button>
+                                        <button class="btn btn-sm btn-warning btn-nonaktif" data-id="<?= $k->id_kelompok ?>">Non Aktifkan</button>
                                     <?php }else{ ?>
-                                        <button class="btn btn-sm btn-danger btn-aktif" data-id="<?= $k->id_kelompok ?>" class="btn btn-danger">Aktifkan</button>
+                                        <button class="btn btn-sm btn-danger btn-aktif" data-id="<?= $k->id_kelompok ?>" >Aktifkan</button>
                                     <?php } ?>
                                     </td>
 

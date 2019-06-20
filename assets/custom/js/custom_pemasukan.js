@@ -30,24 +30,24 @@ function swallQuestion(titles, texts, types, confirm, success) {
 }
 
 $(document).ready(function () {
-    const js = $("#tbl_pengeluaran,#tbl_item").DataTable({
+    const js = $("#tbl_pemasukan").DataTable({
         responsive:true
     })
 
-    $("table#tbl_pengeluaran").on("click",".btn-hapus", function (e) {
+    $("table#tbl_pemasukan").on("click",".btn-hapus", function (e) {
         e.preventDefault();
         let params = $(this).attr("data-id");
-        swallQuestion("Konfirmasi ?", "Ingin di Konfirmasi ?", "question", 'confirm', function () {
+        swallQuestion("Konfirmasi ?", "Ingin di Konfirmasi ?", "question", 'Konfirm', function () {
             $.ajax({
                 type: "get",
-                url: "pengeluaran/hapus",
+                url: "pemasukan/hapus",
                 data: {
                     params
                 },
                 dataType: "JSON",
                 success: function (response) {
                     if (response.success == true) {
-                        swallSuccess("Sukses", "Data berhasil dihapus", "success", function () {
+                        swallSuccess("Sukses", "data berhasil dihapus", "success", function () {
                             location.reload();
                         })
                     }

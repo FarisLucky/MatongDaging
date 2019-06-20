@@ -55,10 +55,13 @@ class Pembayaran extends CI_Controller {
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
-            // $tanda_jadi = $this->Mpembayaran->getDataWhere("status","tbl_pembayaran",["id_transaksi"=>$value->id_transaksi,"id_jenis"=>1])->row();
-            if ($value->status_tj == "belum lunas") {
+            
+            if ($value->status_tj == "belum bayar") {
                 $badge = "badge-danger";
                 $button = '<button type="button" class="btn btn-sm btn-primary mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Bayar</button>';
+            }else if($value->status_tj == "progress"){
+                $badge = "badge-primary";
+                $button = '<button type="button" class="btn btn-sm btn-warning mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Cetak</button>';
             }
             else{
                 $badge = "badge-success";
@@ -102,8 +105,11 @@ class Pembayaran extends CI_Controller {
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
-            if ($value->status_um == "belum lunas") {
-                $badge = "badge-info";
+            if ($value->status_um == "belum bayar") {
+                $badge = "badge-danger";
+                $button = '<a href="'.base_url()."pembayaran/uangmuka/kelola/".$value->id_transaksi.'" class="btn btn-sm btn-primary mr-1 bayar_tj" >Bayar</button>';
+            }else if($value->status_um == "progress"){
+                $badge="badge-primary";
                 $button = '<a href="'.base_url()."pembayaran/uangmuka/kelola/".$value->id_transaksi.'" class="btn btn-sm btn-primary mr-1 bayar_tj" >Bayar</button>';
             }else{
                 $badge="badge-success";
@@ -223,7 +229,10 @@ class Pembayaran extends CI_Controller {
                     $where = ["id_transaksi"=>$id_transaksi,"id_jenis"=>1];
                     $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>$img["file_name"],"hutang"=>$hutang,"status"=>"pending"];
                     $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
-                    $data['success'] = true;
+                    if ($sql) {
+                        $this->Mpembayaran->updateData(["status_tj"=>"progress"],"transaksi_unit",["id_transaksi"=>$id_transaksi]);
+                        $data['success'] = true;
+                    }
                 } else {
                     $data['error'] = $this->upload->display_errors();
                     $data['success'] = false;
@@ -290,7 +299,9 @@ class Pembayaran extends CI_Controller {
                     $where = ["id_pembayaran"=>$id_bayar_um];
                     $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>$img["file_name"],"hutang"=>$hutang,"status"=>"pending"];
                     $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
-
+                    if ($sql) {
+                        
+                    }
                     $data['success'] = true;
                 } else {
                     $data['error'] = $this->upload->display_errors();

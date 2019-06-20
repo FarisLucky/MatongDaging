@@ -37,7 +37,6 @@ class Approve extends CI_Controller {
                 $updateKonsumen = $this->MApprove->updateData(["status_konsumen"=>"konsumen"],"konsumen",["id_konsumen"=>$transaksi->id_konsumen]);
                 if ($updateKonsumen) {
                     $updateunit = $this->MApprove->updateData(["status_unit"=>"booking"],"unit_properti",["id_unit"=>$transaksi->id_unit]);
-                    
                     $data['confirm'] = true;
                     $data['success'] = true;
                 }

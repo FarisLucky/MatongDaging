@@ -12,7 +12,7 @@ class Item extends CI_Controller
 	public function index()
 	{
 		$data['title'] = "Kategori";
-		$data['kategori_item'] = $this->M_kategori_item->getData("*",'tbl_kelompok_item')->result();
+		$data['kategori_item'] = $this->M_kategori_item->getData("*",'tbl_kelompok_item',"id_kelompok","DESC")->result();
 		$data['menus'] = $this->rolemenu->getMenus();
 		$data['img'] = getCompanyLogo();
         $data['js'] = $this->rolemenu->getJavascript(15); //Jangan DIUbah !!
@@ -64,10 +64,11 @@ class Item extends CI_Controller
 	}
 	function edit($id_kelompok)
 	{
+		$data["title"] = "Edit Item";
 		$data['menus'] = $this->rolemenu->getMenus();
 		$data['img'] = getCompanyLogo();
 		$where = array('id_kelompok' => $id_kelompok);
-		$data['kategori_item'] = $this->M_kategori_item->edit_data($where,'kelompok_item')->result();
+		$data['kategori_item'] = $this->M_kategori_item->edit_data($where,'kelompok_item')->row();
 		$data['kategori'] = $this->M_kategori_item->getData("*",'kategori_kelompok')->result();
 		$this->load->view('partials/part_navbar',$data);
 		$this->load->view('partials/part_sidebar',$data);

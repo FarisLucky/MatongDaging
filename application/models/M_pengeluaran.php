@@ -2,9 +2,12 @@
  
 class M_pengeluaran extends CI_Model{
 	
-	public function getData($select,$tbl)
+	public function getData($select,$tbl,$order=null,$order_by=null)
     {
 		$this->db->select($select);
+		if ($order != null) {
+			$this->db->order_by($order, $order_by);
+		}
         return $this->db->get($tbl);
     }
     public function getDataWhere($select,$tbl,$where,$column_order = null,$type_order = null)

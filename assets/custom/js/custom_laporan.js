@@ -99,6 +99,7 @@ $(document).ready(function () {
     });
     const kontrol =  dataTables("#tbl_kontrol","kartukontrol/datakontrol","");
     const pengeluaran =  dataTables("#tbl_laporan_pengeluaran","laporanpengeluaran/data","");
+    const pemasukan =  dataTables("#tbl_laporan_pemasukan","laporanpemasukan/data","");
     const transaksi_unit =  dataTables("#tbl_transaksi_unit","laporantransaksi/data","");
 
     // Js For Konsumen and calon konsumen
@@ -260,6 +261,16 @@ $(document).ready(function () {
         let tgl_akhir = $("#view_pengeluaran #id_akhir").val();
         $("#view_pengeluaran #tbl_laporan_pengeluaran").DataTable().destroy();
         dataTables("#view_pengeluaran #tbl_laporan_pengeluaran","laporanpengeluaran/data",{id_kelompok,tgl_mulai,tgl_akhir});
+    });
+    // End Js For Laporan Konsumen
+    // Js for Laporan Pemasukan
+    $("#view_pemasukan #search_kontrol").on("click", function (e) {
+        e.preventDefault();
+        let id_kelompok = $("#view_pemasukan #id_kelompok").val();
+        let tgl_mulai = $("#view_pemasukan #id_mulai").val();
+        let tgl_akhir = $("#view_pemasukan #id_akhir").val();
+        $("#view_pemasukan #tbl_laporan_pemasukan").DataTable().destroy();
+        dataTables("#view_pemasukan #tbl_laporan_pemasukan","laporanpemasukan/data",{id_kelompok,tgl_mulai,tgl_akhir});
     });
     // End Js For Laporan Konsumen
 });

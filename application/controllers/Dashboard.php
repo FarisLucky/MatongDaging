@@ -12,7 +12,7 @@ class Dashboard extends CI_Controller {
         $session = $this->session->userdata('id_user');
         if (empty($session)) {
             redirect('auth');
-        }else if($this->session->userdata('id_properti') == null){
+        }else if(($this->session->userdata('id_properti') == null) && ($_SESSION['id_akses'] != 1)){
             redirect("auth/kelompokproperti");
         }
     }

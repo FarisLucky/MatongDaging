@@ -7,8 +7,7 @@ class Pengeluaran extends CI_Controller
 		parent::__construct();
 		$this->rolemenu->init();
 		$this->load->library('form_validation');
-		$this->load->model('M_pengeluaran');	
-		$this->load->library('form_validation');
+		$this->load->model('M_pengeluaran');
 		$this->load->helper('date');
 	}
 	public function index()
@@ -104,7 +103,7 @@ class Pengeluaran extends CI_Controller
 		$data = ["success"=>false];
 		$id = $this->input->get('params',true);
 		if (!empty($id)) {
-			$path = $this->M_pengeluaran->edit_data(["id_pengeluaran"=>$id],"pengeluaran")->row_array();
+			$foto = $this->M_pengeluaran->edit_data(["id_pengeluaran"=>$id],"pengeluaran")->row_array();
 			$path = FCPATH."assets/uploads/images/pengeluaran/".$foto["bukti_kwitansi"];
 			if (file_exists($path)) {
 				unlink($path);
@@ -121,6 +120,7 @@ class Pengeluaran extends CI_Controller
 		$active = "pengeluaran";
 		$data['menus'] = $this->rolemenu->getMenus($active);
 		$where = array('id_pengeluaran' => $id_pengeluaran);
+		$data['img'] = getCompanyLogo();
 		$data["kelompok"] = $this->M_pengeluaran->edit_data(['id_kategori'=>3,"status"=>"aktif"],"kelompok_item")->result();
 		$data['pengeluaran'] = $this->M_pengeluaran->edit_data($where,'pengeluaran')->result();
 		$data["error"] = $params;
