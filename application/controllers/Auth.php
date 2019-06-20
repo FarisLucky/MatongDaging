@@ -112,7 +112,7 @@ class Auth extends CI_Controller {
     }
     public function auth_properti()
     {
-        if (empty($_SESSION['id_properti'])) {
+        if ((empty($_SESSION['id_properti'])) && ($_SESSION["id_akses"] != 1)) {
             $id_user = $this->session->userdata('id_user');
             $getUser = $this->Model_auth->getPropertiAssign($id_user);
             if ($getUser->num_rows() > 0) {

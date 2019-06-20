@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class LaporanPengeluaran extends CI_Controller {
+class LaporanPemasukan extends CI_Controller {
     
     public function __construct()
     {
@@ -12,12 +12,12 @@ class LaporanPengeluaran extends CI_Controller {
     }
     public function index()
     {
-        $data['title'] = 'Laporan Pengeluaran';
+        $data['title'] = 'Laporan Pemasukan';
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(25); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
         $data['img'] = getCompanyLogo();
-        $data["kelompok"] = $this->Mlaporan->getDataWhere("*","kelompok_item",["id_kategori"=>3])->result();
-        $this->pages("laporan/pengeluaran/view_pengeluaran",$data);
+        $data["kelompok"] = $this->Mlaporan->getDataWhere("*","kelompok_item",["id_kategori"=>2])->result();
+        $this->pages("laporan/pemasukan/view_pemasukan",$data);
     }
 
     public function data() //Fungsi Untuk Load Datatable
@@ -43,22 +43,22 @@ class LaporanPengeluaran extends CI_Controller {
         }
         $this->load->model('Server_side','ssd');
         $column = "*";
-        $tbl = "tbl_pengeluaran";
-        $order = "id_pengeluaran";
+        $tbl = "tbl_pemasukan";
+        $order = "id_pemasukan";
         $fetch_values = $this->ssd->makeDataTables($column,$tbl,null,$order,null,$where);
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
             $sub = array();
             $sub[] = $no;
-            $sub[] = $value->nama_pengeluaran;
+            $sub[] = $value->nama_pemasukan;
             $sub[] = $value->nama_kelompok;
             $sub[] = $value->volume." ".$value->satuan;
             $sub[] = number_format($value->harga_satuan,2,",",".");
             $sub[] = number_format($value->total_harga,2,",",".");
             $sub[] = $value->nama_lengkap;
             $sub[] = $value->created_at;
-            $sub[] = '<a href="'.base_url('laporanpengeluaran/getdetail/'.$value->id_kelompok).'" class="btn btn-sm btn-info mx-2">Print</a>';
+            $sub[] = '<a href="'.base_url('laporanpemasukan/getdetail/'.$value->id_kelompok).'" class="btn btn-sm btn-info mx-2">Print</a>';
             $data[] = $sub;
             $no++;
         }

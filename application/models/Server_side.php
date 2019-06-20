@@ -27,7 +27,7 @@ class Server_side extends CI_Model
             $this->db->order_by($order[$this->input->post('order')['0']['column']],$this->input->post('order')['0']['dir']);
         }
         else{
-            $this->db->order_by($order,'ASC');
+            $this->db->order_by($order,'DESC');
         }
     }
     public function makeDataTables($column,$table,$search,$order,$having=null,$where = null)

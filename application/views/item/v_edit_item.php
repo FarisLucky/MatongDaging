@@ -1,4 +1,3 @@
-<?php foreach($kategori_item as $k){ ?>
 	<div class="content-wrapper">
     <div class="container">
         <div class="row">
@@ -8,7 +7,6 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="dark txt_title d-inline-block mt-2">Edit Kategori Item</h4>
-                                <!-- <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/profil/user/'.$perusahaan[0]['logo_perusahaan'] ?>" class="float-right" alt=""> -->
                             </div>
                         </div>
                     </div>
@@ -21,12 +19,12 @@
                 <div class="card">
                     <div class="card-body p-4">
                     <form action="<?php echo base_url(). 'item/update'; ?>" method="post">
-                        <input type="hidden" name = "id_kelompok" value = "<?php echo $k->id_kelompok ?>">
+                        <input type="hidden" name = "id_kelompok" value = "<?php echo $kategori_item->id_kelompok ?>">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                 <label for="exampleInputName1">Nama Kelompok</label>
-                                    <input type="text" name = "nama_kelompok" value = "<?php echo $k->nama_kelompok ?>"class="form-control" id="exampleInputName1" placeholder="">
+                                    <input type="text" name = "nama_kelompok" value = "<?php echo $kategori_item->nama_kelompok ?>"class="form-control" id="exampleInputName1" placeholder="">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -35,8 +33,10 @@
                                     <select name="select_kategori" class="form-control">
                                         <option value="">-- Pilih Kategori Kelompok</option>
                                         <?php $select = ""; foreach ($kategori as $key => $value) :
-                                            if ($value->id_kategori == $k->id_kategori) {
+                                            if ($value->id_kategori == $kategori_item->id_kategori) {
                                                 $select = "selected";
+                                            }else{
+                                                $select = "";
                                             }?>
                                         <option value="<?= $value->id_kategori ?>" <?= $select ?>><?= $value->nama_kategori ?></option>
                                         <?php endforeach; ?>
@@ -46,6 +46,7 @@
                             </div>
                             <div class="col-sm-6">
 			                    <button type="submit" class="btn btn-sm btn-success ">Simpan</button>
+			                    <a href="<?php echo base_url("item") ?>" class="btn btn-sm btn-dark mx-2">Batal</a>
                             </div>
                         </div>
                         </form>
@@ -53,4 +54,5 @@
                 </div>
             </div>
         </div>
-    <?php } ?>
+    </div>
+    </div>
