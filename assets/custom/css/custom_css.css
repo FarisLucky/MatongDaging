@@ -190,6 +190,9 @@ table img{
     max-width: 80px;
     border-radius: 20%;
 }
+.modal-lg{
+    width: 65%;
+}
 /* table.dataTable tbody td {
     width: 100%;
     white-space: pre-wrap;
