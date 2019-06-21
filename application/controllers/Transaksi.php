@@ -172,6 +172,7 @@ class Transaksi extends CI_Controller {
                         $data_angsuran['id_transaksi'] = $id_insert;
                         $data_angsuran['nama_pembayaran'] = 'Angsuran '.$no;
                         $data_angsuran['total_tagihan'] = $value;
+                        $data_angsuran['total_bayar'] = 0;
                         $data_angsuran['tgl_jatuh_tempo'] = $date->format("Y-m-d");
                         $data_angsuran['hutang'] = $value;
                         $data_angsuran['status'] = 'belum bayar';
@@ -192,6 +193,7 @@ class Transaksi extends CI_Controller {
                     $data_tj['id_transaksi'] = $id_insert;
                     $data_tj['nama_pembayaran'] = 'Tanda Jadi Unit '.$nama_unit;
                     $data_tj['total_tagihan'] = $t_jd;
+                    $data_tj['total_bayar'] = 0;
                     $data_tj['tgl_jatuh_tempo'] = $this->input->post('tgl_tanda_jadi');
                     $data_tj['hutang'] = $t_jd;
                     $data_tj['status'] = 'belum bayar';
@@ -215,6 +217,7 @@ class Transaksi extends CI_Controller {
                             $data_pembayaran['id_transaksi'] = $id_insert;
                             $data_pembayaran['nama_pembayaran'] = 'Cicilan '.$no;
                             $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $date->format("Y-m-d");
                             $data_pembayaran['hutang'] = $total_bayar;
                             $data_pembayaran['status'] = 'belum bayar';
@@ -233,6 +236,7 @@ class Transaksi extends CI_Controller {
                             $data_pembayaran['id_transaksi'] = $id_insert;
                             $data_pembayaran['nama_pembayaran'] = 'Tunai ';
                             $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $this->input->post('tgl_pembayaran');
                             $data_pembayaran['hutang'] = $total_bayar;
                             $data_pembayaran['status'] = 'belum bayar';
@@ -302,6 +306,7 @@ class Transaksi extends CI_Controller {
                         $data_angsuran['id_transaksi'] = $id;
                         $data_angsuran['nama_pembayaran'] = 'Angsuran '.$no;
                         $data_angsuran['total_tagihan'] = $value;
+                        $data_angsuran['total_bayar'] = 0;
                         $data_angsuran['tgl_jatuh_tempo'] = $date->format("Y-m-d");
                         $data_angsuran['hutang'] = $value;
                         $data_angsuran['status'] = 'belum bayar';
@@ -322,6 +327,7 @@ class Transaksi extends CI_Controller {
                     $data_tj['id_transaksi'] = $id;
                     $data_tj['nama_pembayaran'] = 'Tanda Jadi Unit '.$nama_unit;
                     $data_tj['total_tagihan'] = $t_jd;
+                    $data_tj['total_bayar'] = 0;
                     $data_tj['tgl_jatuh_tempo'] = $this->input->post('tgl_tanda_jadi');
                     $data_tj['hutang'] = $t_jd;
                     $data_tj['status'] = 'belum bayar';
@@ -345,6 +351,7 @@ class Transaksi extends CI_Controller {
                             $data_pembayaran['id_transaksi'] = $id;
                             $data_pembayaran['nama_pembayaran'] = 'Cicilan '.$no;
                             $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $date->format("Y-m-d");
                             $data_pembayaran['hutang'] = $total_bayar;
                             $data_pembayaran['status'] = 'belum bayar';
@@ -363,6 +370,7 @@ class Transaksi extends CI_Controller {
                             $data_pembayaran['id_transaksi'] = $id;
                             $data_pembayaran['nama_pembayaran'] = 'Tunai ';
                             $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $this->input->post('tgl_pembayaran');
                             $data_pembayaran['hutang'] = $total_bayar;
                             $data_pembayaran['status'] = 'belum bayar';

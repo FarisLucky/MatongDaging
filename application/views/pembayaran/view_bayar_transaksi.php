@@ -81,6 +81,8 @@
                                             <th>No</th>
                                             <th>Nama</th>
                                             <th>Tagihan</th>
+                                            <th>Bayar</th>
+                                            <th>Total Bayar</th>
                                             <th>Hutang</th>
                                             <th>Status</th>
                                             <th>Tempo</th>
@@ -88,21 +90,37 @@
                                             <th>Aksi</th>
                                         </thead>
                                         <tbody>
-                                            <?php $no = 1; foreach ($data_transaksi as $key => $value) :?>
+                                            <?php $no = 1; foreach ($data_transaksi as $key => $value) :
+                                                if (($value->status == "belum bayar") && ($value->total_bayar == 0)) {
+                                                    $badge = "badge-danger";
+                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_cicilan" data-id="'.$value->id_pembayaran.'">Bayar</button>';
+                                                }else if (($value->status == "belum bayar") && ($value->total_bayar != 0)) {
+                                                    $badge = "badge-danger";
+                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_cicilan" data-id="'.$value->id_pembayaran.'">Bayar</button><a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</a>';
+                                                }
+                                                else if($value->status == "sementara"){
+                                                    $badge = "badge-warning";
+                                                    $button = '<button type="button" class="btn btn-sm btn-warning mr-1 edit_bayar" data-id="'.$value->id_pembayaran.'"><i class="fa fa-edit"></i> Edit</button><button type="button" class="btn btn-sm btn-info mr-1 lock_bayar" data-id="'.$value->id_pembayaran.'"><i class="fa fa-lock"></i> Lock</button>';
+                                                }
+                                                else if($value->status == "pending"){
+                                                    $badge = "badge-primary";
+                                                    $button = "<i>Menunggu Approve</i>";
+                                                }
+                                                else{
+                                                    $badge = "badge-success";
+                                                    $button = '<button type="button" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</button>';
+                                                }?>
                                             <tr>
                                                 <td><?= $no ?></td>
                                                 <td><?= $value->nama_pembayaran ?></td>
                                                 <td><?= number_format($value->total_tagihan,2,',','.') ?></td>
+                                                <td><?= number_format($value->jumlah_bayar,2,',','.') ?></td>
+                                                <td><?= number_format($value->total_bayar,2,',','.') ?></td>
                                                 <td><?= number_format($value->hutang,2,',','.') ?></td>
-                                                <td><span class="badge <?php $sts = $value->status; if($sts == 'belum bayar') { $cs='badge-dark';} elseif ($sts == 'pending') { $cs = 'badge-danger'; }else{ $cs = 'badge-success';} echo $cs; ?>"><?= $sts ?></span></td>
+                                                <td><?= '<span class="badge '.$badge.'">'.$value->status.'</span>' ?></td>
                                                 <td><?= $value->tgl_jatuh_tempo?></td>
-                                                <td><img src="<?= base_url() ?>assets/uploads/images/pembayaran/uang_muka/<?= $value->bukti_bayar ?>" class="img-circle img-responsive" alt=""></td>
-                                                <td><?php if ($sts == 'belum bayar') { ?>
-                                                <a href="<?= base_url() ?>pembayaran/transaksi/bayar" class="btn btn-sm btn-info btn-transaksi" data-id="<?= $value->id_pembayaran ?>">bayar</a>
-                                                <?php }else{ ?>
-                                                    <a href="<?= base_url() ?>pembayaran/transaksi/bayar" class="btn btn-sm btn-success btn-transaksi" data-id="<?= $value->id_pembayaran ?>">Print</a>
-                                                <?php } ?>
-                                                </td>
+                                                <td><img src="<?= base_url('assets/uploads/images/pembayaran/cicilan/'.$value->bukti_bayar) ?>"></td>
+                                                <td><?= $button ?></td>
                                             </tr>
                                             <?php $no++; endforeach;  ?>
                                         </tbody>
@@ -110,17 +128,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <hr>
-                        <div class="row justify-content-end">
-                            <div class="col-sm-5">
-                                <div class="float-right">
-                                    <span class="d-flex">Total Keuangan untuk cicilan : </span>
-                                    <span class="d-flex">Total Pemasukan untuk cicilan : </span>
-                                    <div class="min"></div>
-                                    <span class="d-flex">Total Keuangan untuk cicilan : </span>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -130,8 +137,8 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="modal_transaksi">
-  <div class="modal-dialog ">
+<div class="modal fade" id="modal_cicilan">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Uang Muka</h5>
@@ -141,33 +148,48 @@
       </div>
       <form method="post" class="form_cicilan" action="<?= base_url() ?>pembayaran/transaksi/submitbayar" enctype="multipart/formdata">
       <input type="hidden" name="input_hidden">
-      <div class="modal-body">
-        <div class="row m-3">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Cicilan</label>
-                    <input type="text" class="form-control cicilan" name="cicilan" disabled>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-7">
+                <div class="row m-3">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Cicilan</label>
+                            <input type="text" class="form-control cicilan" name="cicilan" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Hutang</label>
+                            <input type="text" class="form-control" name="hutang" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Bayar</label>
+                            <input type="text" class="form-control nominal_cicilan" name="bayar">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Tanggal</label>
+                            <input type="date" class="form-control" name="tgl">
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-sm-5">
+                    <small class="txt-normal mb-2">Upload Image</small>
+                    <div class="col-sm-12">
+                        <img src="" style="max-width:100%; max-height:330px;">
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <input type="file" class="form-control" name="upload">
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Bayar</label>
-                    <input type="text" class="form-control nominal_cicilan" name="bayar">
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Tanggal</label>
-                    <input type="date" class="form-control" name="tgl">
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Upload Bukti</label>
-                    <input type="file" class="form-control" name="upload">
-                </div>
-            </div>
-        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

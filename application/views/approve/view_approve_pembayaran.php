@@ -36,20 +36,27 @@
                                         <th>Aksi</th>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($approve_bayar as $key => $value) : ?>
+                                        <?php foreach ($approve_bayar as $key => $value) : 
+                                            if ($value->id_jenis == 3) { 
+                                                $href = 'assets/uploads/images/pembayaran/cicilan/'; 
+                                            }else if ($value->id_jenis == 1) {
+                                                $href = 'assets/uploads/images/pembayaran/tanda_jadi/'; 
+                                            }else{ 
+                                                $href = 'assets/uploads/images/pembayaran/uang_muka/'; 
+                                            }?>
                                         <tr>
                                             <td><?= $value->nama_lengkap ?></td>
                                             <td><?= $value->nama_pembayaran ?></td>
                                             <td><?= $value->nama_properti ?></td>
                                             <td><?= $value->nama_unit ?></td>
-                                            <td><?php $jenis_pembayaran = $value->jenis_pembayaran;if ($jenis_pembayaran == 'Transaksi') { $href = 'assets/uploads/images/pembayaran/cicilan'; }else if ($jenis_pembayaran == 'Tanda Jadi') { $href = 'assets/uploads/images/pembayaran/tanda_jadi/'; }else{ $href = 'assets/uploads/images/pembayaran/uang_muka/'; } echo $jenis_pembayaran; ?></td>
+                                            <td><?php echo $value->jenis_pembayaran;?></td>
                                             <td><?= $value->tgl_jatuh_tempo ?></td>
                                             <td><?= $value->tgl_bayar ?></td>
                                             <td> <?= number_format($value->total_tagihan,2,',','.') ?></td>
                                             <td> <?= number_format($value->jumlah_bayar,2,',','.') ?></td>
                                             <td><?= $value->hutang ?></td>
-                                            <td><img src="<?php echo base_url().$href.$value->bukti_bayar ?>" width="70px" alt=""></td>
-                                            <td><button type="button" class="btn btn-sm btn-info btn-detail" data-id="<?= $value->id_pembayaran ?>">Detail</button><button type="button" class="btn btn-sm btn-warning ml-2 btn-confirm" data-id="<?= $value->id_pembayaran ?>">Confirm</button></td>
+                                            <td><img src="<?php echo base_url($href.$value->bukti_bayar) ?>"></td>
+                                            <td><button type="button" class="btn btn-sm btn-success ml-2 btn_accept" data-id="<?= $value->id_pembayaran ?>"><i class="fa fa-check"></i>Accept</button><button type="button" class="btn btn-sm btn-danger ml-2 btn_reject" data-id="<?= $value->id_pembayaran ?>"><i class="fa fa-ban"></i>Reject</button></td>
                                         </tr>
                                         <?php endforeach; ?>
                                     </tbody>

@@ -22,14 +22,17 @@
                             <div class="col-sm-12">
                                 <table class="table table-hover display responsive no-wrap" id="tbl_tanda_jadi">
                                     <thead>
-                                        <th>Nama</th>
-                                        <th>Nama Perumahan</th>
-                                        <th>Nama Rumah</th>
-                                        <th>Tanggal Tanda Jadi</th>
+                                        <th>Pembayaran</th>
+                                        <th>Konsumen</th>
+                                        <th>Nama Unit</th>
                                         <th>Status</th>
-                                        <th>Tanda Jadi</th>
-                                        <th>Total Kesepakatan</th>
-                                        <th>Total Transaksi</th>
+                                        <th>Tagihan</th>
+                                        <th>Total Bayar</th>
+                                        <th>Hutang</th>
+                                        <th>Bukti</th>
+                                        <th>Tanggal Tempo</th>
+                                        <th>Tanggal Bayar</th>
+                                        <th>Pembuat</th>
                                         <th>Aksi</th>
                                     </thead>
                                 </table>                                 
@@ -44,7 +47,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modal_tanda_jadi">
-  <div class="modal-dialog ">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Tanda Jadi</h5>
@@ -55,32 +58,47 @@
       <form action="" method="post" class="form_tanda_jadi" enctype="multipart/formdata">
       <input type="hidden" name="input_hidden">
       <div class="modal-body">
-        <div class="row m-3">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Tanda Jadi</label>
-                    <input type="text" class="form-control tanda_jadi" name="tanda_jadi" disabled>
+        <div class="row">
+            <div class="col-sm-7">
+            <div class="row m-3">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Tanda Jadi</label>
+                        <input type="text" class="form-control tanda_jadi" name="tanda_jadi" disabled>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Hutang</label>
+                        <input type="text" class="form-control" name="hutang" disabled>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Bayar</label>
+                        <input type="text" class="form-control" name="bayar" id="bayar">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Tanggal</label>
+                        <input type="date" class="form-control" name="tgl">
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Bayar</label>
-                    <input type="text" class="form-control" name="bayar" id="bayar">
+            </div>
+            <div class="col-sm-5">
+                <small class="txt-normal mb-2">Upload Image</small>
+                <div class="col-sm-12">
+                    <img src="" style="max-width:100%; max-height:330px;">
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input type="file" class="form-control" name="upload">
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Tanggal</label>
-                    <input type="date" class="form-control" name="tgl">
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Upload Bukti</label>
-                    <input type="file" class="form-control" name="upload">
-                </div>
-            </div>
-        </div>
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

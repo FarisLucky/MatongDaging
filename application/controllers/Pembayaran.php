@@ -46,37 +46,46 @@ class Pembayaran extends CI_Controller {
     {
         $this->load->model('Server_side','ssd');
         $column = "*";
-        $tbl = "tbl_transaksi";
+        $tbl = "tbl_pembayaran";
         $order = "nama_lengkap";
         $id_properti = $this->session->userdata("id_properti");
-        $column_where = ["id_properti"=>$id_properti,"status_transaksi !="=>"sementara"];
-        $search = ['nama_lengkap','nama_properti','nama_unit'];
+        $column_where = ["id_properti"=>$id_properti,"id_jenis"=>1];
+        $search = ['nama_unit'];
         $fetch_values = $this->ssd->makeDataTables($column,$tbl,$search,$order,$column_where);
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
-            
-            if ($value->status_tj == "belum bayar") {
+            if (($value->status == "belum bayar") && ($value->total_bayar == 0)) {
                 $badge = "badge-danger";
-                $button = '<button type="button" class="btn btn-sm btn-primary mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Bayar</button>';
-            }else if($value->status_tj == "progress"){
+                $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Bayar</button>';
+            }else if (($value->status == "belum bayar") && ($value->total_bayar != 0)) {
+                $badge = "badge-danger";
+                $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Bayar</button><a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</a>';
+            }else if($value->status == "sementara"){
+                $badge = "badge-warning";
+                $button = '<button type="button" class="btn btn-sm btn-warning mr-1 edit_bayar" data-id="'.$value->id_pembayaran.'"><i class="fa fa-edit"></i> Edit</button><button type="button" class="btn btn-sm btn-info mr-1 lock_bayar" data-id="'.$value->id_pembayaran.'"><i class="fa fa-lock"></i> Lock</button>';
+            }
+            else if($value->status == "pending"){
                 $badge = "badge-primary";
-                $button = '<button type="button" class="btn btn-sm btn-warning mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Cetak</button>';
+                $button = "<i>Menunggu Approve</i>";
             }
             else{
                 $badge = "badge-success";
-                $button = '<button type="button" class="btn btn-sm btn-warning mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Cetak</button>';
+                $button = '<button type="button" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</button>';
             }
 
             $sub = array();
+            $sub[] = $value->nama_pembayaran;
             $sub[] = $value->nama_lengkap;
-            $sub[] = $value->nama_properti;
             $sub[] = $value->nama_unit;
-            $sub[] = $value->tempo_tanda_jadi;
-            $sub[] = '<span class="badge '.$badge.'">'.$value->status_tj.'</span>';
-            $sub[] = "Rp. ".number_format($value->tanda_jadi,2,',','.');
-            $sub[] = "Rp. ".number_format($value->total_kesepakatan,2,',','.');
-            $sub[] = "Rp. ".number_format($value->total_transaksi,2,',','.');
+            $sub[] = '<span class="badge '.$badge.'">'.$value->status.'</span>';
+            $sub[] = "Rp. ".number_format($value->total_tagihan,2,',','.');
+            $sub[] = "Rp. ".number_format($value->total_bayar,2,',','.');
+            $sub[] = "Rp. ".number_format($value->hutang,2,',','.');
+            $sub[] =  "<img src='".base_url('assets/uploads/images/pembayaran/tanda_jadi/'.$value->bukti_bayar)."'>";
+            $sub[] = $value->tgl_jatuh_tempo;
+            $sub[] = $value->tgl_bayar;
+            $sub[] = $value->pembuat;
             $sub[] = $button;
             $data[] = $sub;
             $no++;
@@ -84,7 +93,7 @@ class Pembayaran extends CI_Controller {
         $output = array(
             'draw'=>intval($this->input->post('draw')),
             'recordsTotal'=>intval($this->ssd->get_all_datas($tbl,$column_where)),
-            'recordsFiltered'=>intval($this->ssd->get_filtered_datas($column,$tbl,$search,$order)),
+            'recordsFiltered'=>intval($this->ssd->get_filtered_datas($column,$tbl,$search,$order,$column_where)),
             'data'=> $data
         );
         return $this->output->set_output(json_encode($output));
@@ -105,15 +114,12 @@ class Pembayaran extends CI_Controller {
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
-            if ($value->status_um == "belum bayar") {
+            if ($value->status_um == "belum lunas") {
                 $badge = "badge-danger";
-                $button = '<a href="'.base_url()."pembayaran/uangmuka/kelola/".$value->id_transaksi.'" class="btn btn-sm btn-primary mr-1 bayar_tj" >Bayar</button>';
-            }else if($value->status_um == "progress"){
-                $badge="badge-primary";
                 $button = '<a href="'.base_url()."pembayaran/uangmuka/kelola/".$value->id_transaksi.'" class="btn btn-sm btn-primary mr-1 bayar_tj" >Bayar</button>';
             }else{
                 $badge="badge-success";
-                $button = '<button type="button" class="btn btn-sm btn-warning mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Print</button>';
+                $button = '<a href="'.base_url()."pembayaran/uangmuka/kelola/".$value->id_transaksi.'" class="btn btn-sm btn-success mr-1 bayar_tj" >Lihat</button>';
             }
             $sub = array();
             $sub[] = $value->nama_lengkap;
@@ -155,11 +161,11 @@ class Pembayaran extends CI_Controller {
         $no = 1;
         foreach ($fetch_values as $value) {
             if ($value->status_cicilan == "belum lunas") {
-                $badge = "badge-info";
+                $badge = "badge-danger";
                 $button = '<a href="'.base_url()."pembayaran/transaksi/bayar/".$value->id_transaksi.'" class="btn btn-sm btn-primary mr-1 bayar_tj" >Bayar</button>';
             }else{
                 $badge="badge-success";
-                $button = '<button type="button" class="btn btn-sm btn-warning mr-1 bayar_tj" data-id="'.$value->id_transaksi.'">Print</button>';
+                $button = '<a href="'.base_url()."pembayaran/transaksi/bayar/".$value->id_transaksi.'" class="btn btn-sm btn-success mr-1 bayar_tj" >Lihat</button>';
             }
             $sub = array();
             $sub[] = $value->nama_lengkap;
@@ -184,17 +190,13 @@ class Pembayaran extends CI_Controller {
         return $this->output->set_output(json_encode($output));
     } 
 
-    // view detail dan core tandajadi
-    public function tanda_jadi()
+    // Get Modal
+    public function getModal()
     {
-        $where = ["id_transaksi"=>$this->input->post('id'),"id_jenis"=>1];
-        $input['id_transaksi'] = $this->input->post('id');
-        $input['id_jenis'] = 1;
-        $data = $this->Mpembayaran->getDataWhere("total_tagihan","pembayaran_transaksi",$where)->row();
-        $output['id'] = $input['id_transaksi'];
-        $output['tj'] = $data->total_tagihan;
-        return $this->output->set_output(json_encode($output));
-        
+        $id = $this->input->get('params');
+        $where = ['id_pembayaran'=>$id];
+        $data = $this->Mpembayaran->getDataWhere("id_pembayaran,total_tagihan,tgl_bayar,bukti_bayar,hutang,jumlah_bayar","pembayaran_transaksi",$where)->row();
+        return $this->output->set_output(json_encode($data));
     }
     public function core_tanda_jadi()
     {
@@ -209,39 +211,38 @@ class Pembayaran extends CI_Controller {
                 $data['msg'][$key] = form_error($key);
             }
         }else {
-            $id_transaksi = $this->input->post('input_hidden',true);
+            $id_pembayaran = $this->input->post('input_hidden',true);
             $bayar = str_replace(".","",$this->input->post('bayar',true));
-            $ttl_tgh = $this->Mpembayaran->getDataWhere("total_tagihan","tbl_pembayaran",["id_transaksi"=>$id_transaksi,"id_jenis"=>1])->row_array();
-            $hutang = $ttl_tgh['total_tagihan'] - $bayar; 
-            $data["tagihan"] = $ttl_tgh['total_tagihan'];
-            $data["bayar"] = $bayar;
-            $data["hutang"] = $hutang;
-            $config['upload_path'] = './assets/uploads/images/pembayaran/tanda_jadi/';
-            $config['allowed_types'] = 'jpg|jpeg|png';
-            $config['encrypt_name'] = true;
-            $config['max_size']  = '2048';
-            $config['max_width']  = '1024';
-            $config['max_height']  = '768';
-            $this->load->library('upload', $config);
-            if ($_FILES['upload']['name'] != "") {
-                if ($this->upload->do_upload('upload')) {
-                    $img = $this->upload->data();
-                    $where = ["id_transaksi"=>$id_transaksi,"id_jenis"=>1];
-                    $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>$img["file_name"],"hutang"=>$hutang,"status"=>"pending"];
-                    $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
-                    if ($sql) {
-                        $this->Mpembayaran->updateData(["status_tj"=>"progress"],"transaksi_unit",["id_transaksi"=>$id_transaksi]);
+            $ttl_tgh = $this->Mpembayaran->getDataWhere("hutang","tbl_pembayaran",["id_pembayaran"=>$id_pembayaran])->row_array();
+            if ($bayar > $ttl_tgh["hutang"]) {
+                $data['error'] = "Jumlah bayar terlalu besar";
+            }else{
+                $config =$this->imageInit('./assets/uploads/images/pembayaran/tanda_jadi/');
+                $this->load->library('upload', $config);
+                if ($_FILES['upload']['name'] != "") {
+                    if ($this->upload->do_upload('upload')) {
+                        $foto = $this->Mpembayaran->getDataWhere("bukti_bayar","pembayaran_transaksi",["id_pembayaran"=>$id_pembayaran])->row();
+                        $path = base_url()."assets/uploads/images/pembayaran/tanda_jadi/".$foto->bukti_bayar;
+                        if (!is_dir($path)) {
+                            if (file_exists($path)) {
+                                unlink($path);
+                            }
+                        }
+                        $img = $this->upload->data();
+                        $where = ["id_pembayaran"=>$id_pembayaran];
+                        $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>$img["file_name"],"status"=>"sementara"];
+                        $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
                         $data['success'] = true;
+                    } else {
+                        $data['error'] = $this->upload->display_errors();
+                        $data['success'] = false;
                     }
                 } else {
-                    $data['error'] = $this->upload->display_errors();
-                    $data['success'] = false;
+                    $where = ["id_pembayaran"=>$id_pembayaran];
+                    $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"status"=>"sementara"];
+                    $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
+                    $data['success'] = true;
                 }
-            } else {
-                $where = ["id_transaksi"=>$id_transaksi,"id_jenis"=>1];
-                $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>"","hutang"=>$hutang,"status"=>"pending"];
-                $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
-                $data['success'] = true;
             }
         }
         return $this->output->set_output(json_encode($data));
@@ -260,15 +261,6 @@ class Pembayaran extends CI_Controller {
         $data['data_uang_muka'] = $this->Mpembayaran->getDataWhere("*","tbl_pembayaran",["id_transaksi"=>$id,"id_jenis"=>2])->result();
         $this->pages("pembayaran/view_bayar_um",$data);
     }
-    public function uang_muka_modal()
-    {
-        $input = $this->input->post('id');
-        $data = $this->Mpembayaran->getDataWhere("*","tbl_pembayaran",["id_pembayaran"=>$input])->row_array();
-        $output['id'] = $input;
-        $output['um'] = $data['total_tagihan'];
-        return $this->output->set_output(json_encode($output));
-        
-    }
     public function core_uang_muka()
     {
         $this->load->library('form_validation');
@@ -284,34 +276,36 @@ class Pembayaran extends CI_Controller {
         }else {
             $id_bayar_um = $this->input->post('input_hidden',true);
             $bayar = str_replace('.','',$this->input->post('bayar',true));
-            $ttl_tgh = $this->Mpembayaran->getDataWhere("total_tagihan","tbl_pembayaran",["id_pembayaran"=>$id_bayar_um])->row_array();
-            $hutang = ($ttl_tgh['total_tagihan'] - $bayar); 
-            $config['upload_path'] = './assets/uploads/images/pembayaran/uang_muka/';
-            $config['allowed_types'] = 'gif|jpg|png';
-            $config['encrypt_name'] = true;
-            $config['max_size']  = '2048';
-            $config['max_width']  = '1024';
-            $config['max_height']  = '768';
-            $this->load->library('upload', $config);
-            if ($_FILES['upload']['name'] != "") {
-                if ($this->upload->do_upload('upload')) {
-                    $img = $this->upload->data();
-                    $where = ["id_pembayaran"=>$id_bayar_um];
-                    $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>$img["file_name"],"hutang"=>$hutang,"status"=>"pending"];
-                    $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
-                    if ($sql) {
-                        
+            $ttl_tgh = $this->Mpembayaran->getDataWhere("hutang","tbl_pembayaran",["id_pembayaran"=>$id_bayar_um])->row_array();
+            if ($bayar > $ttl_tgh["hutang"]) {
+                $data["error"] = "Jumlah bayar terlalu besar";
+            }else{
+                $config = $this->imageInit('./assets/uploads/images/pembayaran/uang_muka/');
+                $this->load->library('upload', $config);
+                if ($_FILES['upload']['name'] != "") {
+                    if ($this->upload->do_upload('upload')) {
+                        $foto = $this->Mpembayaran->getDataWhere("bukti_bayar","pembayaran_transaksi",["id_pembayaran"=>$id_bayar_um])->row();
+                        $path = base_url()."assets/uploads/images/pembayaran/uang_muka/".$foto->bukti_bayar;
+                        if (!is_dir($path)) {
+                            if (file_exists($path)) {
+                                unlink($path);
+                            }
+                        }
+                        $img = $this->upload->data();
+                        $where = ["id_pembayaran"=>$id_bayar_um];
+                        $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>$img["file_name"],"status"=>"sementara"];
+                        $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
+                        $data['success'] = true;
+                    } else {
+                        $data['error'] = $this->upload->display_errors();
+                        $data['success'] = false;
                     }
-                    $data['success'] = true;
                 } else {
-                    $data['error'] = $this->upload->display_errors();
-                    $data['success'] = false;
+                    $where = ["id_pembayaran"=>$id_bayar_um];
+                    $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"status"=>"sementara"];
+                    $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
+                    $data['success'] = true;
                 }
-            } else {
-                $where = ["id_pembayaran"=>$id_bayar_um];
-                $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>"","hutang"=>$hutang,"status"=>"pending"];
-                $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
-                $data['success'] = true;
             }
         }
         return $this->output->set_output(json_encode($data));
@@ -329,14 +323,6 @@ class Pembayaran extends CI_Controller {
         $data['um_bayar'] = $this->Mpembayaran->getBayar($id,3);
         $data['data_transaksi'] = $this->Mpembayaran->getDataWhere("*","tbl_pembayaran",["id_transaksi"=>$id,"id_jenis"=>3])->result();
         $this->pages("pembayaran/view_bayar_transaksi",$data);
-    }   
-    public function transaksi_modal()
-    {
-        $input = $this->input->post('id');
-        $data = $this->Mpembayaran->getDataWhere("*","tbl_pembayaran",["id_pembayaran"=>$input])->row_array();
-        $output['id'] = $input;
-        $output['um'] = $data['total_tagihan'];
-        return $this->output->set_output(json_encode($output));
     }
     public function core_cicilan()
     {
@@ -353,37 +339,54 @@ class Pembayaran extends CI_Controller {
         }else {
             $id_bayar_cicilan = $this->input->post('input_hidden',true);
             $bayar = str_replace('.','',$this->input->post('bayar',true));
-            $ttl_tgh = $this->Mpembayaran->getDataWhere("total_tagihan","tbl_pembayaran",["id_pembayaran"=>$id_bayar_cicilan])->row_array();
-            $hutang = ($ttl_tgh['total_tagihan'] - $bayar);  
-            $config['upload_path'] = './assets/uploads/images/pembayaran/cicilan/';
-            $config['allowed_types'] = 'gif|jpg|png';
-            $config['encrypt_name'] = true;
-            $config['max_size']  = '2048';
-            $config['max_width']  = '1024';
-            $config['max_height']  = '768';
-            $this->load->library('upload', $config);
-            if ($_FILES['upload']['name'] != "") {
-                if ($this->upload->do_upload('upload')) {
-                    $img = $this->upload->data();
-                    $where = ["id_pembayaran"=>$id_bayar_cicilan];
-                    $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>$img["file_name"],"hutang"=>$hutang,"status"=>"pending"];
-                    $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
-
-                    $data['success'] = true;
+            $ttl_tgh = $this->Mpembayaran->getDataWhere("jumlah_bayar,hutang","tbl_pembayaran",["id_pembayaran"=>$id_bayar_cicilan])->row_array();
+            if ($bayar > $ttl_tgh["hutang"]) {
+                $data["error"] = "Jumlah bayar terlalu besar";
+            }
+            else{
+                $config = $this->imageInit('./assets/uploads/images/pembayaran/cicilan/');
+                $this->load->library('upload', $config);
+                if ($_FILES['upload']['name'] != "") {
+                    if ($this->upload->do_upload('upload')) {
+                        $foto = $this->Mpembayaran->getDataWhere("bukti_bayar","pembayaran_transaksi",["id_pembayaran"=>$id_bayar_cicilan])->row();
+                        $path = base_url()."assets/uploads/images/pembayaran/uang_muka/".$foto->bukti_bayar;
+                        if (!is_dir($path)) {
+                            if (file_exists($path)) {
+                                unlink($path);
+                            }
+                        }
+                        $img = $this->upload->data();
+                        $where = ["id_pembayaran"=>$id_bayar_cicilan];
+                        $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>$img["file_name"],"status"=>"sementara"];
+                        $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
+                        $data['success'] = true;
+                    } else {
+                        $data['error'] = $this->upload->display_errors();
+                        $data['success'] = false;
+                    }
                 } else {
-                    $data['error'] = $this->upload->display_errors();
-                    $data['success'] = false;
+                    $where = ["id_pembayaran"=>$id_bayar_cicilan];
+                    $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"status"=>"sementara"];
+                    $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
+                    $data['success'] = true;
                 }
-            } else {
-                $where = ["id_pembayaran"=>$id_bayar_cicilan];
-                $data_update = ["tgl_bayar"=>$this->input->post('tgl',true),"jumlah_bayar"=>$bayar,"bukti_bayar"=>"","hutang"=>$hutang,"status"=>"pending"];
-                $sql = $this->Mpembayaran->updateData($data_update,"pembayaran_transaksi",$where);
-                $data['success'] = true;
             }
         }
         return $this->output->set_output(json_encode($data));
     }
 
+    public function payLock()
+    {
+        $data = ["success"=>false];
+        $id = $this->input->post("params",true);
+        if ($id != null) {
+            $ttl_tgh = $this->Mpembayaran->getDataWhere("jumlah_bayar,hutang","tbl_pembayaran",["id_pembayaran"=>$id])->row_array();
+            $hutang = ($ttl_tgh['hutang'] - $ttl_tgh["jumlah_bayar"]);
+            $this->Mpembayaran->updateData(["status"=>"pending","hutang"=>$hutang],"pembayaran_transaksi",["id_pembayaran"=>$id]);
+            $data["success"] = true;
+        }
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
     // This function is private. so , anyone cannot to access this function from web based *Private*
     private function pages($core_page,$data){
         $this->load->view('partials/part_navbar',$data);
@@ -396,6 +399,15 @@ class Pembayaran extends CI_Controller {
         $this->form_validation->set_rules('bayar','Bayar','trim|required');
         $this->form_validation->set_rules('tgl','Tanggal','trim|required');
         $this->form_validation->set_error_delimiters('<div class="invalid-feedback">','</div>');
+    }
+    private function imageInit($path){
+        $config['upload_path'] = $path;
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['encrypt_name'] = true;
+        $config['max_size']  = '2048';
+        $config['max_width']  = '1024';
+        $config['max_height']  = '768';
+        return $config;
     }
 }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2019 at 09:42 AM
+-- Generation Time: Jun 21, 2019 at 05:37 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -301,10 +301,10 @@ CREATE TABLE `konsumen` (
 
 INSERT INTO `konsumen` (`id_konsumen`, `id_type`, `id_card`, `nama_lengkap`, `alamat`, `telp`, `email`, `foto_ktp`, `npwp`, `pekerjaan`, `alamat_kantor`, `telp_kantor`, `status_konsumen`, `id_user`, `tgl_buat`) VALUES
 (1, 2, '35181402098800099', 'Lampi Pijar', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '082997387997', 'percobaan@gmail.com', 'ceaeb8dd60ef69d9b8851850ee568506.jpg', '97897987', 'Guru', '  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.', '082133122459', 'konsumen', 21, '2019-04-11 14:38:48'),
-(2, 2, '35181402098800099', 'Pias Pijar', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468997', 'percobaanlagi@gmail.com', 'a5b95d19bfdcb1e2390c1b97acccec1dsfsd', NULL, NULL, NULL, NULL, 'calon konsumen', 3, '2019-04-11 14:38:48'),
+(2, 2, '35181402098800099', 'Pias Pijar', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468997', 'percobaanlagi@gmail.com', 'a5b95d19bfdcb1e2390c1b97acccec1dsfsd', NULL, NULL, NULL, NULL, 'konsumen', 3, '2019-04-11 14:38:48'),
 (4, 2, '35181402098800099', 'Roni', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468932', 'percobaanlagiin@gmail.com', 'a35756f29757ee9fd6965839de73b6ab.png', '4353456', 'Petani', ' asdasd', '082231884957', 'calon konsumen', 15, '2019-04-11 14:38:48'),
 (5, 2, '35181402098800099', 'Ronis', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468939', 'percobaanlagii@gmail.com', '5e31edeba7884319fff2bee7ebcbb273.png', '4353457', 'Petani', '        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.', '435345', 'konsumen', 15, '2019-04-11 14:38:48'),
-(7, 2, '23213', 'Sulaiman', 'asd', '23433', 'asdas@gmail.com', '6b7288d44a5d944d5fffbc1d4732746d.png', '9789798748', 'Guru', '  sdas', '0839176868', 'calon konsumen', 15, '2019-05-29 22:23:20');
+(7, 2, '23213', 'Sulaiman', 'asd', '23433', 'asdas@gmail.com', '6b7288d44a5d944d5fffbc1d4732746d.png', '9789798748', 'Guru', '  sdas', '0839176868', 'konsumen', 15, '2019-05-29 22:23:20');
 
 -- --------------------------------------------------------
 
@@ -350,9 +350,10 @@ CREATE TABLE `pembayaran_transaksi` (
   `tgl_jatuh_tempo` date NOT NULL,
   `tgl_bayar` date DEFAULT NULL,
   `jumlah_bayar` int(11) DEFAULT NULL,
+  `total_bayar` int(11) DEFAULT NULL,
   `hutang` int(11) NOT NULL,
   `bukti_bayar` varchar(255) DEFAULT NULL,
-  `status` enum('belum bayar','pending','selesai') NOT NULL,
+  `status` enum('belum bayar','sementara','pending','selesai') NOT NULL,
   `id_user` tinyint(4) NOT NULL,
   `id_jenis` tinyint(2) NOT NULL,
   `id_type_bayar` tinyint(2) DEFAULT NULL
@@ -362,37 +363,37 @@ CREATE TABLE `pembayaran_transaksi` (
 -- Dumping data for table `pembayaran_transaksi`
 --
 
-INSERT INTO `pembayaran_transaksi` (`id_pembayaran`, `id_transaksi`, `nama_pembayaran`, `total_tagihan`, `tgl_jatuh_tempo`, `tgl_bayar`, `jumlah_bayar`, `hutang`, `bukti_bayar`, `status`, `id_user`, `id_jenis`, `id_type_bayar`) VALUES
-(126, 10, 'Angsuran 1', 10000000, '2019-05-15', '2019-05-11', 10000000, 0, 'f48067386590373670c03ba0cb24bfee.png', 'selesai', 15, 2, NULL),
-(127, 10, 'Angsuran 2', 10000000, '2019-05-15', '2019-05-10', 10000000, 0, '2e0b0166f0563e085083e0048e834737.png', 'pending', 15, 2, NULL),
-(128, 10, 'Angsuran 3', 10000000, '2019-05-15', '2019-05-14', 0, 10000000, '', 'belum bayar', 15, 2, NULL),
-(129, 10, 'Tanda Jadi Unit SF01', 5000000, '2019-05-09', '2019-06-12', 5000000, 0, 'd5fb6c8386b5f5ccaabad59fbdffc8fa.png', 'pending', 15, 1, NULL),
-(130, 10, 'Tunai ', 250000000, '2019-05-16', '2019-05-14', 0, 250000000, '', 'belum bayar', 15, 3, 2),
-(131, 11, 'Angsuran 1', 10000000, '2019-05-20', '2019-06-19', 10000000, 0, '5d6377aae012edaffa10344db3a2025d.png', 'selesai', 15, 2, NULL),
-(132, 11, 'Angsuran 2', 10000000, '2019-05-20', '2019-05-14', 10000000, 0, '', 'belum bayar', 15, 2, NULL),
-(133, 11, 'Angsuran 3', 10000000, '2019-05-20', '2019-05-14', 10000000, 0, '', 'belum bayar', 15, 2, NULL),
-(134, 11, 'Tanda Jadi Unit SF02', 5000000, '2019-05-19', '2019-06-21', 5000000, 0, 'e6b7232844a76500c0c90dc103aa8588.png', 'selesai', 15, 1, NULL),
-(135, 11, 'Tunai ', 435000000, '2019-05-21', '2019-06-12', 435000000, 0, '20cde9bcc84286109312d2f82cc0fc92.png', 'selesai', 15, 3, 2),
-(146, 0, 'Cicilan 1', 83000000, '2019-06-30', NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
-(147, 0, 'Cicilan 2', 83000000, '2019-07-31', NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
-(148, 0, 'Cicilan 3', 83000000, '2019-08-31', NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
-(149, 0, 'Cicilan 4', 83000000, '2019-09-30', NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
-(150, 0, 'Cicilan 5', 83000000, '2019-10-31', NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
-(151, 0, 'Cicilan 6', 83000000, '2019-11-30', NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
-(159, 15, 'Angsuran 1', 1, '2019-06-22', NULL, NULL, 1, NULL, 'belum bayar', 15, 2, NULL),
-(160, 15, 'Angsuran 2', 1, '2019-07-22', NULL, NULL, 1, NULL, 'belum bayar', 15, 2, NULL),
-(161, 15, 'Tanda Jadi Unit perumahan tegal', 2000, '2019-05-17', NULL, NULL, 2000, NULL, 'belum bayar', 15, 1, NULL),
-(162, 15, 'Cicilan 1', 248999997, '2019-06-23', NULL, NULL, 248999997, NULL, 'belum bayar', 15, 3, 3),
-(163, 15, 'Cicilan 2', 248999997, '2019-07-23', NULL, NULL, 248999997, NULL, 'belum bayar', 15, 3, 3),
-(180, 16, 'Angsuran 1', 50000000, '2019-06-01', NULL, NULL, 50000000, NULL, 'belum bayar', 15, 2, NULL),
-(181, 16, 'Angsuran 2', 50000000, '2019-07-01', NULL, NULL, 50000000, NULL, 'belum bayar', 15, 2, NULL),
-(182, 16, 'Tanda Jadi Unit 312', 2000, '2019-05-09', NULL, NULL, 2000, NULL, 'belum bayar', 15, 1, NULL),
-(183, 16, 'Cicilan 1', 175500000, '2019-06-13', NULL, NULL, 175500000, NULL, 'belum bayar', 15, 3, 3),
-(184, 16, 'Cicilan 2', 175500000, '2019-07-13', NULL, NULL, 175500000, NULL, 'belum bayar', 15, 3, 3),
-(190, 17, 'Angsuran 1', 10000000, '2019-06-14', '2019-06-05', 10000000, 0, '410561dba4ec7d5699cbf76c78dcb405.jpg', 'selesai', 15, 2, NULL),
-(191, 17, 'Tanda Jadi Unit perumahan tegal', 5000000, '2019-05-15', '2019-06-20', 5000000, 0, '8db87c078010200b8043c0482a8a33c5.png', 'pending', 15, 1, NULL),
-(192, 17, 'Cicilan 1', 227500000, '2019-06-07', NULL, NULL, 227500000, NULL, 'belum bayar', 15, 3, 3),
-(193, 17, 'Cicilan 2', 227500000, '2019-07-07', NULL, NULL, 227500000, NULL, 'belum bayar', 15, 3, 3);
+INSERT INTO `pembayaran_transaksi` (`id_pembayaran`, `id_transaksi`, `nama_pembayaran`, `total_tagihan`, `tgl_jatuh_tempo`, `tgl_bayar`, `jumlah_bayar`, `total_bayar`, `hutang`, `bukti_bayar`, `status`, `id_user`, `id_jenis`, `id_type_bayar`) VALUES
+(126, 10, 'Angsuran 1', 10000000, '2019-05-15', '2019-05-11', 0, 10000000, 0, 'f48067386590373670c03ba0cb24bfee.png', 'selesai', 15, 2, NULL),
+(127, 10, 'Angsuran 2', 10000000, '2019-05-15', '2019-05-10', 0, 10000000, 0, '2e0b0166f0563e085083e0048e834737.png', 'selesai', 15, 2, NULL),
+(128, 10, 'Angsuran 3', 10000000, '2019-05-15', '2019-05-14', NULL, 0, 10000000, '', 'belum bayar', 15, 2, NULL),
+(129, 10, 'Tanda Jadi Unit SF01', 5000000, '2019-05-09', '2019-06-12', 0, 5000000, 0, 'd5fb6c8386b5f5ccaabad59fbdffc8fa.png', 'selesai', 15, 1, NULL),
+(130, 10, 'Tunai ', 250000000, '2019-05-16', '2019-05-14', NULL, 0, 250000000, '', 'belum bayar', 15, 3, 2),
+(131, 11, 'Angsuran 1', 10000000, '2019-05-20', '2019-06-19', 0, 10000000, 0, '5d6377aae012edaffa10344db3a2025d.png', 'selesai', 15, 2, NULL),
+(132, 11, 'Angsuran 2', 10000000, '2019-05-20', '2019-06-22', 0, 10000000, 0, '256bd61bcdea3ce030f4634b29c78615.png', 'selesai', 15, 2, NULL),
+(133, 11, 'Angsuran 3', 10000000, '2019-05-20', '2019-06-14', 0, 10000000, 0, '24654a7cf265658c7a979db1c1872d1f.png', 'selesai', 15, 2, NULL),
+(134, 11, 'Tanda Jadi Unit SF02', 5000000, '2019-05-19', '2019-06-21', 0, 5000000, 0, 'e6b7232844a76500c0c90dc103aa8588.png', 'selesai', 15, 1, NULL),
+(135, 11, 'Tunai ', 435000000, '2019-05-21', '2019-06-12', 0, 435000000, 0, '20cde9bcc84286109312d2f82cc0fc92.png', 'selesai', 15, 3, 2),
+(146, 0, 'Cicilan 1', 83000000, '2019-06-30', NULL, NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
+(147, 0, 'Cicilan 2', 83000000, '2019-07-31', NULL, NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
+(148, 0, 'Cicilan 3', 83000000, '2019-08-31', NULL, NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
+(149, 0, 'Cicilan 4', 83000000, '2019-09-30', NULL, NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
+(150, 0, 'Cicilan 5', 83000000, '2019-10-31', NULL, NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
+(151, 0, 'Cicilan 6', 83000000, '2019-11-30', NULL, NULL, NULL, 83000000, NULL, 'belum bayar', 15, 3, 3),
+(159, 15, 'Angsuran 1', 1, '2019-06-22', NULL, NULL, NULL, 1, NULL, 'belum bayar', 15, 2, NULL),
+(160, 15, 'Angsuran 2', 1, '2019-07-22', NULL, NULL, NULL, 1, NULL, 'belum bayar', 15, 2, NULL),
+(161, 15, 'Tanda Jadi Unit perumahan tegal', 2000, '2019-05-17', '2019-06-22', 0, 1000, 1000, 'ac35753ba56697db4186b7af572976af.png', 'belum bayar', 15, 1, NULL),
+(162, 15, 'Cicilan 1', 248999997, '2019-06-23', NULL, NULL, NULL, 248999997, NULL, 'belum bayar', 15, 3, 3),
+(163, 15, 'Cicilan 2', 248999997, '2019-07-23', NULL, NULL, NULL, 248999997, NULL, 'belum bayar', 15, 3, 3),
+(180, 16, 'Angsuran 1', 50000000, '2019-06-01', NULL, NULL, NULL, 50000000, NULL, 'belum bayar', 15, 2, NULL),
+(181, 16, 'Angsuran 2', 50000000, '2019-07-01', NULL, NULL, NULL, 50000000, NULL, 'belum bayar', 15, 2, NULL),
+(182, 16, 'Tanda Jadi Unit 312', 2000, '2019-05-09', '2019-06-12', 0, 1200, 800, 'd22070620bc5e7615261c44de10715b3.png', 'sementara', 15, 1, NULL),
+(183, 16, 'Cicilan 1', 175500000, '2019-06-13', NULL, NULL, NULL, 175500000, NULL, 'belum bayar', 15, 3, 3),
+(184, 16, 'Cicilan 2', 175500000, '2019-07-13', NULL, NULL, NULL, 175500000, NULL, 'belum bayar', 15, 3, 3),
+(190, 17, 'Angsuran 1', 10000000, '2019-06-14', '2019-06-05', NULL, 10000000, 0, '410561dba4ec7d5699cbf76c78dcb405.jpg', 'selesai', 15, 2, NULL),
+(191, 17, 'Tanda Jadi Unit perumahan tegal', 5000000, '2019-05-15', '2019-06-20', 0, 5000000, 0, '8db87c078010200b8043c0482a8a33c5.png', 'selesai', 15, 1, NULL),
+(192, 17, 'Cicilan 1', 227500000, '2019-06-07', '2019-06-22', 0, 227500000, 227500000, '33c74f315487209e7c77c94553846bc8.png', 'selesai', 15, 3, 3),
+(193, 17, 'Cicilan 2', 227500000, '2019-07-07', '2019-06-14', 0, 227500000, 0, '628cb1955290a3c1a3ba05b0f9dce74c.png', 'selesai', 15, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -776,9 +777,10 @@ CREATE TABLE `tbl_pembayaran` (
 ,`tgl_jatuh_tempo` date
 ,`tgl_bayar` date
 ,`jumlah_bayar` int(11)
+,`total_bayar` int(11)
 ,`hutang` int(11)
 ,`bukti_bayar` varchar(255)
-,`status` enum('belum bayar','pending','selesai')
+,`status` enum('belum bayar','sementara','pending','selesai')
 ,`id_user` tinyint(4)
 ,`pembuat` varchar(100)
 ,`id_jenis` tinyint(2)
@@ -928,9 +930,9 @@ CREATE TABLE `tbl_transaksi` (
 ,`id_user` tinyint(4)
 ,`nama_pembuat` varchar(100)
 ,`status_transaksi` enum('sementara','progress','selesai')
-,`status_tj` enum('belum bayar','progress','selesai')
-,`status_um` enum('belum bayar','progress','selesai')
-,`status_cicilan` enum('belum bayar','progress','selesai')
+,`status_tj` enum('belum lunas','lunas')
+,`status_um` enum('belum lunas','lunas')
+,`status_cicilan` enum('belum lunas','lunas')
 ,`tempo_tanda_jadi` date
 ,`tempo_uang_muka` date
 ,`tempo_bayar` date
@@ -1041,9 +1043,9 @@ CREATE TABLE `transaksi_unit` (
   `kunci` enum('default','lock','unlock') NOT NULL,
   `id_user` tinyint(4) NOT NULL,
   `status_transaksi` enum('sementara','progress','selesai') NOT NULL,
-  `status_tj` enum('belum bayar','progress','selesai') NOT NULL,
-  `status_um` enum('belum bayar','progress','selesai') NOT NULL,
-  `status_cicilan` enum('belum bayar','progress','selesai') NOT NULL,
+  `status_tj` enum('belum lunas','lunas') NOT NULL,
+  `status_um` enum('belum lunas','lunas') NOT NULL,
+  `status_cicilan` enum('belum lunas','lunas') NOT NULL,
   `tempo_tanda_jadi` date NOT NULL,
   `tempo_uang_muka` date NOT NULL,
   `tempo_bayar` date NOT NULL,
@@ -1057,11 +1059,11 @@ CREATE TABLE `transaksi_unit` (
 --
 
 INSERT INTO `transaksi_unit` (`id_transaksi`, `no_ppjb`, `id_konsumen`, `id_unit`, `tgl_transaksi`, `total_kesepakatan`, `total_transaksi`, `tanda_jadi`, `uang_muka`, `periode_uang_muka`, `id_type_bayar`, `bayar_periode`, `pembayaran`, `kunci`, `id_user`, `status_transaksi`, `status_tj`, `status_um`, `status_cicilan`, `tempo_tanda_jadi`, `tempo_uang_muka`, `tempo_bayar`, `total_tambahan`, `total_akhir`, `update_at`) VALUES
-(10, '200927-38974-56', 1, 2, '2019-05-14', 500000000, 501200000, 5000000, 30000000, 3, 2, 1, 127, 'lock', 15, 'progress', 'progress', 'belum bayar', 'belum bayar', '2019-05-09', '2019-05-15', '2019-05-16', 1200000, 436200000, '0000-00-00'),
-(11, '200927-38974-76', 1, 3, '2019-05-14', 500000000, 500000000, 5000000, 30000000, 3, 2, 1, 435000000, 'lock', 15, 'progress', 'belum bayar', 'progress', 'selesai', '2019-05-19', '2019-05-20', '2019-05-21', 0, 435000000, '0000-00-00'),
-(15, '200927-38974-23', 1, 7, '2019-05-29', 500000000, 500000000, 2000000, 2, 2, 3, 2, 248999997, 'default', 15, 'sementara', '', '', '', '2019-05-17', '2019-05-22', '2019-05-23', 0, 497999995, '0000-00-00'),
-(16, '200927-38974-23', 2, 6, '2019-05-29', 500000000, 503000000, 2000000, 100000000, 2, 3, 2, 175500000, 'default', 15, 'sementara', '', '', '', '2019-05-09', '2019-05-01', '2019-05-13', 3000000, 351000000, '0000-00-00'),
-(17, '200927-38974-76', 7, 7, '2019-05-29', 500000000, 500000000, 5000000, 10000000, 1, 3, 2, 227500000, 'unlock', 15, 'progress', 'selesai', 'selesai', 'progress', '2019-05-15', '2019-05-14', '2019-05-07', 0, 465000000, '0000-00-00');
+(10, '200927-38974-56', 1, 2, '2019-05-14', 500000000, 501200000, 5000000, 30000000, 3, 2, 1, 127, 'lock', 15, 'progress', '', 'belum lunas', 'belum lunas', '2019-05-09', '2019-05-15', '2019-05-16', 1200000, 436200000, '0000-00-00'),
+(11, '200927-38974-76', 1, 3, '2019-05-14', 500000000, 500000000, 5000000, 30000000, 3, 2, 1, 435000000, 'lock', 15, 'progress', '', 'lunas', 'lunas', '2019-05-19', '2019-05-20', '2019-05-21', 0, 435000000, '0000-00-00'),
+(15, '200927-38974-23', 1, 7, '2019-05-29', 500000000, 500000000, 2000000, 2, 2, 3, 2, 248999997, 'default', 15, 'sementara', 'lunas', '', '', '2019-05-17', '2019-05-22', '2019-05-23', 0, 497999995, '0000-00-00'),
+(16, '200927-38974-23', 2, 6, '2019-05-29', 500000000, 503000000, 2000000, 100000000, 2, 3, 2, 175500000, 'default', 15, 'sementara', 'lunas', '', '', '2019-05-09', '2019-05-01', '2019-05-13', 3000000, 351000000, '0000-00-00'),
+(17, '200927-38974-76', 7, 7, '2019-05-29', 500000000, 500000000, 5000000, 10000000, 1, 3, 2, 227500000, 'unlock', 15, 'progress', 'lunas', 'lunas', 'lunas', '2019-05-15', '2019-05-14', '2019-05-07', 0, 465000000, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -1133,8 +1135,8 @@ INSERT INTO `unit_properti` (`id_unit`, `nama_unit`, `id_properti`, `type`, `lua
 (2, 'SF01', 1, '36/60', '36', '60', 500000000, 'de7340c4c6faab83542b00b5dcfd2110.png', 'Lokasi proyek cukup strategis di bandingkan dengan proyek-proyek perumahan lain di sekitarnya karena posisinya hanya _+ 100m dari jalan raya propinsi dan berdekatan dengan pabrik , klinik kesehatan, pasar hewan, terminal bus, kantor pemerintahan, bank, minimarket, dealer motor, area terminal truk, sarana pendidikan.', '2019-04-10', 'sudah terjual', 14, 'Pondasi \r\nBatu kali\r\nDinding\r\nBatu bata merah di plester\r\nAtap\r\nBaja ringan \r\nPlafon\r\nEnternit\r\nLantai\r\nKramik\r\nKusain\r\nKayu\r\nPintu\r\nKayu\r\nJendela\r\nKayu dan kaca\r\nSanitasi\r\nClosed jongkok, bak mandi \r\nAir bersih\r\nPDAM \r\nListrik \r\n900 watt'),
 (3, 'SF02', 1, '36/60', '36', '60', 130000000, 'cf51fef7bb3a3bfdfd4b2e768fbba0b9.png', 'Lokasi proyek cukup strategis di bandingkan dengan proyek-proyek perumahan lain di sekitarnya karena posisinya hanya _+ 100m dari jalan raya propinsi dan berdekatan dengan pabrik , klinik kesehatan, pasar hewan, terminal bus, kantor pemerintahan, bank, minimarket, dealer motor, area terminal truk, sarana pendidikan.', '2019-04-10', 'booking', 14, 'Pondasi \r\nBatu kali\r\nDinding\r\nBatu bata merah di plester\r\nAtap\r\nBaja ringan \r\nPlafon\r\nEnternit\r\nLantai\r\nKramik\r\nKusain\r\nKayu\r\nPintu\r\nKayu\r\nJendela\r\nKayu dan kaca\r\nSanitasi\r\nClosed jongkok, bak mandi \r\nAir bersih\r\nPDAM \r\nListrik \r\n900 watt'),
 (5, 'A21', 1, '36/34', '32 M2', '32', 500000000, '6c75c9c80b2334e85bcc733034c60667.png', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', '0000-00-00', 'belum terjual', 19, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'),
-(6, '312', 1, '312', '312', '312', 500000000, 'b89ddd7227c93dfd50ac070423ef6024.png', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, ad. Accusantium, inventore. Earum repellat numquam cupiditate, ad, nostrum commodi minima itaque magni iure nobis fuga accusamus molestias eligendi minus est.', '2019-05-08', 'belum terjual', 14, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, ad. Accusantium, inventore. Earum repellat numquam cupiditate, ad, nostrum commodi minima itaque magni iure nobis fuga accusamus molestias eligendi minus est.'),
-(7, 'perumahan tegal', 1, '36x60', '34', '56', 450000, '0502e66814d972d2f2c8cf7368bb76c6.jpg', 'lumajang', '2019-05-29', 'belum terjual', 19, 'perumahan'),
+(6, '312', 1, '312', '312', '312', 500000000, 'b89ddd7227c93dfd50ac070423ef6024.png', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, ad. Accusantium, inventore. Earum repellat numquam cupiditate, ad, nostrum commodi minima itaque magni iure nobis fuga accusamus molestias eligendi minus est.', '2019-05-08', 'booking', 14, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, ad. Accusantium, inventore. Earum repellat numquam cupiditate, ad, nostrum commodi minima itaque magni iure nobis fuga accusamus molestias eligendi minus est.'),
+(7, 'perumahan tegal', 1, '36x60', '34', '56', 450000, '0502e66814d972d2f2c8cf7368bb76c6.jpg', 'lumajang', '2019-05-29', 'booking', 19, 'perumahan'),
 (9, 'perumahan', 15, '36/34', '45', '34', 210000, 'b4c1940d866b3079fd5211fede59c4e4.png', 'jember', '2019-05-29', 'belum terjual', 19, 'ada kamar mandi');
 
 -- --------------------------------------------------------
@@ -1213,14 +1215,12 @@ INSERT INTO `user_assign_properti` (`id_assign`, `id_properti`, `id_user`) VALUE
 (41, 9, 16),
 (42, 12, 16),
 (44, 9, 18),
-(48, 1, 19),
-(49, 14, 19),
-(50, 15, 19),
 (51, 1, 20),
 (52, 1, 21),
 (53, 13, 21),
 (54, 14, 21),
-(55, 15, 21);
+(55, 15, 21),
+(56, 1, 19);
 
 -- --------------------------------------------------------
 
@@ -1455,7 +1455,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `tbl_pembayaran`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl_pembayaran`  AS  select `pembayaran_transaksi`.`id_pembayaran` AS `id_pembayaran`,`pembayaran_transaksi`.`id_transaksi` AS `id_transaksi`,`tbl_transaksi`.`id_properti` AS `id_properti`,`tbl_transaksi`.`nama_properti` AS `nama_properti`,`tbl_transaksi`.`nama_unit` AS `nama_unit`,`pembayaran_transaksi`.`nama_pembayaran` AS `nama_pembayaran`,`pembayaran_transaksi`.`total_tagihan` AS `total_tagihan`,`pembayaran_transaksi`.`tgl_jatuh_tempo` AS `tgl_jatuh_tempo`,`pembayaran_transaksi`.`tgl_bayar` AS `tgl_bayar`,`pembayaran_transaksi`.`jumlah_bayar` AS `jumlah_bayar`,`pembayaran_transaksi`.`hutang` AS `hutang`,`pembayaran_transaksi`.`bukti_bayar` AS `bukti_bayar`,`pembayaran_transaksi`.`status` AS `status`,`pembayaran_transaksi`.`id_user` AS `id_user`,`us`.`nama_lengkap` AS `pembuat`,`pembayaran_transaksi`.`id_jenis` AS `id_jenis`,`jenis_pembayaran`.`jenis_pembayaran` AS `jenis_pembayaran`,`pembayaran_transaksi`.`id_type_bayar` AS `id_type_bayar`,`type_bayar`.`type_bayar` AS `type_bayar`,`tbl_transaksi`.`nama_lengkap` AS `nama_lengkap` from ((((`pembayaran_transaksi` join `tbl_transaksi` on((`tbl_transaksi`.`id_transaksi` = `pembayaran_transaksi`.`id_transaksi`))) left join `type_bayar` on((`type_bayar`.`id_type_bayar` = `pembayaran_transaksi`.`id_type_bayar`))) join `jenis_pembayaran` on((`jenis_pembayaran`.`id_jenis` = `pembayaran_transaksi`.`id_jenis`))) join `user` `us` on((`pembayaran_transaksi`.`id_user` = `us`.`id_user`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl_pembayaran`  AS  select `pembayaran_transaksi`.`id_pembayaran` AS `id_pembayaran`,`pembayaran_transaksi`.`id_transaksi` AS `id_transaksi`,`tbl_transaksi`.`id_properti` AS `id_properti`,`tbl_transaksi`.`nama_properti` AS `nama_properti`,`tbl_transaksi`.`nama_unit` AS `nama_unit`,`pembayaran_transaksi`.`nama_pembayaran` AS `nama_pembayaran`,`pembayaran_transaksi`.`total_tagihan` AS `total_tagihan`,`pembayaran_transaksi`.`tgl_jatuh_tempo` AS `tgl_jatuh_tempo`,`pembayaran_transaksi`.`tgl_bayar` AS `tgl_bayar`,`pembayaran_transaksi`.`jumlah_bayar` AS `jumlah_bayar`,`pembayaran_transaksi`.`total_bayar` AS `total_bayar`,`pembayaran_transaksi`.`hutang` AS `hutang`,`pembayaran_transaksi`.`bukti_bayar` AS `bukti_bayar`,`pembayaran_transaksi`.`status` AS `status`,`pembayaran_transaksi`.`id_user` AS `id_user`,`us`.`nama_lengkap` AS `pembuat`,`pembayaran_transaksi`.`id_jenis` AS `id_jenis`,`jenis_pembayaran`.`jenis_pembayaran` AS `jenis_pembayaran`,`pembayaran_transaksi`.`id_type_bayar` AS `id_type_bayar`,`type_bayar`.`type_bayar` AS `type_bayar`,`tbl_transaksi`.`nama_lengkap` AS `nama_lengkap` from ((((`pembayaran_transaksi` join `tbl_transaksi` on((`tbl_transaksi`.`id_transaksi` = `pembayaran_transaksi`.`id_transaksi`))) left join `type_bayar` on((`type_bayar`.`id_type_bayar` = `pembayaran_transaksi`.`id_type_bayar`))) join `jenis_pembayaran` on((`jenis_pembayaran`.`id_jenis` = `pembayaran_transaksi`.`id_jenis`))) join `user` `us` on((`pembayaran_transaksi`.`id_user` = `us`.`id_user`))) ;
 
 -- --------------------------------------------------------
 
@@ -2000,7 +2000,7 @@ ALTER TABLE `user_activity`
 -- AUTO_INCREMENT for table `user_assign_properti`
 --
 ALTER TABLE `user_assign_properti`
-  MODIFY `id_assign` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id_assign` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `user_controller`

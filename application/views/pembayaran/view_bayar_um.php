@@ -21,6 +21,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block">Konsumen : <?= $um_data->nama_lengkap ?></h5>
+                                <a href="<?= base_url('pembayaran/uangmuka') ?>" class="float-right"><i class="fa fa-arrow-circle-left"></i> Kembali</a>
                             </div>
                         </div>
                         <hr>
@@ -69,6 +70,9 @@
                                             <th>No</th>
                                             <th>Nama</th>
                                             <th>Tagihan</th>
+                                            <th>Bayar</th>
+                                            <th>Total Bayar</th>
+                                            <th>Tagihan</th>
                                             <th>Hutang</th>
                                             <th>Status</th>
                                             <th>Tempo</th>
@@ -76,21 +80,37 @@
                                             <th>Aksi</th>
                                         </thead>
                                         <tbody>
-                                            <?php $no = 1; foreach ($data_uang_muka as $key => $value) :?>
+                                            <?php $no = 1; foreach ($data_uang_muka as $key => $value) :
+                                                if (($value->status == "belum bayar") && ($value->total_bayar == 0)) {
+                                                    $badge = "badge-danger";
+                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_um" data-id="'.$value->id_pembayaran.'">Bayar</button>';
+                                                }else if (($value->status == "belum bayar") && ($value->total_bayar != 0)) {
+                                                    $badge = "badge-danger";
+                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_um" data-id="'.$value->id_pembayaran.'">Bayar</button><a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</a>';
+                                                }
+                                                else if($value->status == "sementara"){
+                                                    $badge = "badge-warning";
+                                                    $button = '<button type="button" class="btn btn-sm btn-warning mr-1 edit_bayar" data-id="'.$value->id_pembayaran.'"><i class="fa fa-edit"></i> Edit</button><button type="button" class="btn btn-sm btn-info mr-1 lock_bayar" data-id="'.$value->id_pembayaran.'"><i class="fa fa-lock"></i> Lock</button>';
+                                                }
+                                                else if($value->status == "pending"){
+                                                    $badge = "badge-primary";
+                                                    $button = "<i>Menunggu Approve</i>";
+                                                }
+                                                else{
+                                                    $badge = "badge-success";
+                                                    $button = '<button type="button" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</button>';
+                                                }?>
                                             <tr>
                                                 <td><?= $no ?></td>
                                                 <td><?= $value->nama_pembayaran ?></td>
                                                 <td><?= number_format($value->total_tagihan,2,',','.') ?></td>
+                                                <td><?= number_format($value->jumlah_bayar,2,',','.') ?></td>
+                                                <td><?= number_format($value->total_bayar,2,',','.') ?></td>
                                                 <td><?= number_format($value->hutang,2,',','.') ?></td>
-                                                <td><span class="badge <?php $sts = $value->status; if($sts == 'belum bayar') { $cs='badge-dark';} elseif ($sts == 'pending') { $cs = 'badge-danger'; }else{ $cs = 'badge-success';} echo $cs; ?>"><?= $sts ?></span></td>
+                                                <td><?= '<span class="badge '.$badge.'">'.$value->status.'</span>' ?></td>
                                                 <td><?= $value->tgl_jatuh_tempo?></td>
-                                                <td><img src="<?= base_url() ?>assets/uploads/images/pembayaran/uang_muka/<?= $value->bukti_bayar ?>" class="img-circle img-responsive" alt=""></td>
-                                                <td><?php if ($sts == 'belum bayar') { ?>
-                                                <a href="<?= base_url() ?>pembayaran/uangmuka/bayar" class="btn btn-sm btn-info bayar_Um" data-id="<?= $value->id_pembayaran ?>">bayar</a>
-                                                <?php }else{ ?>
-                                                    <a href="<?= base_url() ?>pembayaran/uangmuka/bayar" class="btn btn-sm btn-success bayar_Um" data-id="<?= $value->id_pembayaran ?>">Print</a>
-                                                <?php } ?>
-                                                </td>
+                                                <td><img src="<?= base_url('assets/uploads/images/pembayaran/uang_muka/'.$value->bukti_bayar) ?>"></td>
+                                                <td><?= $button ?></td>
                                             </tr>
                                             <?php $no++; endforeach;  ?>
                                         </tbody>
@@ -108,7 +128,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modal_uang_muka">
-  <div class="modal-dialog ">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Uang Muka</h5>
@@ -119,29 +139,44 @@
       <form method="post" class="form_uang_muka" action="<?= base_url() ?>pembayaran/uangmuka/submitbayar" enctype="multipart/formdata">
       <input type="hidden" name="input_hidden">
       <div class="modal-body">
-        <div class="row m-3">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Uang Muka</label>
-                    <input type="text" class="form-control uang_muka" name="uang_muka" disabled>
+        <div class="row">
+            <div class="col-sm-7">
+            <div class="row m-3">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Uang Muka</label>
+                        <input type="text" class="form-control uang_muka" name="uang_muka" disabled>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Hutang</label>
+                        <input type="text" class="form-control" name="hutang" disabled>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Bayar</label>
+                        <input type="text" class="form-control nominal_um" name="bayar">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="">Tanggal</label>
+                        <input type="date" class="form-control" name="tgl">
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Bayar</label>
-                    <input type="text" class="form-control nominal_um" name="bayar">
-                </div>
             </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Tanggal</label>
-                    <input type="date" class="form-control" name="tgl">
+            <div class="col-sm-5">
+                <small class="txt-normal mb-2">Upload Image</small>
+                <div class="col-sm-12">
+                    <img src="" style="max-width:100%; max-height:330px;">
                 </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="">Upload Bukti</label>
-                    <input type="file" class="form-control" name="upload">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input type="file" class="form-control" name="upload">
+                    </div>
                 </div>
             </div>
         </div>

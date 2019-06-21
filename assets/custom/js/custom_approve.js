@@ -58,18 +58,39 @@ $(document).ready(function () {
         });
     });
 
-    $('table#tbl_approve_pembayaran').on('click','.btn-confirm',function (e) { 
+    $('table#tbl_approve_pembayaran').on('click','.btn_accept',function (e) { 
         e.preventDefault();
-        let id = $(this).attr('data-id');
-        swallQuestion("Konfirmasi ?", "Ingin di Konfirmasi ?", "question", 'confirm', function () {
+        let params = $(this).attr('data-id');
+        swallQuestion("Accept ?", "Ingin diterima ?", "question", 'Accept', function () {
             $.ajax({
-                type: "post",
-                url: "confirm",
-                data: {id_confirm:id},
+                type: "GET",
+                url: "accept",
+                data: {params},
                 dataType: "JSON",
                 success: function (response) {
                     if (response.success == true) {
                         swallSuccess("Berhasil", "berhasil di konfirmasi", "success", function () {
+                            location.reload();
+                        });
+                    }else{
+                        swallSuccess("Gagal", 'gagal di konfirmasi', 'error', '');
+                    }
+                }
+            });
+        });
+    });
+    $('table#tbl_approve_pembayaran').on('click','.btn_reject',function (e) { 
+        e.preventDefault();
+        let params = $(this).attr('data-id');
+        swallQuestion("Reject ?", "Ingin diterima ?", "question", 'Reject', function () {
+            $.ajax({
+                type: "GET",
+                url: "reject",
+                data: {params},
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.success == true) {
+                        swallSuccess("Berhasil", "berhasil disimpan", "success", function () {
                             location.reload();
                         });
                     }else{

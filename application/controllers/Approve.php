@@ -13,7 +13,7 @@ class Approve extends CI_Controller {
     }
     public function index()
     {
-        redirect("auth");
+        redirect("dashboard");
     }
     public function kwitansi()
     {
@@ -24,39 +24,57 @@ class Approve extends CI_Controller {
         $data['approve_bayar'] = $this->MApprove->getDataWhere("*","tbl_pembayaran",["status"=>"pending"])->result();
         $this->pages("approve/view_approve_pembayaran",$data);
     }
-    public function confirm()
+    public function accept()
     {
         $data = ['success'=>false];
-        $confirm = $this->input->post('id_confirm');
-        $updatePembayaran = $this->MApprove->updateData(["status"=>"selesai"],"pembayaran_transaksi",["id_pembayaran"=>$confirm]);
-        $getJenis = $this->MApprove->getDataWhere("id_jenis,id_transaksi","tbl_pembayaran",["id_pembayaran"=>$confirm])->row();
-        if ($getJenis->id_jenis == 1) {
-            $updateTransaksi = $this->MApprove->updateData(["status_tj"=>"lunas"],"transaksi_unit",["id_transaksi"=>$getJenis->id_transaksi]);
+        $confirm = $this->input->get('params',true);
+        $getData = $this->MApprove->getDataWhere("hutang,jumlah_bayar,total_bayar,id_jenis,id_transaksi","pembayaran_transaksi",["id_pembayaran"=>$confirm])->row();
+        if ($getData->hutang == 0) {
+            $status = "selesai";
+        }else{
+            $status = "belum bayar";
+        }
+        $total = (int) ($getData->Jumlah_bayar + $getData->total_bayar);
+        $updatePembayaran = $this->MApprove->updateData(["status"=>$status,"total_bayar"=>$total,"jumlah_bayar"=>0],"pembayaran_transaksi",["id_pembayaran"=>$confirm]);
+        if ($getData->id_jenis == 1) {
+            $updateTransaksi = $this->MApprove->updateData(["status_tj"=>"lunas"],"transaksi_unit",["id_transaksi"=>$getData->id_transaksi]);
             if ($updateTransaksi) {
-                $transaksi = $this->MApprove->getDataWhere("id_konsumen,id_unit","tbl_transaksi",["id_transaksi"=>$getJenis->id_transaksi])->row();
-                $updateKonsumen = $this->MApprove->updateData(["status_konsumen"=>"konsumen"],"konsumen",["id_konsumen"=>$transaksi->id_konsumen]);
-                if ($updateKonsumen) {
-                    $updateunit = $this->MApprove->updateData(["status_unit"=>"booking"],"unit_properti",["id_unit"=>$transaksi->id_unit]);
-                    $data['confirm'] = true;
-                    $data['success'] = true;
-                }
+                $dataTransaksi = $this->MApprove->getDataWhere("id_konsumen,id_unit","tbl_transaksi",["id_transaksi"=>$getData->id_transaksi])->row();
+                $updateKonsumen = $this->MApprove->updateData(["status_konsumen"=>"konsumen"],"konsumen",["id_konsumen"=>$dataTransaksi->id_konsumen]);
+                $updateunit = $this->MApprove->updateData(["status_unit"=>"booking"],"unit_properti",["id_unit"=>$dataTransaksi->id_unit]);
+                $data['confirm'] = true;
+                $data['success'] = true;
             }
         }else {
-            // $query = $this->MApprove->updateData(["status"=>"selesai"],"pembayaran_transaksi",["id_pembayaran"=>$confirm]);
-            // Get uang muka type of pay
-            $status_result = $this->MApprove->getDataWhere("COUNT(id_pembayaran) as result","tbl_pembayaran",["id_transaksi"=>$getJenis->id_transaksi,"id_jenis"=>$getJenis->id_jenis,"status"=>"selesai"])->row_array();
-            $result_all = $this->MApprove->getDataWhere("COUNT(id_pembayaran) as result","tbl_pembayaran",["id_transaksi"=>$getJenis->id_transaksi,"id_jenis"=>$getJenis->id_jenis])->row_array();
+            $status_result = $this->MApprove->getDataWhere("COUNT(id_pembayaran) as result","tbl_pembayaran",["id_transaksi"=>$getData->id_transaksi,"id_jenis"=>$getData->id_jenis,"status"=>"selesai"])->row_array();
+            $result_all = $this->MApprove->getDataWhere("COUNT(id_pembayaran) as result","tbl_pembayaran",["id_transaksi"=>$getData->id_transaksi,"id_jenis"=>$getData->id_jenis])->row_array();
             if ($status_result["result"] == $result_all["result"]) {
-                if ($getJenis->id_jenis == 2) {
-                    $this->MApprove->updateData(["status_um"=>"lunas"],"transaksi_unit",["id_transaksi"=>$getJenis->id_transaksi]);
-                }else if($getJenis->id_jenis == 3){
-                    $this->MApprove->updateData(["status_cicilan"=>"lunas"],"transaksi_unit",["id_transaksi"=>$getJenis->id_transaksi]);
+                if ($getData->id_jenis == 2) {
+                    $this->MApprove->updateData(["status_um"=>"lunas"],"transaksi_unit",["id_transaksi"=>$getData->id_transaksi]);
+                }else if($getData->id_jenis == 3){
+                    $this->MApprove->updateData(["status_cicilan"=>"lunas"],"transaksi_unit",["id_transaksi"=>$getData->id_transaksi]);
                 }
             }
             $data['confirm'] = true;
             $data['success'] = true;
         }
         $this->output->set_output(json_encode($data));
+    }
+
+    public function reject()
+    {
+        $data = ["success"=>false];
+        $id = $this->input->get("params",true);
+        if (!empty($id)) {
+            $status="sementara";
+            $getData = $this->MApprove->getDataWhere("hutang,jumlah_bayar,total_bayar","pembayaran_transaksi",["id_pembayaran"=>$id])->row();
+            $hutang = (int) ($getData->hutang + $getData->jumlah_bayar);
+            $update = $this->MApprove->updateData(["hutang"=>$hutang,"jumlah_bayar"=>0,"status"=>$status],"pembayaran_transaksi",["id_pembayaran"=>$id]);
+            if ($update) {
+                $data["success"] = true;
+            }
+        }
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     public function data_approve()
     {
