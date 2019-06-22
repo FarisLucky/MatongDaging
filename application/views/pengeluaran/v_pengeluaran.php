@@ -46,7 +46,7 @@
                                             <td><?php echo $p->volume ?></td>
                                             <td><?php echo $p->satuan ?></td>
                                             <td><?php echo $p->harga_satuan ?></td>
-                                            <td><?php echo $p->tgl_buat ?></td>
+                                            <td><?php echo $p->created_at ?></td>
                                             <td><?php echo $p->bukti_kwitansi ?></td>
                                             <td>
                                             <a href="<?= base_url() .'pengeluaran/edit'?>/<?= $p->id_pengeluaran ?>" class="btn btn-primary">Edit</a>
