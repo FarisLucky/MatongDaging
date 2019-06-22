@@ -119,18 +119,20 @@ class KelolaUsers extends CI_Controller
         $this->load->model('Server_side', 'ssd');
         $column = "*";
         $tbl = "tbl_users";
-        $nama = "nama_lengkap";
+        $nama = "akses";
         $search = ['nama_lengkap', 'email', 'no_hp', 'status_user', 'akses'];
         $fetch_values = $this->ssd->makeDataTables($column, $tbl, $search, $nama);
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
             if ($value->akses != 'owner') {
+                $this->status = '<a href="' . base_url() . 'kelolausers/detailuser/' . $value->id_user . '" class="btn btn-sm btn-primary mx-2" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger" id="hapus_data_user" data-id="' . $value->id_user . '">Hapus</button>';
                 if ($value->status_user == 'aktif') {
-                    $this->status = '<a href="' . base_url() . 'kelolausers/detailuser/' . $value->id_user . '" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="' . $value->id_user . '">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="nonaktif_data_user" data-id="' . $value->id_user . '">Nonaktif</button>';
+                    $this->status .= '<button type="button" class="btn btn-sm btn-warning mx-2" id="nonaktif_data_user" data-id="' . $value->id_user . '">Nonaktif</button>';
                 } else {
-                    $this->status = '<a href="' . base_url() . 'kelolausers/detailuser/' . $value->id_user . '" class="btn btn-sm btn-primary mr-1" id="detail_data_user">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_user" data-id="' . $value->id_user . '">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="aktif_data_user" data-id="' . $value->id_user . '">Aktifkan</button>';
+                    $this->status .= '<button type="button" class="btn btn-sm btn-warning mx-2" id="aktif_data_user" data-id="' . $value->id_user . '">Aktifkan</button>';
                 }
+                $this->status .= '<button class="btn btn-sm btn-success btn-change" data-id="'.$value->id_user.'">Change Password</button>';
             } else {
                 $this->status = '-';
             }
@@ -216,6 +218,27 @@ class KelolaUsers extends CI_Controller
             $data['success'] = false;
         }
         return $this->output->set_output(json_encode($data));
+    }
+    public function changePassword()
+    {
+        $this->load->library('form_validation');
+        $data = ["success"=>false];
+        $this->form_validation->set_rules('pw_baru', 'Password Baru', 'trim|required');
+        $this->form_validation->set_rules('confirm_pw_baru', 'Confirm Password', 'trim|required|matches[pw_baru]');
+        if ($this->form_validation->run() == FALSE) {
+            foreach ($_POST as $key => $value) {
+                $data['msg'][$key] = form_error($key);
+            }
+        } else{
+            $id = $this->input->post('input_hidden',true);
+            $new_pass = $this->input->post("pw_baru",true);
+            $password = password_hash($new_pass, PASSWORD_DEFAULT);
+            $change = $this->Muser->updateData(["password"=>$password],"user",["id_user"=>$id]);
+            if ($change) {
+                $data["success"] = true;
+            }
+        }
+        return $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 }
 

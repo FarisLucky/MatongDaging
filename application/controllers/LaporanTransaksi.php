@@ -96,6 +96,7 @@ class LaporanTransaksi extends CI_Controller {
     {
         $this->load->helper('date');
         $id = $this->uri->segment(3);
+        $params4 = $this->uri->segment(4);
         $data["title"] = "Detail Transaksi";
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(22); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
@@ -107,6 +108,11 @@ class LaporanTransaksi extends CI_Controller {
                 $data["unit"] = $this->Mlaporan->getDataWhere("*","tbl_unit_properti",["id_unit"=>$data["transaksi"]->id_unit])->row();
                 $data["detail_transaksi"] = $this->Mlaporan->getDataWhere("*","detail_transaksi",["id_transaksi"=>$data["transaksi"]->id_transaksi])->result();
             }
+        }
+        if ($params4 == "un") {
+            $data["link"] = '<a href="'.base_url("laporantransaksi/listunlock") .'" class="btn mr-2 float-right d-block text-info"><i class="fa fa-arrow-left"></i>Kembali</a>';
+        }else{
+            $data["link"] = '<a href="'.base_url("laporantransaksi") .'" class="btn mr-2 float-right d-block text-info"><i class="fa fa-arrow-left"></i>Kembali</a>';
         }
         $this->pages("laporan/transaksi/view_detail",$data);
     }
@@ -120,6 +126,29 @@ class LaporanTransaksi extends CI_Controller {
             $data["success"] = true;
         }
         return $this->output->set_output(json_encode($data));
+    }
+
+    public function listUnlock()
+    {
+        $data['title'] = 'List Unlock Transaksi';
+        $data['menus'] = $this->rolemenu->getMenus();
+        $data['js'] = $this->rolemenu->getJavascript(22); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
+        $data['img'] = getCompanyLogo();
+        $data["transaksi"] = $this->Mlaporan->getDataWhere("*","tbl_transaksi",["kunci"=>"unlock","status_transaksi"=>"progress"])->result();
+        $this->pages("laporan/transaksi/view_list_unlock",$data);
+    }
+    public function hapus()
+    {
+        $data = ["success"=>false];
+        $id = $this->input->get('params',true);
+        if (!empty($id)) {
+            $transaksi = $this->Mlaporan->deleteData("transaksi_unit",["id_transaksi"=>$id]);
+            if ($transaksi) {
+                $this->Mlaporan->deleteData("pembayaran_transaksi",["id_transaksi"=>$id]);
+                $data["success"] = true; 
+            }
+        }
+        return $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     // This function is private. so , anyone cannot to access this function from web based
     private function pages($core_page,$data){

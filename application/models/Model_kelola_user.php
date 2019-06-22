@@ -6,6 +6,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Model_kelola_user extends CI_Model {
 
     private $table="user_assign_properti";
+
+    public function getWhere($select,$tbl,$where,$order=null,$order_by=null)
+    {
+        $this->db->select($select);
+        $this->db->where($where);
+        $this->db->from($tbl);
+        if ($order != null) {
+            $this->db->order_by($order, $order_by);
+        }
+        return $this->db->get();
+    }
+    public function updateData($data,$tbl,$where)
+    {
+        $this->db->update($tbl,$data, $where);
+        return $this->db->affected_rows();
+    }
     public function getUser()
     {
         return $this->db->query('select * from tbl_users')->result();

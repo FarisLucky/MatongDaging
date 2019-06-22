@@ -52,9 +52,12 @@
                                             <td><?= $value->tgl_transaksi ?></td>
                                             <td><div class="badge badge-primary"><?= $value->status_transaksi ?></div></td>
                                             <td>
-                                            <?php if ($value->kunci != "lock") { ?>
+                                            <?php if (($value->kunci != "lock") && ($value->status_transaksi == "sementara")) { ?>
                                                 <a href="<?= base_url() ?>transaksi/detail/<?= $value->id_transaksi ?>" class="btn btn-sm"><i class="fa fa-info" data-toggle="tooltip" data-placement="bottom" title="Detail"></i></a>
                                                 <a href="<?= base_url() ?>transaksi/delete/<?= $value->id_transaksi ?>" class="delete-transaksi"><i class="fa fa-trash text-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus"></i></a>
+                                                <a href="<?= base_url() ?>transaksi/edit/<?= $value->id_transaksi ?>" class="btn btn-sm"><i class="fa fa-pencil-square text-info" data-toggle="tooltip" data-placement="bottom" title="Edit"></i></a>
+                                            <?php } elseif (($value->kunci != "lock") && ($value->status_transaksi == "progress")) { ?>
+                                                <a href="<?= base_url() ?>transaksi/detail/<?= $value->id_transaksi ?>" class="btn btn-sm"><i class="fa fa-info" data-toggle="tooltip" data-placement="bottom" title="Detail"></i></a>
                                                 <a href="<?= base_url() ?>transaksi/edit/<?= $value->id_transaksi ?>" class="btn btn-sm"><i class="fa fa-pencil-square text-info" data-toggle="tooltip" data-placement="bottom" title="Edit"></i></a>
                                             <?php } else{ ?>
                                                 <a href="<?= base_url() ?>transaksi/detail/<?= $value->id_transaksi ?>" class="btn btn-sm"><i class="fa fa-info" data-toggle="tooltip" data-placement="bottom" title="Detail"></i></a>

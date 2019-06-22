@@ -1,4 +1,4 @@
-<div class="content-wrapper" id="detail_user_content">
+<div class="content-wrapper" id="tambah_user_content">
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
