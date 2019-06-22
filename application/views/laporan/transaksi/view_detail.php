@@ -15,7 +15,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-4 p-4">
-                                <a href="<?= base_url('laporantransaksi') ?>" id="btn_batal_properti" class="btn mr-2 float-right d-block text-info"><i class="fa fa-arrow-left"></i>Kembali</a>
+                                <?= $link ?>
                             </div>
                         </div>
                     </div>

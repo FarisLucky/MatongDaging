@@ -55,10 +55,18 @@
                         </div>
                     </div>
                     <hr>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table table-hover " id="tbl_transaksi_unit">
-                                    <thead>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5 class="d-inline">List Semua Transaksi Unit</h5>
+                            <a href="<?= base_url('laporantransaksi/listunlock') ?>" class="btn btn-warning float-right"><i class="fa fa-unlock"></i> List Unlock</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-hover table-bordered" id="tbl_transaksi_unit">
+                                <thead class="thead-light">
+                                    <tr>
                                         <th>PPJB</th>
                                         <th>Nama Konsumen</th>
                                         <th>Nama Rumah</th>
@@ -67,10 +75,11 @@
                                         <th>User Pembuat</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
-                                    </thead>
-                                </table>                                 
-                            </div>
+                                    </tr>
+                                </thead>
+                            </table>                                 
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

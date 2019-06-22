@@ -340,12 +340,14 @@
                                     </select>
                                 </div> 
                             </div>
+                            <?php if ($transaksi->id_type_bayar != 2) { ?>
                             <div class="col-sm-3 val_periode">
                                 <div class="form-group">
                                     <label for="periode_bayar">Periode Bayar(Bulan)</label>
                                     <input type="number" name="periode_bayar" class="form-control" id="periode_bayar" value="<?= $transaksi->bayar_periode ?>" required>
                                 </div>
                             </div>
+                            <?php } ?>
                             <div class="col-sm-3 val_periode">
                                 <div class="form-group">
                                     <label for="total_bayar_periode">Cicilan</label>

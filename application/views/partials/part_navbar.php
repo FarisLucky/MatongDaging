@@ -209,9 +209,9 @@
               <div class="bg-setting padding-setting">
                 <small class="text-setting">Pilih Setting</small>
               </div>
-              <a href="<?= base_url().'profiluser' ?>" class="dropdown-item mt-2">Manage Accounts
+              <a href="<?= base_url().'profileuser' ?>" class="dropdown-item mt-2">Manage Accounts
               </a>
-              <a href="<?= base_url().'profil/user' ?>" class="dropdown-item">Change Password
+              <a href="<?= base_url().'profileuser/authpassword' ?>" class="dropdown-item">Change Password
               </a>
               <a href="<?= base_url() ?>auth/logout" class="dropdown-item">Sign Out
               </a>

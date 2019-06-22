@@ -65,6 +65,21 @@ function swallSuccess(titles, texts, types, success) {
         }
     })
 }
+function showPass(selector,selector2) {
+    $(selector).click(function (e) {
+        if ($(this).is(":checked")) {
+            $(selector2).attr("type", "text");
+        } else {
+            $(selector2).attr("type", "password");
+        }
+    });
+}
+function inputPaste(selector){
+    $(selector).on("paste",function(e) {
+        e.preventDefault();
+        return false;
+    })
+}
 $(document).ready(function () {
     const user = $('#tbl_users').DataTable({
         "processing": true,
@@ -122,11 +137,6 @@ $(document).ready(function () {
 
     $("#detail_user_content #form_user_properti").submit(function (e) {
         e.preventDefault();
-        // if (!$("#properti").is(':checked')) {
-        //     toastr.remove();
-        //     notifToastr("error", "Pilih Perumahan");
-        //     return;
-        // }
         let form = $(this).serialize();
         let ajax = [$(this).attr("action"), "post"];
         console.log(form);
@@ -175,7 +185,6 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (success) {
-                console.log(success);
                 if (success.success === true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid')
                         .next().remove();
@@ -201,6 +210,40 @@ $(document).ready(function () {
         });
     });
 
+    $("table#tbl_users").on("click", ".btn-change", function (e) {
+        e.preventDefault();
+        let params = $(this).attr("data-id");
+        $("#modal_kelola input[name='input_hidden']").val(params);
+        $("#modal_kelola").modal("show");
+    });
+
+    $("#modal_kelola #form_change").submit(function (e) {
+        e.preventDefault();
+        let form = $(this).serialize();
+        $.ajax({
+            type: "post",
+            url: "kelolausers/changepassword",
+            data: form,
+            dataType: "JSON",
+            success: function (success) {
+                if (success.success === true) {
+                    swallSuccess("Berhasil", "Data Disimpan", "success", function () {
+                        location.reload();
+                    });
+                }else {
+                    toastr.remove();
+                    $.each(success.msg, function (key, val) {
+                        if (val != "") {
+                            notifToastr("error",val);
+                        }
+                            return;
+                    });
+                }
+            }
+        });
+    });
+
+    // Profile User
     $("#show_pw").click(function (e) {
         if ($(this).is(":checked")) {
             $("#txt_password_user").attr("type", "text");
@@ -208,12 +251,57 @@ $(document).ready(function () {
             $("#txt_password_user").attr("type", "password");
         }
     });
-    $("#show_pw2").click(function (e) {
-        if ($(this).is(":checked")) {
-            $("#txt_retype_password").attr("type", "text");
-        } else {
-            $("#txt_retype_password").attr("type", "password");
-        }
+
+    $("#view_password #form_password").submit(function (e) {
+        e.preventDefault();
+        let form = $(this).serialize();
+        $.ajax({
+            type: "post",
+            url: "corepassword",
+            data: form,
+            dataType: "JSON",
+            success: function (success) {
+                if (success.success === true) {
+                    swallSuccess("Berhasil", "Data Disimpan", "success", function () {
+                        swallSuccess("Warning", "Anda Harus Login Lagi !", "info", function () {
+                            location.reload();
+                        });
+                    });
+                }else if(success.error){
+                    toastr.remove();
+                    notifToastr("warning",success.error);
+                    return;
+                } 
+                else {
+                    toastr.remove();
+                    $.each(success.msg, function (key, val) {
+                        if (val != "") {
+                            notifToastr("error",val);
+                        }
+                            return;
+                    });
+                }
+            }
+        });
     });
 
+    // Form Profile User
+    // Tampilkan Password
+    showPass("#view_password input[name='show_pw1']","#view_password input[name='pass_baru']");
+    showPass("#view_password input[name='show_pw2']","#view_password input[name='pass_lama']");
+    showPass("#view_password input[name='show_pw3']","#view_password input[name='confirm_pass_baru']");
+    // Tidak bisa paste form
+    inputPaste("#view_password input[name='pass_baru']");
+    inputPaste("#view_password input[name='confirm_pass_baru']");
+    inputPaste("#view_password input[name='pass_lama']");
+    // End Profile User
+    
+    // Form Kelola User
+    // Tampil Password
+    showPass("#modal_kelola input[name='tampil_pw1']","#modal_kelola input[name='pw_baru']");
+    showPass("#modal_kelola input[name='tampil_pw2']","#modal_kelola input[name='confirm_pw_baru']");
+    // Tidak bisa paste di form
+    inputPaste("#modal_kelola input[name='pw_baru']");
+    inputPaste("#modal_kelola input[name='confirm_pw_baru']");
+    // End Form Kelola User
 });

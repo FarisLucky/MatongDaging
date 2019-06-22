@@ -63,7 +63,7 @@ function swallSuccess(titles, texts, types, success) {
 }
 $(document).ready(function () {
     let base = $("body").attr("data-base");
-    $("#tbl_laporan_unit,#tbl_detail_kontrol").DataTable({
+    $("#tbl_laporan_unit,#tbl_detail_kontrol,#tbl_unlock_transaksi").DataTable({
         "responsive":true
     });
     const calon_konsumen =  $('#tbl_laporan_calon').DataTable ({
@@ -248,6 +248,20 @@ $(document).ready(function () {
             $("input[name = 'input_hidden']").val(params);
             $("#modal_laporan_unit").modal("show");
         });
+    });
+    $("#tbl_unlock_transaksi").on("click",".btn-hapus", function (e) {
+        e.preventDefault();
+        let params = $(this).attr("data-id");
+        let array = ["GET","hapus"];
+        swallQuestion("Hapus","Apakah ingin dihapus ?","question","Hapus",function(){
+            setAjax(array,{params},function (params) {
+                if (params.success == true) {
+                    swallSuccess("Berhasil","Data disimpan","success",function () {
+                        location.reload();
+                    })
+                }
+            })
+        })
     });
     // End Js for unit transaksi
     // Js For Konsumen Report

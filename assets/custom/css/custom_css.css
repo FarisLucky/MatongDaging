@@ -188,7 +188,7 @@ table img{
 }
 #sidebar .profile-icon img{
     max-width: 80px;
-    border-radius: 20%;
+    border-radius: 10%;
 }
 .modal-lg{
     width: 65%;

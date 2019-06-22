@@ -135,6 +135,9 @@ class Transaksi extends CI_Controller {
             }
         }else{
             $input = $this->input();
+            $angsuran = $this->input->post('txt_angsuran',true);
+            $tanda_jadi = $this->input->post('txt_tanda_jadi',true);
+            $type = $this->input->post('txt_type_pembayaran',true);
             if ($input['type_pembayaran'] == 2) {
                 $input['periode_bayar'] = 1;
                 $input['total_bayar_periode'] = str_replace('.','',$this->input->post('txt_ttl_akhir'));
@@ -162,8 +165,7 @@ class Transaksi extends CI_Controller {
                     $data['hello'] = "tidak masuk";
                 }
                 // Uang Muka Angsuran 
-                if (!empty($this->input->post('txt_angsuran'))) {
-                    $angsuran = $this->input->post('txt_angsuran');
+                if (!empty($angsuran)) {
                     $data_angsuran = [];
                     $no= 1;
                     foreach ($angsuran as $key => $value) {
@@ -185,8 +187,7 @@ class Transaksi extends CI_Controller {
                 }
 
                 // Uang Tanda Jadi 
-                if (!empty($this->input->post('txt_tanda_jadi'))) {
-                    $t_jd = $this->input->post('txt_tanda_jadi');
+                if (!empty($tanda_jadi)) {
                     $data_tj = [];
                     $unit = $this->Mtransaksi->getNameUnit($this->input->post('select_unit'));
                     $nama_unit = $unit->nama_unit;
@@ -204,8 +205,7 @@ class Transaksi extends CI_Controller {
                 }
 
                 //  Periode pembayaran
-                if (!empty($this->input->post('txt_type_pembayaran'))) {
-                    $type = $this->input->post('txt_type_pembayaran');
+                if (!empty($type)) {
                     if ($type == 1 || $type == 3) {
                         $data_pembayaran = [];
                         $periode = $this->input->post('periode_bayar');
@@ -244,7 +244,6 @@ class Transaksi extends CI_Controller {
                             $data_pembayaran['id_type_bayar'] = $this->input->post('txt_type_pembayaran');
                             $data_pembayaran['id_jenis'] = 3;
                             $this->Mtransaksi->insertPembayaranTransaksi($data_pembayaran);
-                            $no++;
                         }
                     }
                     $data['success'] = true;
@@ -268,6 +267,9 @@ class Transaksi extends CI_Controller {
             }
         }else{
             $input = $this->input();
+            $angsuran = $this->input->post('txt_angsuran',true);
+            $tanda_jadi = $this->input->post('txt_tanda_jadi',true);
+            $type = $this->input->post('txt_type_pembayaran',true);
             if ($input['type_pembayaran'] == 2) {
                 $input['periode_bayar'] = 1;
                 $input['total_bayar_periode'] = str_replace('.','',$this->input->post('txt_ttl_akhir'));
@@ -275,7 +277,7 @@ class Transaksi extends CI_Controller {
             $id = $this->input->post('transaksi_id',true);
             $query = $this->Mtransaksi->ubahTransaksi($input,$id);
             if ($query) {
-                $detail = [$this->input->post('txt_nama_tambah'),$this->input->post('txt_volume_tambah'),$this->input->post('txt_satuan_tambah'),$this->input->post('txt_harga_tambah')];
+                $detail = [$this->input->post('txt_nama_tambah',true),$this->input->post('txt_volume_tambah',true),$this->input->post('txt_satuan_tambah',true),$this->input->post('txt_harga_tambah',true)];
                 $data['detail'] = $this->reArray($detail);
                 $this->Mtransaksi->deleteData('detail_transaksi',['id_transaksi'=>$id]);
                 $this->Mtransaksi->deleteData('pembayaran_transaksi',['id_transaksi'=>$id,]);
@@ -296,7 +298,7 @@ class Transaksi extends CI_Controller {
                     $data['success'] = true;
                 }
                 // Uang Muka Angsuran 
-                if (!empty($this->input->post('txt_angsuran'))) {
+                if (!empty($angsuran)) {
                     $angsuran = $this->input->post('txt_angsuran');
                     $data_angsuran = [];
                     $no= 1;
@@ -319,7 +321,7 @@ class Transaksi extends CI_Controller {
                 }
 
                 // Uang Tanda Jadi 
-                if (!empty($this->input->post('txt_tanda_jadi'))) {
+                if (!empty($tanda_jadi)) {
                     $t_jd = $this->input->post('txt_tanda_jadi');
                     $data_tj = [];
                     $unit = $this->Mtransaksi->getNameUnit($this->input->post('select_unit'));
@@ -338,7 +340,7 @@ class Transaksi extends CI_Controller {
                 }
 
                 //  Periode pembayaran
-                if (!empty($this->input->post('txt_type_pembayaran'))) {
+                if (!empty($type)) {
                     $type = $this->input->post('txt_type_pembayaran');
                     if ($type == 1 || $type == 3) {
                         $data_pembayaran = [];
