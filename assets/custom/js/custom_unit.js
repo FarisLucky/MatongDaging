@@ -11,6 +11,15 @@ function swallSuccess(titles, texts, types, success) {
         }
     })
 }
+function readURL(input,selector) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(selector).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 $(document).ready(function () {
     // Datatable Unit
     const unit = $('#tbl_unit').DataTable ({
@@ -30,6 +39,14 @@ $(document).ready(function () {
         "bDestroy": true
     });
 
+    $("#form_tambah_unit input[name='foto']").change(function (e) {
+        e.preventDefault();
+        readURL(this,"#tambah_unit img#foto_unit");
+    });
+    $(document).on("change","#detail_unit input[name='foto']",function (e) {
+        e.preventDefault();
+        readURL(this,"#detail_unit img#foto_unit");
+    });
     $("#btn_ubah_unit").click(function (e) {
         e.preventDefault();
         $("#form_detail_unit input[name='txt_nama']").attr('disabled', false);
@@ -86,7 +103,6 @@ $(document).ready(function () {
         let urls = $(this).attr("action");
         let types = "post";
         let datas = new FormData($(this)[0]);
-        // console.log(urls);   
         $.ajax({
             type: types,
             url: urls,

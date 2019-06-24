@@ -51,7 +51,7 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <a href="<?= base_url().'laporanunit/print' ?>" class="ml-3  mb-3 print"><i class="fa fa-print text-info"> Print</i></a>
+                    <a href="<?= base_url().'laporanunit/printunit' ?>" class="btn btn-warning ml-3  mb-3 print"><i class="fa fa-print"> Print</i></a>
                     <div class="col-sm-12">
                         <table id="tbl_laporan_unit" class="table">
                             <thead>

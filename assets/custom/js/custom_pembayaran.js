@@ -66,6 +66,9 @@ $(document).ready(function () {
     $("#modal_tanda_jadi input[name='upload']").change(function () {
         readURL(this,"#modal_tanda_jadi img");
     });
+    $("#view_surat_kpr input[name='upload_sp3k']").change(function () {
+        readURL(this,"#view_surat_kpr #foto_sp3k");
+    });
     $("#modal_uang_muka input[name='upload']").change(function () {
         readURL(this,"#modal_uang_muka img");
     });

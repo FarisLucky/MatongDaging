@@ -193,6 +193,9 @@ table img{
 .modal-lg{
     width: 65%;
 }
+#unit_properti .form-check.form-check-flat label input:disabled:checked + .input-helper:before{
+    background-color: #00ce68;
+}
 /* table.dataTable tbody td {
     width: 100%;
     white-space: pre-wrap;

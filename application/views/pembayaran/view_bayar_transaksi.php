@@ -93,10 +93,10 @@
                                             <?php $no = 1; foreach ($data_transaksi as $key => $value) :
                                                 if (($value->status == "belum bayar") && ($value->total_bayar == 0)) {
                                                     $badge = "badge-danger";
-                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_cicilan" data-id="'.$value->id_pembayaran.'">Bayar</button>';
+                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_cicilan" data-id="'.$value->id_pembayaran.'"><i class="fa fa-money"></i> Bayar</button>';
                                                 }else if (($value->status == "belum bayar") && ($value->total_bayar != 0)) {
                                                     $badge = "badge-danger";
-                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_cicilan" data-id="'.$value->id_pembayaran.'">Bayar</button><a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</a>';
+                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_cicilan" data-id="'.$value->id_pembayaran.'"><i class="fa fa-money"></i>Bayar</button><a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</a>';
                                                 }
                                                 else if($value->status == "sementara"){
                                                     $badge = "badge-warning";
@@ -108,7 +108,7 @@
                                                 }
                                                 else{
                                                     $badge = "badge-success";
-                                                    $button = '<button type="button" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</button>';
+                                                    $button = '<button type="button" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'"><i class="fa fa-print"></i>Cetak</button>';
                                                 }?>
                                             <tr>
                                                 <td><?= $no ?></td>

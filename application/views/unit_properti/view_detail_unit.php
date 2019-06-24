@@ -6,7 +6,7 @@
                     <div class="card-body p-4">
                         <div class="row">
                             <div class="col-sm-12">
-                                <h4 class="dark txt_title d-inline-block mt-2">Kelola Unit</h4>
+                                <h4 class="dark txt_title d-inline-block mt-2">Site Plan</h4>
                                 <img id="logo_perusahaan" width="50px" src="<?= base_url().'assets/uploads/images/properti/'.$img->logo_perusahaan ?>" class="float-right" alt="">
                             </div>
                         </div>
@@ -22,7 +22,7 @@
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block mr-4">Detail Unit Properti</h5>
                                 <small class="badge badge-info"><?= $unit->status_unit ?></small>
-                                <a href="<?= base_url() ?>unitproperti" class="btn btn-dark float-right">Kembali</a>
+                                <a href="<?= base_url() ?>unitproperti" class="btn btn-dark float-right"><i class="fa fa-arrow-circle-left"></i>Kembali</a>
                             </div>
                         </div>
                         <hr>
@@ -62,7 +62,7 @@
                                         </div> 
                                         <div class="form-group">
                                             <label for="txt_foto" class="d-flex">Foto Properti</label>
-                                            <img src="<?= base_url() ?>assets/uploads/images/unit_properti/<?= $unit->foto_unit ?>" alt="" id="foto_unit" class="img-thumbnail" width="200px">
+                                            <img src="<?= base_url() ?>assets/uploads/images/unit_properti/<?= $unit->foto_unit ?>" alt="" id="foto_unit" class="img-thumbnail" style="max-width:500px">
                                         </div>
                                     </div>
                                 </div>                                

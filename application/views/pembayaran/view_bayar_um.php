@@ -72,7 +72,6 @@
                                             <th>Tagihan</th>
                                             <th>Bayar</th>
                                             <th>Total Bayar</th>
-                                            <th>Tagihan</th>
                                             <th>Hutang</th>
                                             <th>Status</th>
                                             <th>Tempo</th>

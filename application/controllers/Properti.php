@@ -55,7 +55,6 @@ class Properti extends CI_Controller {
             $sub[] = $value->luas_tanah;
             $sub[] = $value->rekening;
             $sub[] = '<img id="foto_properti" width="70px" src="'.base_url().'assets/uploads/images/properti/'.$value->foto_properti.'" class="" alt="">';
-            $sub[] = $value->alamat;
             $sub[] = $this->status;
             $data[] = $sub;
             $no++;

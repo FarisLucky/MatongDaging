@@ -62,7 +62,7 @@ class LaporanUnit extends CI_Controller {
         }
         $this->pages("laporan/view_unit",$data);
     }
-    public function print()
+    public function printUnit()
     {
         $this->load->library('Pdf');
         $session = $this->session->userdata('id_properti');
