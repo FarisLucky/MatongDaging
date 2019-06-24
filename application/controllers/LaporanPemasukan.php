@@ -22,25 +22,7 @@ class LaporanPemasukan extends CI_Controller {
 
     public function data() //Fungsi Untuk Load Datatable
     {
-        if (isset($_POST["id_kelompok"]) || isset($_POST["tgl_mulai"]) || isset($_POST["tgl_akhir"])) {
-            $where = "";
-            if (!empty($_POST["id_kelompok"])) {
-                $where .= "id_kelompok = '".$this->db->escape_str($_POST['id_kelompok'])."' and ";
-            }
-            if ((!empty($_POST["tgl_mulai"])) && (empty($_POST["tgl_akhir"]))) {
-                $where .= "created_at >= '".$this->db->escape_str($_POST['tgl_mulai'])."' and ";
-            }
-            else if ((!empty($_POST["tgl_akhir"])) && (empty($_POST["tgl_mulai"]))) {
-                $where .= "created_at <= '".$this->db->escape_str($_POST['tgl_akhir'])."' and ";
-            }
-            else if((!empty($_POST['tgl_mulai'])) && (!empty($_POST['tgl_akhir']))){
-                $where .= "created_at BETWEEN '".$this->db->escape_str($_POST['tgl_mulai'])."' and '".$this->db->escape_str($_POST['tgl_akhir'])."' and ";
-            }
-            $where .= "id_properti = '".$this->session->userdata("id_properti")."'";
-        }
-        else{
-            $where = "id_properti = '".$this->session->userdata("id_properti")."'";
-        }
+        $where = $this->whereData();
         $this->load->model('Server_side','ssd');
         $column = "*";
         $tbl = "tbl_pemasukan";
@@ -99,6 +81,20 @@ class LaporanPemasukan extends CI_Controller {
         }
         return $this->output->set_output(json_encode($data));
     }
+    public function printAll()
+    {
+        $this->load->library('Pdf');
+        $where = $this->whereData();
+        $data['pemasukan'] = $this->Mlaporan->getDataWhere("*","tbl_pemasukan",$where)->result();
+        $this->pdf->load_view('Semua Pemasukan','print/print_pemasukan',$data);
+    }
+    public function printSpesific($id_pemasukan)
+    {
+        $this->load->library('Pdf');
+        $where = ["id_pemasukan"=>$id_pemasukan];
+        $data['pemasukan'] = $this->Mlaporan->getDataWhere("*","tbl_pemasukan",$where)->result();
+        $this->pdf->load_view('Spesific Pemasukan','print/print_spesifikasi_pemasukan',$data);
+    }
     // This function is private. so , anyone cannot to access this function from web based
     private function pages($core_page,$data){
         $this->load->view('partials/part_navbar',$data);
@@ -106,7 +102,35 @@ class LaporanPemasukan extends CI_Controller {
         $this->load->view($core_page,$data);
         $this->load->view('partials/part_footer',$data);
     }
-
+    private function whereData()
+    {
+        $where = [];
+        $session = $this->session->userdata("id_akses");
+        if (isset($_POST["id_kelompok"]) || isset($_POST["tgl_mulai"]) || isset($_POST["tgl_akhir"])) {
+            $id_kelompok = $this->input->post('id_kelompok',true);
+            $tgl_mulai = $this->input->post('tgl_mulai',true);
+            $tgl_akhir = $this->input->post('tgl_akhir',true);
+            if (!empty($id_kelompok)) {
+                $where += ["id_kelompok"=>$id_kelompok];
+            }
+            if ((!empty($tgl_mulai)) && (empty($tgl_akhir))) {
+                $where += ["created_at >="=>$tgl_mulai]; 
+                // "created_at >= '".$this->db->escape_str($_POST['tgl_mulai'])."' and ";
+            }
+            else if ((!empty($tgl_akhir)) && (empty($tgl_mulai))) {
+                $where += ["created_at <="=>$tgl_akhir]; 
+                // "created_at <= '".$this->db->escape_str($_POST['tgl_akhir'])."' and ";
+            }
+            else if((!empty($tgl_mulai)) && (!empty($tgl_akhir))){
+                $where += ["created_at >="=>$tgl_mulai,"created_at <="=>$tgl_akhir]; 
+                // "created_at BETWEEN '".$this->db->escape_str($_POST['tgl_mulai'])."' and '".$this->db->escape_str($_POST['tgl_akhir'])."' and ";
+            }
+        }
+        if ($session != 1) {
+            $where += ["id_properti"=>$this->session->userdata('id_properti')];
+        }
+        return $where;
+    }
 }
 
 /* End of file Laporan_Keuangan.php */
