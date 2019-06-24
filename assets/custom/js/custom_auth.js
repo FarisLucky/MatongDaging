@@ -11,6 +11,12 @@ function swallSuccess(titles, texts, types, success) {
         }
     })
 }
+function inputPaste(selector){
+    $(selector).on("paste",function(e) {
+        e.preventDefault();
+        return false;
+    })
+}
 $(document).ready(function () {
     $("#form_login").submit(function (e) {
         e.preventDefault();
@@ -60,4 +66,5 @@ $(document).ready(function () {
             }
         });
     });
+    inputPaste("input[name='auth_pass']");
 });

@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block">Detail Properti</h5>
-                                <a href="<?= base_url() ?>properti" class="btn btn-dark mr-2 float-right">Kembali</a>
+                                <a href="<?= base_url() ?>properti" class="btn btn-dark mr-2 float-right"><i class="fa fa-arrow-circle-left"></i>Kembali</a>
                             </div>
                         </div>
                         <hr>
@@ -65,11 +65,11 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="txt_logo" class="d-flex">logo Properti</label>
-                                                <img id="logo_properti" width="150px" src="<?= base_url().'assets/uploads/images/properti/'.$properti->logo_properti ?>" alt="" >
+                                                <img id="logo_properti" width="180px" src="<?= base_url().'assets/uploads/images/properti/'.$properti->logo_properti ?>" alt="" >
                                             </div>
                                             <div class="form-group">
                                                 <label for="txt_foto" class="d-flex">Foto Properti</label>
-                                                <img id="foto_properti" width="150px" src="<?= base_url().'assets/uploads/images/properti/'.$properti->foto_properti ?>" alt="" >
+                                                <img id="foto_properti" src="<?= base_url().'assets/uploads/images/properti/'.$properti->foto_properti ?>" style="max-width:100%;max-height:350px" >
                                             </div>
                                         </div>
                                     </div>                                

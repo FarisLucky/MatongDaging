@@ -11,6 +11,15 @@ function swallSuccess(titles, texts, types, success) {
         }
     })
 }
+function readURL(input,selector) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(selector).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 $(document).ready(function () {
     // Datatable Unit
     const unit = $('#tbl_unit').DataTable({
@@ -153,5 +162,8 @@ $(document).ready(function () {
             }
         })
     });
-
+    $("#form_tambah_unit input[name='foto']").change(function (e) {
+        e.preventDefault();
+        readURL(this,"#tambah_unit img#foto_unit");
+    });
 });

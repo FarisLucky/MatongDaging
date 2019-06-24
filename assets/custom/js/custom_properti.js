@@ -32,6 +32,15 @@ function swallSuccess(titles, texts, types, success) {
     })
 }
 
+function readURL(input,selector) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(selector).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 function notifToastr(types, text) {
     toastr[types](text);
     toastr.options = {
@@ -67,6 +76,12 @@ $(document).ready(function () {
             "orderable": false,
             "targets": '_all'
         }],
+    });
+
+    
+    $(document).on("change","#detail_property #txt_foto",function (e) {
+        e.preventDefault();
+        readURL(this,"#detail_property img#foto_properti");
     });
 
     $("#btn_ubah_properti").click(function (e) {

@@ -124,7 +124,7 @@ class Auth extends CI_Controller {
                     $array = [];
                     $array['id'] = $properti->id_properti;
                     $array['nama'] = $properti->nama_properti;
-                    $array['foto'] = $properti->foto_properti;
+                    $array['foto'] = $properti->logo_properti;
                     $query_result[] = $array;
                 }
             }else{

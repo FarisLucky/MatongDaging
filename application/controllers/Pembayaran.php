@@ -162,10 +162,14 @@ class Pembayaran extends CI_Controller {
         foreach ($fetch_values as $value) {
             if ($value->status_cicilan == "belum lunas") {
                 $badge = "badge-danger";
-                $button = '<a href="'.base_url()."pembayaran/transaksi/bayar/".$value->id_transaksi.'" class="btn btn-sm btn-primary mr-1 bayar_tj" >Bayar</button>';
-            }else{
-                $badge="badge-success";
-                $button = '<a href="'.base_url()."pembayaran/transaksi/bayar/".$value->id_transaksi.'" class="btn btn-sm btn-success mr-1 bayar_tj" >Lihat</button>';
+                $button = '<a href="'.base_url()."pembayaran/transaksi/bayar/".$value->id_transaksi.'" class="btn btn-sm btn-primary mr-1 bayar_tj" ><i class="fa fa-money"></i> Bayar</button>';
+            }
+            else{
+                $badge = "badge-success";
+                $button = '<a href="'.base_url()."pembayaran/transaksi/bayar/".$value->id_transaksi.'" class="btn btn-sm btn-success mr-1 bayar_tj" ><i class="fa fa-eye"></i> Lihat</button>';
+            }
+            if ($value->id_type_bayar == 3) {
+                $button .= "<a href='".base_url('pembayaran/suratkpr/'.$value->id_transaksi)."' class='btn btn-info mx-2'><i class='fa fa-book'></i> Sp3k</a>";
             }
             $sub = array();
             $sub[] = $value->nama_lengkap;
@@ -386,6 +390,15 @@ class Pembayaran extends CI_Controller {
             $data["success"] = true;
         }
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+    
+    public function suratKpr()
+    {
+        $data['title'] = "Surat SP3K";
+        $data['menus'] = $this->rolemenu->getMenus();
+        $data['js'] = $this->rolemenu->getJavascript(7); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
+        $data['img'] = getCompanyLogo();
+        $this->pages("pembayaran/view_surat_kpr",$data);
     }
     // This function is private. so , anyone cannot to access this function from web based *Private*
     private function pages($core_page,$data){

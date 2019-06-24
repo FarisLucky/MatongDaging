@@ -17,6 +17,8 @@ class UnitProperti extends CI_Controller {
         $data['title'] = 'Unit Properti';
         $data['js'] = $this->rolemenu->getJavascript(6); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
         $data['img'] = getCompanyLogo();
+        $data["site_plan"] = $this->Munit->getData("foto_properti","properti",["id_properti"=>$_SESSION["id_properti"]])->row_array();
+        $data["list_unit"] = $this->Munit->getData("nama_unit,status_unit","unit_properti",["id_properti"=>$_SESSION["id_properti"]])->result();
         $this->pages("unit_properti/view_unit",$data);
     }
 
@@ -65,7 +67,7 @@ class UnitProperti extends CI_Controller {
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(6); //Jangan DIUbah !!
         $data['img'] = getCompanyLogo();
-        $this->pages("unitproperti/view_tambah_unit",$data); 
+        $this->pages("unit_properti/view_tambah_unit",$data); 
     }
     public function detail_unit($id) //Menampilkan Form Tambah
     {
@@ -74,7 +76,7 @@ class UnitProperti extends CI_Controller {
         $data['js'] = $this->rolemenu->getJavascript(6); //Jangan DIUbah !!
         $data['img'] = getCompanyLogo();
         $data['unit'] = $this->Munit->getUnitWithId($id);
-        $this->pages("unitproperti/view_detail_unit",$data); 
+        $this->pages("unit_properti/view_detail_unit",$data); 
     }
 
     public function core_tambah_unit() //Unit Core Tambah

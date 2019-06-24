@@ -34,7 +34,6 @@
                                         <th>Luas Tanah</th>
                                         <th>Bank</th>
                                         <th>Foto</th>
-                                        <th>Alamat</th>
                                         <th>Aksi</th>
                                     </thead>
                                 </table>                                 
