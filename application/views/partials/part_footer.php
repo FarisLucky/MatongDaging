@@ -34,7 +34,7 @@
 <!-- Toastr -->
 <script src="<?= base_url() ?>assets/custom/toastr/toastr.min.js"></script>
 <!-- CKEditor -->
-<script src="<?= base_url() ?>assets/custom/ckeditor/ckeditor.js"></script>
+<script src="<?= base_url() ?>assets/library/ckeditor/ckeditor.js"></script>
 <script src="<?= base_url() ?>assets/custom/select2/js/select2.full.min.js"></script>
 <!-- endinject -->
 <!-- End custom js for this page-->

@@ -178,7 +178,7 @@ class KelolaUsers extends CI_Controller
         $data['menus'] = $this->rolemenu->getMenus(null,$active);
         $data['js'] = $this->rolemenu->getJavascript(4); //Jangan DIUbah !!
         $data['users'] = $this->Muser->getUserWhereId($id);
-        $data['properti'] = $this->Muser->getProperti($id);
+        $data['properti'] = $this->Muser->getDataWhere("id_properti,nama_properti,foto_properti","tbl_properti",["status"=>"publish"])->result();
         $data['img'] = getCompanyLogo();
         $this->load->view('partials/part_navbar', $data);
         $this->load->view('partials/part_sidebar', $data);

@@ -30,6 +30,7 @@ function swallQuestion(titles, texts, types, confirm, success) {
 }
 
 $(document).ready(function () {
+    $(".overlay").remove();
     const js = $("#tbl_pemasukan").DataTable({
         responsive:true
     })

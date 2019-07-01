@@ -1,6 +1,7 @@
 (function ($) {
   'use strict';
   $(function () {
+    $(".overlay").remove();
     if ($('#dashboard-area-chart').length) {
       var lineChartCanvas = $("#dashboard-area-chart").get(0).getContext("2d");
       var data = {

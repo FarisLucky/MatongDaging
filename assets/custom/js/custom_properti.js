@@ -63,6 +63,7 @@ function notifToastr(types, text) {
 }
 
 $(document).ready(function () {
+    $(".overlay").remove();
     const properti = $('#tbl_properti').DataTable({
         "processing": true,
         "responsive": true,
@@ -83,6 +84,18 @@ $(document).ready(function () {
         e.preventDefault();
         readURL(this,"#detail_property img#foto_properti");
     });
+    $(document).on("change","#detail_property #txt_logo",function (e) {
+        e.preventDefault();
+        readURL(this,"#detail_property img#logo_properti");
+    });
+    $(document).on("change","#tambah_property #txt_foto",function (e) {
+        e.preventDefault();
+        readURL(this,"#tambah_property img#foto_properti");
+    });
+    $(document).on("change","#tambah_property #txt_logo",function (e) {
+        e.preventDefault();
+        readURL(this,"#tambah_property img#logo_properti");
+    });
 
     $("#btn_ubah_properti").click(function (e) {
         e.preventDefault();
@@ -102,8 +115,8 @@ $(document).ready(function () {
     $("#form_detail").on("submit", function (e) {
         e.preventDefault();
         let form = new FormData($(this)[0]);
-        let url = $(this).attr('action');
-        // console.log(form);
+        let base = $("body").attr("data-base");
+        let url = base+"properti/update";
         $.ajax({
             type: "post",
             url: url,
@@ -279,4 +292,12 @@ $(document).ready(function () {
             }
         });
     })
+    let view = $("#tambah_property");
+    let view_detail = $("#detail_property");
+    if (view.length != 0) {
+        CKEDITOR.replace("txt_spr");
+    }
+    if (view_detail.length != 0) {
+        CKEDITOR.replace("txt_edit_spr");
+    }
 });

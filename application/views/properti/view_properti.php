@@ -57,17 +57,19 @@
       </div>
       <div class="modal-body">
         <div class="row">
-            <div class="col-sm-12">
                 <form action="<?= base_url() ?>properti/rab_properti" id="form_modal">
+                <div class="col-sm-12">
                     <div class="form-group name">
                         <label for="">Nama RAB</label>
                         <input type="text" class="form-control" name="txt_name">
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <button type="button" class="btn btn-success">Tambah</button>
                     </div>
+                </div>
                 </form>
-            </div>
         </div>
       </div>
     </div>

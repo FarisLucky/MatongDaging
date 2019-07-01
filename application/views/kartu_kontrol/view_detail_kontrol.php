@@ -102,14 +102,14 @@
                                     <tbody>
                                         <?php $no = 1; foreach ($detail_kontrol as $key => $value) :?>
                                         <tr>
-                                            <td><?= $no ?></td>
+                                        <td><?= $no ?></td>
                                             <td><?= $value->nama_pembayaran ?></td>
                                             <td><?= $value->jenis_pembayaran ?></td>
                                             <td><?= number_format($value->total_tagihan,2,',','.') ?></td>
-                                            <td><?= number_format($value->jumlah_bayar,2,',','.') ?></td>
+                                            <td><?= number_format($value->total_bayar,2,',','.') ?></td>
                                             <td><span class="badge <?php $sts = $value->status; if($sts == 'belum bayar') { $cs='badge-dark';} elseif ($sts == 'pending') { $cs = 'badge-danger'; }else{ $cs = 'badge-success';} echo $cs; ?>"><?= $sts ?></span></td>
                                             <td><?= number_format($value->hutang,2,',','.') ?></td>
-                                            <td><img src="<?= base_url() ?>assets/uploads/images/pembayaran/uang_muka/<?= $value->bukti_bayar ?>" class="img-circle img-responsive" alt=""></td>
+                                            <td><img src="<?= base_url("assets/uploads/images/pembayaran/uang_muka/".$value->bukti_bayar) ?>" class="img-circle img-responsive" alt=""></td>
                                             </td>
                                             <td><button type="button" class="btn btn-sm btn-primary btn-detail" data-id="<?= $value->id_pembayaran ?>">Detail</a>
                                         </tr>

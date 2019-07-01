@@ -11,22 +11,19 @@ class Model_properti extends CI_Model {
         return $this->db->get_where("tbl_properti",['id_properti'=>$val])->row();
     }
 
-    public function updateDataProperti($params)
+    public function getDataWhere($select,$tbl,$where,$column_order = null,$type_order = null)
     {
-        if (($params['logo'] != "") && ($params['foto'] != "")) {
-            $data = ['nama_properti'=>$params['nama'],'alamat'=>$params['alamat'],'luas_tanah'=>$params['luas'],'jumlah_unit'=>$params['jumlah'],'rekening'=>$params['rekening'],'tgl_buat'=>date('Y-m-d'),'status'=>$params['status'],"foto_properti"=>$params['foto'],"logo_properti"=>$params['logo'],"setting_spr"=>$params['spr']];
+        $this->db->select($select);
+        $this->db->where($where);
+        if (($column_order != null) && ($type_order != null)) {
+            $this->db->order_by($column_order, $type_order);
         }
-        elseif ($params['logo'] != "") {
-            $data = ['nama_properti'=>$params['nama'],'alamat'=>$params['alamat'],'luas_tanah'=>$params['luas'],'jumlah_unit'=>$params['jumlah'],'rekening'=>$params['rekening'],'tgl_buat'=>date('Y-m-d'),'status'=>$params['status'],"logo_properti"=>$params['logo'],"setting_spr"=>$params['spr']];
-        }
-        elseif($params['foto'] != ""){
-            $data = ['nama_properti'=>$params['nama'],'alamat'=>$params['alamat'],'luas_tanah'=>$params['luas'],'jumlah_unit'=>$params['jumlah'],'rekening'=>$params['rekening'],'tgl_buat'=>date('Y-m-d'),'status'=>$params['status'],"foto_properti"=>$params['foto'],"setting_spr"=>$params['spr']];
-        }
-        else{
-            $data = ['nama_properti'=>$params['nama'],'alamat'=>$params['alamat'],'luas_tanah'=>$params['luas'],'jumlah_unit'=>$params['jumlah'],'rekening'=>$params['rekening'],'tgl_buat'=>date('Y-m-d'),'status'=>$params['status'],"setting_spr"=>$params['spr']];
-        }
-        $this->db->where('id_properti', $params['id']);
-        $val =  $this->db->update($this->tbl,$data);
+        return $this->db->get($tbl);
+    }
+    public function updateData($data,$tbl,$where)
+    {
+        $this->db->where($where);
+        $val =  $this->db->update($tbl,$data);
         return $this->db->affected_rows();
     }
 
@@ -53,22 +50,10 @@ class Model_properti extends CI_Model {
         $this->db->insert($table,$data);
         return $this->db->affected_rows();
     }
-    public function insertDataProperti($input)
+    public function insertData($data,$tbl)
     {
-        $data = $this->m_input($input);
-        $this->db->insert("properti",$data);
+        $this->db->insert($tbl,$data);
         return $this->db->affected_rows();
-    }
-    private function m_input($params)
-    {
-        $data = [
-            'nama_properti'=>$params['nama'],'alamat'=>$params['alamat'],'luas_tanah'=>$params['luas'],'jumlah_unit'=>$params['jumlah'],'rekening'=>$params['rekening'],'logo_properti'=>$params['logo'],'foto_properti'=>$params['foto'],'tgl_buat'=>date('Y-m-d'),'status'=>$params['status'],"setting_spr"=>$params['spr']
-        ];
-        return $data;
-    }
-    public function getDataWhere($table,$where)
-    {
-        return $this->db->get_where($table,$where);
     }
 }
 

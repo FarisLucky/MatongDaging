@@ -26,53 +26,53 @@
                         </div>
                         <hr>
                         <form id="form_detail" action="<?= base_url() ?>properti/update" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="txt_id" value="<?= $properti->id_properti ?>">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="txti_nama">Nama Properti</label>
+                                        <input type="text" name="txt_nama" class="form-control" id="txt_nama" value="<?php echo $properti->nama_properti;?>" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_alamat">Alamat</label>
+                                        <textarea class="form-control" name="txt_alamat" id="txt_alamat" rows="3" disabled><?= $properti->alamat;?></textarea>
+                                    </div> 
+                                    <div class="form-group">
+                                        <label for="txt_luas">Luas Tanah</label>
+                                        <input type="text" name="txt_luas" class="form-control" id="txt_luas" value="<?= $properti->luas_tanah;?>" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_jumlah">Jumlah</label>
+                                        <input type="text" name='txt_jumlah' class="form-control" id="txt_jumlah" value="<?= $properti->jumlah_unit;?>"disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_rekening">Rekening</label>
+                                        <input type="text" name='txt_rekening' class="form-control" id="txt_rekening" value="<?= $properti->rekening;?>"disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_foto">Status</label>
+                                        <select name="txt_status" id="txt_status" class="form-control" disabled>
+                                            <option value="">-- Pilih Status --</option>
+                                            <option value="publish" <?php echo (($properti->status == "publish")?"selected":""); ?>>Publish</option>
+                                            <option value="non-publish" <?php echo (($properti->status == "non-publish")?"selected":""); ?>>Non Publish</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_logo" class="d-flex">logo Properti</label>
+                                        <img id="logo_properti" width="180px" src="<?= base_url().'assets/uploads/images/properti/'.$properti->logo_properti ?>" alt="" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt_foto" class="d-flex">Foto Properti</label>
+                                        <img id="foto_properti" src="<?= base_url().'assets/uploads/images/properti/'.$properti->foto_properti ?>" style="max-width:100%;max-height:350px" >
+                                    </div>
+                                </div>
+                            </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <input type="hidden" name="txt_id" value="<?= $properti->id_properti ?>">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txti_nama">Nama Properti</label>
-                                                <input type="text" name="txt_nama" class="form-control" id="txt_nama" value="<?php echo $properti->nama_properti;?>" disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txt_alamat">Alamat</label>
-                                                <textarea class="form-control" name="txt_alamat" id="txt_alamat" rows="3" disabled><?= $properti->alamat;?></textarea>
-                                            </div> 
-                                            <div class="form-group">
-                                                <label for="txt_luas">Luas Tanah</label>
-                                                <input type="text" name="txt_luas" class="form-control" id="txt_luas" value="<?= $properti->luas_tanah;?>" disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txt_jumlah">Jumlah</label>
-                                                <input type="text" name='txt_jumlah' class="form-control" id="txt_jumlah" value="<?= $properti->jumlah_unit;?>"disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txt_rekening">Rekening</label>
-                                                <input type="text" name='txt_rekening' class="form-control" id="txt_rekening" value="<?= $properti->rekening;?>"disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txt_foto">SPR</label>
-                                                <textarea class="form-control" name="txt_spr" id="txt_spr" rows="10" disabled><?= $properti->setting_spr ?></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txt_foto">Status</label>
-                                                <select name="txt_status" id="txt_status" class="form-control" disabled>
-                                                    <option value="">-- Pilih Status --</option>
-                                                    <option value="publish" <?php echo (($properti->status == "publish")?"selected":""); ?>>Publish</option>
-                                                    <option value="non-publish" <?php echo (($properti->status == "non-publish")?"selected":""); ?>>Non Publish</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txt_logo" class="d-flex">logo Properti</label>
-                                                <img id="logo_properti" width="180px" src="<?= base_url().'assets/uploads/images/properti/'.$properti->logo_properti ?>" alt="" >
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txt_foto" class="d-flex">Foto Properti</label>
-                                                <img id="foto_properti" src="<?= base_url().'assets/uploads/images/properti/'.$properti->foto_properti ?>" style="max-width:100%;max-height:350px" >
-                                            </div>
-                                        </div>
-                                    </div>                                
+                                <div class="form-group">
+                                    <label for="">Setting SPR</label>
+                                    <textarea name="txt_spr" id="txt_edit_spr" rows="10" class="form-control"><?= $properti->setting_spr ?></textarea>
+                                </div>
                             </div>
                         </div>
                         <hr>

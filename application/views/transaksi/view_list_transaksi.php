@@ -61,6 +61,7 @@
                                                 <a href="<?= base_url() ?>transaksi/edit/<?= $value->id_transaksi ?>" class="btn btn-sm"><i class="fa fa-pencil-square text-info" data-toggle="tooltip" data-placement="bottom" title="Edit"></i></a>
                                             <?php } else{ ?>
                                                 <a href="<?= base_url() ?>transaksi/detail/<?= $value->id_transaksi ?>" class="btn btn-sm"><i class="fa fa-info" data-toggle="tooltip" data-placement="bottom" title="Detail"></i></a>
+                                                <a href="<?= base_url() ?>transaksi/printspr/<?= $value->id_transaksi ?>" class="btn btn-sm" data-id="<?= $value->id_transaksi ?>"><i class="fa fa-print text-warning" data-toggle="tooltip" data-placement="bottom" title="Print SPR "></i></a>
                                             <?php }?>
                                             </td>
                                             <td>

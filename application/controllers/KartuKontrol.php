@@ -84,7 +84,7 @@ class KartuKontrol extends CI_Controller {
         $data['img'] = getCompanyLogo();
         $data["detail_kontrol"] = $this->Mlaporan->getDataWhere("*","tbl_pembayaran",["id_transaksi"=>$id],"id_jenis","ASC")->result();
         $data["transaksi"] = $this->Mlaporan->getDataWhere("id_transaksi,total_transaksi,tanda_jadi,uang_muka,periode_uang_muka,pembayaran,bayar_periode","tbl_transaksi",["id_transaksi"=>$id])->row();
-        $data["pemasukan"] = $this->Mlaporan->getDataWhere("SUM(jumlah_bayar) as pemasukan","tbl_pembayaran",["id_transaksi"=>$id])->row();
+        $data["pemasukan"] = $this->Mlaporan->getDataWhere("SUM(total_bayar) as pemasukan","tbl_pembayaran",["id_transaksi"=>$id])->row();
         $data["hutang"] = $this->Mlaporan->getDataWhere("SUM(hutang) as hutang","tbl_pembayaran",["id_transaksi"=>$id])->row();
         $this->pages("kartu_kontrol/view_detail_kontrol",$data);
     }

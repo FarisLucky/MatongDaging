@@ -51,7 +51,7 @@ function notifToastr(types, text) {
     };
 }
 $(document).ready(function () {
-
+    $(".overlay").remove();
     $("#btn_ubah_profil").click(function (e) {
         e.preventDefault();
         $("#form_perusahaan input[type='text']").attr('disabled', false);

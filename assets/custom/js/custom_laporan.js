@@ -62,6 +62,7 @@ function swallSuccess(titles, texts, types, success) {
     })
 }
 $(document).ready(function () {
+    $(".overlay").remove();
     let base = $("body").attr("data-base");
     $("#tbl_laporan_unit,#tbl_detail_kontrol,#tbl_unlock_transaksi").DataTable({
         "responsive":true

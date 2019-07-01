@@ -34,8 +34,10 @@
 </head>
 
 <body data-base="<?= base_url() ?>">
+<div class="overlay">
+    <div class="loader"></div>
+</div>
   <div class="container-scroller">
-
 
     <!-- Part Navbar -->
 <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">

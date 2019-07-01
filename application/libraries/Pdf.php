@@ -13,6 +13,7 @@ require_once 'assets/library/dompdf/autoload.inc.php';
  * @link        https://github.com/ardianta/codeigniter-dompdf
  */
 use Dompdf\Dompdf;
+use Dompdf\Options;
 class Pdf extends Dompdf{
     /**
      * PDF filename
@@ -45,7 +46,7 @@ class Pdf extends Dompdf{
 
         $this->load_html($html);
         // Set Paper
-        $this->setPaper('A4','landscape');
+        $this->setPaper('A4','potrait');
         // Render the PDF
         $this->render();
         // Output the generated PDF to Browser

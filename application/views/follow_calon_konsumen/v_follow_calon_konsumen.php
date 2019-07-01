@@ -20,7 +20,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block"><i class="fa fa-m"></i>Data Follow Calon Konsumen</h5>
-                                <a href="<?= base_url() ?>follow_calon_konsumen/tambah" class="btn btn-info btn-sm float-right">Tambah</a>
+                                <a href="<?= base_url() ?>followcalonkonsumen/tambah" class="btn btn-info btn-sm float-right">Tambah</a>
                             </div>
                         </div>
                         <hr>
@@ -44,9 +44,6 @@
                                             <?php
                                             $no = 1;
                                             foreach ($follow_calon_konsumen as $f) :
-                                                // $tgl = explode(' ', $f->tgl_follow);
-                                                // $tanggal = $tgl[0];
-                                                // $waktu = $tgl[1];
                                                 $tanggal = date('d-m-Y', strtotime($f->tgl_follow));
                                                 ?>
                                                 <tr>
@@ -56,10 +53,10 @@
                                                     <td><?php echo $f->media ?></td>
                                                     <td><?php echo $f->keterangan ?></td>
                                                     <td><?php echo $f->hasil_follow ?></td>
-                                                    <td><?php echo $f->id_user ?></td>
+                                                    <td><?php echo $f->pembuat ?></td>
                                                     <td width="250">
-                                                        <a href="<?php echo site_url('follow_calon_konsumen/edit/' . $f->id_follow) ?>" class="btn btn btn-primary btn-fw"></i> Edit</a>
-                                                        <a href="<?php echo site_url('index.php/Follow_calon_konsumen/hapus/' . $f->id_follow) ?>" onclick="return confirm('Apakah anda yakin akan menghapus data ?');" class="btn btn btn-danger btn-fw"></i> Hapus</a>
+                                                        <a href="<?php echo site_url('followcalonkonsumen/edit/' . $f->id_follow) ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                                        <a href="<?php echo site_url('followcalonkonsumen/hapus/' . $f->id_follow) ?>" onclick="return confirm('Apakah anda yakin akan menghapus data ?');" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Hapus</a>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -69,5 +66,4 @@
                             </div>
                         </div>
                     </div>
-
                 </div>

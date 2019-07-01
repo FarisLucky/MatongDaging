@@ -8,6 +8,7 @@ class Pembayaran extends CI_Controller {
     {
         parent::__construct();
         $this->rolemenu->init();
+        $this->load->library("form_validation");
         $this->load->model('Model_pembayaran',"Mpembayaran");
     }
     public function index()
@@ -60,7 +61,7 @@ class Pembayaran extends CI_Controller {
                 $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Bayar</button>';
             }else if (($value->status == "belum bayar") && ($value->total_bayar != 0)) {
                 $badge = "badge-danger";
-                $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Bayar</button><a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</a>';
+                $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Bayar</button><a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1" data-id="'.$value->id_pembayaran.'">Cetak</a>';
             }else if($value->status == "sementara"){
                 $badge = "badge-warning";
                 $button = '<button type="button" class="btn btn-sm btn-warning mr-1 edit_bayar" data-id="'.$value->id_pembayaran.'"><i class="fa fa-edit"></i> Edit</button><button type="button" class="btn btn-sm btn-info mr-1 lock_bayar" data-id="'.$value->id_pembayaran.'"><i class="fa fa-lock"></i> Lock</button>';
@@ -71,7 +72,7 @@ class Pembayaran extends CI_Controller {
             }
             else{
                 $badge = "badge-success";
-                $button = '<button type="button" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</button>';
+                $button = '<a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1">Cetak</a>';
             }
 
             $sub = array();
@@ -204,7 +205,6 @@ class Pembayaran extends CI_Controller {
     }
     public function core_tanda_jadi()
     {
-        $this->load->library('form_validation');
         $data = [
             "success" => false,
             'msg' => [],
@@ -267,7 +267,6 @@ class Pembayaran extends CI_Controller {
     }
     public function core_uang_muka()
     {
-        $this->load->library('form_validation');
         $data = [
             "success" => false,
             'msg' => [],
@@ -330,7 +329,6 @@ class Pembayaran extends CI_Controller {
     }
     public function core_cicilan()
     {
-        $this->load->library('form_validation');
         $data = [
             "success" => false,
             'msg' => [],
@@ -392,13 +390,42 @@ class Pembayaran extends CI_Controller {
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
-    public function suratKpr()
+    public function suratKpr($id,$image = null)
     {
         $data['title'] = "Surat SP3K";
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(7); //Jangan DIUbah hanya bisa diganti berdasarkan id_dari sub/menu ini !!
         $data['img'] = getCompanyLogo();
+        $data["id"] = $id;
+        $data["error"] = $image;
+        $data["image"] = $this->Mpembayaran->getDataWhere("sp3k","transaksi_unit",["id_transaksi"=>$id])->row();
         $this->pages("pembayaran/view_surat_kpr",$data);
+    }
+    public function coreSuratKpr()
+    {
+        $id = $this->input->post("input_hidden",true);
+        $config = $this->imageInit('./assets/uploads/images/pembayaran/cicilan/');
+        $this->load->library('upload', $config);
+        if ($this->upload->do_upload('upload')) {
+            $img = $this->upload->data();
+            $this->Mpembayaran->updateData(["sp3k"=>$img["file_name"]],"transaksi_unit",["id_transaksi"=>$id]);
+            redirect("pembayaran/cicilan");
+        } else {
+            $image = $this->upload->display_errors();
+            $this->suratKpr($id,$image);
+        }
+        // return $this->output->set_content_type('application/json')->set_output(json_encode($image));
+    }
+    public function printData($id_pembayaran)
+    {
+        $this->load->library('Pdf');
+        $this->load->helper('date');
+        $where = ["id_pembayaran" => $id_pembayaran];
+        $data['tandajadi'] = $this->Mpembayaran->getDataWhere("*", "tbl_pembayaran", $where)->row();
+        $id = $data["tandajadi"]->id_properti;
+        $data["logo"] = $this->Mpembayaran->getDataWhere("logo_properti,alamat","tbl_properti",["id_properti"=>$id])->row();
+        // $this->load->view('print/print_tandajadi', $data);
+        $this->pdf->load_view('Kwitansi Tanda Jadi', 'print/print_tandajadi', $data);
     }
     // This function is private. so , anyone cannot to access this function from web based *Private*
     private function pages($core_page,$data){

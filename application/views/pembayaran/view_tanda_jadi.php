@@ -55,7 +55,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="" method="post" class="form_tanda_jadi" enctype="multipart/formdata">
+      <form action="" method="post" class="form_tanda_jadi" enctype="multipart/form-data">
       <input type="hidden" name="input_hidden">
       <div class="modal-body">
         <div class="row">

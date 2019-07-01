@@ -6,12 +6,12 @@ class M_follow_calon_konsumen extends CI_Model
     public function ambildata()
     {
         // mysqli_query ("select * from barang where kode_barang='.$kode_barang'")
-        return $this->db->get('follow_calon_konsumen');
+        return $this->db->get('follow_up');
     }
 
     public function getAll()
     {
-        $result = $this->db->query("SELECT f.*, k.nama_lengkap FROM follow_calon_konsumen f JOIN konsumen k ON k.id_konsumen = f.id_konsumen")->result();
+        $result = $this->db->query("SELECT f.*, k.nama_lengkap,user.nama_lengkap as pembuat FROM follow_up f JOIN konsumen k ON k.id_konsumen = f.id_konsumen INNER JOIN user on user.id_user = f.id_user")->result();
         return $result;
     }
 
@@ -23,19 +23,19 @@ class M_follow_calon_konsumen extends CI_Model
 
     public function insertDataFollow($data)
     {
-        $this->db->insert("follow_calon_konsumen", $data);
+        $this->db->insert("follow_up", $data);
     }
 
     public function delete($id)
     {
         $input = ['id_follow' => $id['id_follow']];
         $this->db->where($input);
-        $this->db->delete('follow_calon_konsumen');
+        $this->db->delete('follow_up');
     }
 
     public function getSelectionData($where)
     {
-        return $this->db->get_where('follow_calon_konsumen', $where)->row_array();
+        return $this->db->get_where('follow_up', $where)->row_array();
     }
 
     public function updateDatafollow($data) //edit
