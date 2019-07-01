@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2019 at 07:49 PM
+-- Generation Time: Jul 01, 2019 at 07:58 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -26,12 +26,6 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `data_perusahaan_update` (IN `siupp` VARCHAR(255), IN `tdpp` VARCHAR(255), IN `namap` VARCHAR(255), IN `alamatp` VARCHAR(255), IN `emailp` VARCHAR(255), IN `telpp` VARCHAR(255), IN `logop` VARCHAR(255))  BEGIN
-	DECLARE siup,tdp,nama,alamat,email,telp,logo varchar(255);
-    SET siup = siupp;SET tdp = tdpp;SET nama = namap;SET alamat = alamatp;SET email = emailp;SET telp = telpp;SET logo = logop;
-    INSERT INTO data_perusahaan VALUES(null,siup,tdp,nama,alamat,email,telp,logo,null);
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getBayarUm` (IN `id` INT(11), IN `jenis` TINYINT(2))  BEGIN
 	SELECT SUM(pembayaran_transaksi.total_bayar) as ttl_bayar from pembayaran_transaksi WHERE pembayaran_transaksi.id_transaksi = id AND pembayaran_transaksi.id_jenis = jenis;
 END$$
@@ -46,10 +40,6 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getJumlahUnit` (IN `properti` INT(3), OUT `jml_properti` INT(3))  BEGIN
 	SELECT COUNT(id_properti) INTO jml_properti FROM unit_properti WHERE id_properti = properti;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_user` (IN `nama` VARCHAR(100), IN `jk` ENUM('laki-laki','perempuan'), IN `alamat` TEXT, IN `telp` VARCHAR(15), IN `email` VARCHAR(100), IN `users` VARCHAR(255), IN `pass` VARCHAR(255), IN `akses` TINYINT(3), IN `foto` VARCHAR(255), IN `statuss` ENUM('aktif','nonaktif'))  BEGIN
-	INSERT INTO user VALUES(null,nama,jk,alamat,email,telp,users,pass,akses,foto,CURRENT_DATE(),statuss);
 END$$
 
 DELIMITER ;
