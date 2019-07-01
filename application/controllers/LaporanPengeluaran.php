@@ -40,7 +40,7 @@ class LaporanPengeluaran extends CI_Controller {
             $sub[] = number_format($value->total_harga,2,",",".");
             $sub[] = $value->nama_lengkap;
             $sub[] = $value->created_at;
-            $sub[] = '<a href="'.base_url('laporanpengeluaran/getdetail/'.$value->id_kelompok).'" class="btn btn-sm btn-info mx-2">Print</a>';
+            $sub[] = '<a href="'.base_url('laporanpengeluaran/printspesific/'.$value->id_pengeluaran).'" class="btn btn-sm btn-info mx-2">Print</a>';
             $data[] = $sub;
             $no++;
         }
