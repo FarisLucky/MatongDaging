@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2019 at 05:37 PM
+-- Generation Time: Jul 01, 2019 at 07:38 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -33,7 +33,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `data_perusahaan_update` (IN `siupp`
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getBayarUm` (IN `id` INT(11), IN `jenis` TINYINT(2))  BEGIN
-	SELECT SUM(pembayaran_transaksi.jumlah_bayar) as ttl_bayar from pembayaran_transaksi WHERE pembayaran_transaksi.id_transaksi = id AND pembayaran_transaksi.id_jenis = jenis;
+	SELECT SUM(pembayaran_transaksi.total_bayar) as ttl_bayar from pembayaran_transaksi WHERE pembayaran_transaksi.id_transaksi = id AND pembayaran_transaksi.id_jenis = jenis;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getHutangUm` (IN `id` INT(11), IN `jenis` TINYINT(2))  BEGIN
@@ -132,7 +132,9 @@ INSERT INTO `detail_rab` (`id_detail`, `nama_detail`, `id_rab`, `volume`, `satua
 (9, 'sdafasd', 1, 30, 'asdf2', 3454, 0, 6),
 (10, 'Tukang ', 4, 20, 'HOK', 70000, 1400000, 9),
 (20, 'Peralatan Paku', 4, 5, 'm2', 20000, 100000, 9),
-(30, 'hai', 5, 30, 'M2', 200000, 6000000, 7);
+(30, 'hai', 5, 30, 'M2', 200000, 6000000, 7),
+(31, 'Atap', 7, 10, 'M2', 190000, 1900000, 11),
+(32, 'tukang atap', 7, 10, 'M2', 73000, 730000, 11);
 
 -- --------------------------------------------------------
 
@@ -162,18 +164,25 @@ INSERT INTO `detail_transaksi` (`id_detail`, `penambahan`, `volume`, `satuan`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `follow_calon_konsumen`
+-- Table structure for table `follow_up`
 --
 
-CREATE TABLE `follow_calon_konsumen` (
+CREATE TABLE `follow_up` (
   `id_follow` int(11) NOT NULL,
   `id_konsumen` mediumint(9) NOT NULL,
   `tgl_follow` date NOT NULL,
   `media` varchar(50) NOT NULL,
   `keterangan` text NOT NULL,
-  `hasil_follow` varchar(20) NOT NULL,
+  `hasil_follow` enum('d','bd') NOT NULL,
   `id_user` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `follow_up`
+--
+
+INSERT INTO `follow_up` (`id_follow`, `id_konsumen`, `tgl_follow`, `media`, `keterangan`, `hasil_follow`, `id_user`) VALUES
+(1, 4, '2019-06-28', 'Whatsapp', 'percobaan', 'bd', 15);
 
 -- --------------------------------------------------------
 
@@ -304,7 +313,8 @@ INSERT INTO `konsumen` (`id_konsumen`, `id_type`, `id_card`, `nama_lengkap`, `al
 (2, 2, '35181402098800099', 'Pias Pijar', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468997', 'percobaanlagi@gmail.com', 'a5b95d19bfdcb1e2390c1b97acccec1dsfsd', NULL, NULL, NULL, NULL, 'konsumen', 3, '2019-04-11 14:38:48'),
 (4, 2, '35181402098800099', 'Roni', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468932', 'percobaanlagiin@gmail.com', 'a35756f29757ee9fd6965839de73b6ab.png', '4353456', 'Petani', ' asdasd', '082231884957', 'calon konsumen', 15, '2019-04-11 14:38:48'),
 (5, 2, '35181402098800099', 'Ronis', 'Jl. Riau No.10-A, Krajan Barat, Sumbersari, Kabupaten Jember, Jawa Timur 68121', '081988468939', 'percobaanlagii@gmail.com', '5e31edeba7884319fff2bee7ebcbb273.png', '4353457', 'Petani', '        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.', '435345', 'konsumen', 15, '2019-04-11 14:38:48'),
-(7, 2, '23213', 'Sulaiman', 'asd', '23433', 'asdas@gmail.com', '6b7288d44a5d944d5fffbc1d4732746d.png', '9789798748', 'Guru', '  sdas', '0839176868', 'konsumen', 15, '2019-05-29 22:23:20');
+(7, 2, '23213', 'Sulaiman', 'asd', '23433', 'asdas@gmail.com', '6b7288d44a5d944d5fffbc1d4732746d.png', '9789798748', 'Guru', '  sdas', '0839176868', 'konsumen', 15, '2019-05-29 22:23:20'),
+(8, 2, '35181402098800087', 'postman', 'api web di php no7.3', '082212256232', 'postman@gmail.com', NULL, NULL, NULL, NULL, NULL, 'calon konsumen', 15, '2019-04-25 00:45:40');
 
 -- --------------------------------------------------------
 
@@ -392,7 +402,7 @@ INSERT INTO `pembayaran_transaksi` (`id_pembayaran`, `id_transaksi`, `nama_pemba
 (184, 16, 'Cicilan 2', 175500000, '2019-07-13', NULL, NULL, NULL, 175500000, NULL, 'belum bayar', 15, 3, 3),
 (190, 17, 'Angsuran 1', 10000000, '2019-06-14', '2019-06-05', NULL, 10000000, 0, '410561dba4ec7d5699cbf76c78dcb405.jpg', 'selesai', 15, 2, NULL),
 (191, 17, 'Tanda Jadi Unit perumahan tegal', 5000000, '2019-05-15', '2019-06-20', 0, 5000000, 0, '8db87c078010200b8043c0482a8a33c5.png', 'selesai', 15, 1, NULL),
-(192, 17, 'Cicilan 1', 227500000, '2019-06-07', '2019-06-22', 0, 227500000, 227500000, '33c74f315487209e7c77c94553846bc8.png', 'selesai', 15, 3, 3),
+(192, 17, 'Cicilan 1', 227500000, '2019-06-07', '2019-06-22', 0, 227500000, 0, '33c74f315487209e7c77c94553846bc8.png', 'selesai', 15, 3, 3),
 (193, 17, 'Cicilan 2', 227500000, '2019-07-07', '2019-06-14', 0, 227500000, 0, '628cb1955290a3c1a3ba05b0f9dce74c.png', 'selesai', 15, 3, 3);
 
 -- --------------------------------------------------------
@@ -481,7 +491,7 @@ INSERT INTO `persyaratan_kelompok_sasaran` (`id_persyaratan`, `id_sasaran`, `id_
 CREATE TABLE `persyaratan_sasaran` (
   `id_sasaran` tinyint(3) NOT NULL,
   `nama_persyaratan` text NOT NULL,
-  `poin_penting` varchar(5) NOT NULL,
+  `poin_penting` enum('tp','s','p','ps') NOT NULL,
   `keterangan` text NOT NULL,
   `id_kategori_persyaratan` tinyint(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -491,16 +501,20 @@ CREATE TABLE `persyaratan_sasaran` (
 --
 
 INSERT INTO `persyaratan_sasaran` (`id_sasaran`, `nama_persyaratan`, `poin_penting`, `keterangan`, `id_kategori_persyaratan`) VALUES
-(1, 'Kartu Tanda Penduduk', '', 'Wajib di isi', 1),
+(1, 'Kartu Tanda Penduduk', 'p', 'Wajib di isi ya', 1),
 (2, 'Kartu Keluarga', '', 'Wajib di isi', 1),
 (3, 'Akta Nikah', '', 'Wajib di isi', 1),
-(4, 'Tidak Memiliki rumah', '*', 'dikecualikan untuk PNS / TNI yang pindah domisili karena kepentingan dinas  dan berlaku hany sekali', 1),
-(5, 'Nomor Pokok Wajib Pajak(NPWP)', '**', 'Berstatus kawin hanya dipersyaratkan suami/istri', 1),
-(6, 'SPT Tahunan Pph Orang Pribadi sesuai peraturan perundang - undangan', '***', 'dikecualikan untuk penghasilan dibawah PTKP', 1),
-(7, 'Penghasilan tidak melebihi batas penghasilan yang ditentukan ', '**', 'berstatus kawin hanya dipersyaratkan suami/istri', 1),
-(8, 'Surat Akadi', '*', '', 2),
-(9, 'Surat Tanah', '*', '', 2),
-(10, 'Surat Izin Bangun Rumah', '*', '', 2);
+(4, 'Tidak Memiliki rumah', '', 'dikecualikan untuk PNS / TNI yang pindah domisili karena kepentingan dinas  dan berlaku hany sekali', 1),
+(5, 'Nomor Pokok Wajib Pajak(NPWP)', '', 'Berstatus kawin hanya dipersyaratkan suami/istri', 1),
+(6, 'SPT Tahunan Pph Orang Pribadi sesuai peraturan perundang - undangan', '', 'dikecualikan untuk penghasilan dibawah PTKP', 1),
+(7, 'Penghasilan tidak melebihi batas penghasilan yang ditentukan ', '', 'berstatus kawin hanya dipersyaratkan suami/istri', 1),
+(8, 'Surat Akadi', '', '', 2),
+(9, 'Surat Tanah', '', '', 2),
+(10, 'Surat Izin Bangun Rumah', '', '', 2),
+(11, 'coba', 'p', 'coba', 1),
+(13, 'sadsad', 'p', 'coba', 1),
+(14, 'sadsad', 'ps', 'coba', 1),
+(15, 'coba', 'p', 'Wajib di isi ya', 1);
 
 -- --------------------------------------------------------
 
@@ -551,13 +565,14 @@ CREATE TABLE `properti` (
 --
 
 INSERT INTO `properti` (`id_properti`, `nama_properti`, `alamat`, `luas_tanah`, `jumlah_unit`, `rekening`, `logo_properti`, `foto_properti`, `tgl_buat`, `status`, `setting_spr`, `id_user`, `id_rab`) VALUES
-(1, 'PERUMAHAN SUFAH PERMAI', 'Lokasi di Guyangan bagor Nganjuk - Lingkungan asri dan sejuk - 5 menit ke terminal - 5 menit ke pom bensin - 10 menit ke pusat kota dan stasiun - dekat dengan minimarket dan pasar - dekat dengan jalan raya surabaya - madiun', '1.965 m2', 6, 'BCA MAndiri 878455', 'afd2dd7c8232279c3b4d22ef2eb8b068.png', '21bba11673944884ca888cc69df249ed.jpg', '2019-05-03', 'publish', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, NULL),
+(1, 'PERUMAHAN SUFAH PERMAI', 'Jl. Raya Tamanan-Guyangan No.', '1.965 m2', 7, 'BCA MAndiri 878455', 'f0c4122fc53dbdb44f779d3649cfa034.png', 'cacd4487c8ae0eb143b7da0594c0aace.png', '2019-06-26', 'publish', '<p>Penyerahan tanah dan/ bangunan tanggal Untuk pemesanan tersebut diatas maka dengan ini<br />    Pemesan menyetujui ketentuan-ketentuan sebagai berikut :</p><p>I. Membayar uang muka pada tanggal 26 Oktober 2016 sebesar <strong><em>Rp. 15.000.000<br />     ( Lima belas juta rupiah)</em></strong></p><p>II. Membayar uang muka pada tanggal 27 November 2016 sebesar <strong><em>Rp. 45.000.000<br />     ( Empat puluh lima juta rupiah)</em></strong></p><p>III. Membayar uang muka pada tanggal 19 Desember 2016 sebesar <strong><em>Rp.10.000.000,-<br />     (Sepuluh juta rupiah)</em></strong></p><p><strong><em>IV. </em></strong>Membayar uang muka pada tanggal 5 Januari 2017 sebesar <strong><em>Rp.10.000.000,-<br />     (Sepuluh juta rupiah)</em></strong></p><p>V. Sisa pembayaran sebesar <strong><em>Rp.40.000.000,00</em></strong> <strong><em>( Empat puluh juta rupiah)</em></strong></p><p>VI. Menandatangani Surat Perjanjian Pengikat Jual Beli Tanah dan/atau bangunan, dalam waktu maksimal 21 (Dua Puluh Satu ) Hari setelah tanggal Surat Pemesanan ini.</p><p>VII. Apabila kemudian ternyata pemesan tidak bersedia/tidak mau menandatangani Surat Perjanjian Pengikat Jual Beli Tanah dan/atau Bangunan dimaksud pada butir IV, maka pemesanan ini menjadi batal, oleh karenanya berlaku ketentuan pada butir VIII.</p><p>VIII. Apabila Pemesan dalam membayar harga tanah dan/atau bangunan mempergunakan fasilitas KPR dari Bank/Lembaga Keuangan, maka pemesan harus menandatangani Surat Perjanjian Pengikat Jual Beli Tanah dan/atau Bangunan selambat-lambatnya 2 (dua) Minggu sejak tanggal Pemesanan ini.</p><p>IX. Apabila saatnya akan diadakan wawancara oleh pihak Bank/Lembaga Keuangan atau apabila telah mendapat persetujuan kredit dari Bank/Lembaga Keuangan, pemesan tidak melaksanakannya walaupun sudah diberitahu 3 (tiga) kali baik lisan maupun tertulis, maka pemesanan ini menjadi batal, oleh karenanya akan berlaku ketentuan pada butir VIII.</p><p>X. Apabila pemesanan ini menjadi batal oleh sebab apapun, sedangkan Pemesan telah membayar sejumlah uang, baik tanda jadi maupun uang muka        untuk pemesanan tanah dan/atau bangunan, maka pemesanan ini menjadi batal dan uang yang telah dibayar oleh pemesan untuk pemesanan tanah dan/atau bangunan dimaksud tidak boleh dikembalikan (hangus). Selanjutnya tanah dan/atau bangunan dimaksud menjadi hak sepenuhnya pengembang kavling tanah dan unit rumah.</p><p>XI. Apabila permohonan KPR dari Pemesan ditolak oleh seluruh Bank/Lembaga keuangan yang dibuktikan dengan Surat Penolakan, maka uang yang sudah dibayarkan akan dikembalikan kepada Pemesan setelah dipotong biaya administrasi <strong><em>Rp. 1.000.000,-</em></strong> (Satu Juta Rupiah). Tetapi apabila permohonan KPR yang disetujui tidak sesuai dengan  jumlah yang dimohon (terjadi penurunan Plafond Kredit), maka pemesan wajib menambah uang muka kepada Pengembang. Pemesan diperbolehkan merubah cara pembayaran dari KPR menjadi cash bertahap ke developer karena penolakan KPR dengan ketentuan besarnya harga yang diberlakukan adalah harga yang berlaku pada saat terjadi perubahan.</p><p> </p><p>XII.  Apabila Pemesan Lalai/terlambat melakukan pembayaran sesuai dengan ketentuan pada butir III maka akan dikenakan denda sebesar 3 % (tiga persen) perbulan dari jumlah yang harus dibayar/terutang dan apabila kelalaian/keterlambatan tersebut sampai dengan 3 (tiga) bulan berturut-turut sejak tanggal terutang, maka pemesanan ini menjadi batal dan oleh karenanya akan berlaku ketentuan pada butir VIII.</p><p> </p><p>XIII. Pembayaran yang dilakukan cek/giro apabila dikemudian ditolak oleh Bank yang bersangkutan, maka Pemesan dikenai biaya administrasi sebesar <strong><em>Rp. 100.000,-</em></strong> (seratus ribu rupiah) dan dikenakan denda sesuai dengan ketentuan pada butir X.</p><p> </p><p>XIV. Apabila Pemesan membayar harga tanah dan/atau bangunan dengan cara mengangsur melalui developer, maka apabila sewaktu-waktu developer menghendaki, Pemesan bersedia untuk dipindahkan pembayaran angsuran harganya melalui Bank/Lembaga keuangan yang ditunjuk oleh developer, dengan ketentuan yang sama dengan pengurusan KPR sebelumnya.</p><p> </p><p>XIIV. Khusus untuk pembelian tanah dan/atau bangunan dilokasi sudut (Hock) atau dengan bentuk ireguler, maka apabila tanah dan/atau bangunan yang telah dipesan berbeda dengan yang telah ditentukan oleh instansi yang berwenang (kelebihan/kekurangan) diadakan perhitungan ulang dengan berdasarkan harga tanah dan bangunan yang berlaku pada saat penandatanganan Surat Pemesanan ini.</p><p> </p><p>XIIIV. Surat Pemesanan ini merupakan satu kesatuan yang tidak dapat dipisahkan dengan Surat Perjanjian Pengikatan Jual Beli Tanah dan/ atau bangunan, yang telah atau akan ditandatangani. Selanjutnya apabila Surat Perjanjian Pengikatan Jual Beli dimaksud sudah ditandatangani oleh pemesan, maka ketentuan yang berlaku untuk jual beli tanah dan/atau bangunan dimaksud adalah seperti yang diatur Dalam Surat Pengikatan Jual Beli. Demikian Surat Ini dibuat untuk dapat dilaksanakan sebagaimana mestinya.</p><p> </p><p> </p><p>Guyangan, ......................................</p><p> </p><p> </p><p> </p><p> </p><p>     Pengembang                                  Head Of Sales                                       Pemesan</p><p> </p><p> </p><p> </p><p> </p><p>   <strong>( SYAIFUDIN )                              (  SUTEJO )                                    ( DAMIANTO )</strong></p><p> </p>', 1, NULL),
 (9, 'PERUMAHAN GELORA HENING', 'Jl. A Yani No. 2A, Jl. Letjend S. Parman, Blimbing, Kota Malang, Jawa Timur 65125', '34', 20, 'BCA 23342 Salman Al Farisi', '38a483b687aba2afbd9b20e6467fde24.png', '88466ae1d27d9e707d4d33ceeba68a57.png', '2019-05-15', 'publish', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 0, NULL),
 (11, 'sdf', 'asfd', 'sfd1', 1, 'dsaf', '', '008868cf22d64a0dbd9fde200ceea43a.jpg', '2019-05-03', 'publish', 'sdafasdf', 0, NULL),
-(12, 'Perumahan coba', 'Perumahan coba', '65 m2', 12, 'rekening', 'e1d56f41635edb0c78e7651d67f74296.png', 'ed6531c1ddfc54c4d212e9d5b4f6d238.png', '2019-05-08', 'publish', 'Perumahan coba', 0, NULL),
-(13, 'PERUMAHAN SUFAH PERMAIS', 'nganjuk', '20', 22, '849203', '9e0d35d59ae42e8471ef57f3faf1398e.png', '583fd1ae705758151d0bc684403c65c9.png', '2019-05-29', 'publish', 'surat', 0, NULL),
+(12, 'Perumahan coba', 'Jl. A Yani No. 2A, Jl. Letjend S. Parman, Blimbing, Kota Malang, Jawa Timur 65125', '65 m2', 12, 'rekening', 'e1d56f41635edb0c78e7651d67f74296.png', 'ed6531c1ddfc54c4d212e9d5b4f6d238.png', '2019-05-08', 'publish', 'Perumahan coba', 0, NULL),
+(13, 'PERUMAHAN SUFAH PERMAIS', 'nganjuk', '20', 22, '849203', '6e9181f72c05469bd2ef9522f2cb3ad2.png', 'b6899ccfea5ce6e1fc582e6815b4ae39.png', '2019-06-27', 'publish', '<p>surat</p>', 0, NULL),
 (14, 'Perumahan permai', 'Lumajang', '10', 12, 'BCA 23342 Cobain Terserah', '6f2ba2014f04f9be08d30f96bfefc5cc.jpg', '5b1455b45dbd10dc0a2663209b7e63a6.png', '2019-06-13', 'publish', 'surat', 0, NULL),
-(15, 'perumahan tegal gede', 'jember', '36', 2, '423423424', '4fd1bfa8e555d7a9806fbd56998e0cdf.jpg', 'e4d7756b4e42c5bfaa3351c9158f0969.jpg', '2019-05-29', 'publish', 'surat', 0, NULL);
+(15, 'perumahan tegal gede', 'jember', '36', 2, '423423424', '4fd1bfa8e555d7a9806fbd56998e0cdf.jpg', 'b7d5038028a3677fce904c1a297ce098.png', '2019-06-24', 'publish', 'surat', 0, NULL),
+(16, 'coba', 'coba', 'coba', 656, 'coba', '26a9308e4575fa3a6390c85802f3799a.png', 'default.jpg', '2019-06-27', 'non-publish', '<p>cmiiw</p>', 14, NULL);
 
 -- --------------------------------------------------------
 
@@ -570,6 +585,8 @@ CREATE TABLE `rab_properti` (
   `nama_rab` varchar(50) NOT NULL,
   `type` enum('properti','unit') NOT NULL,
   `tgl_buat` date NOT NULL,
+  `tanah_effective` varchar(50) NOT NULL,
+  `sarana` varchar(50) NOT NULL,
   `total_anggaran` int(11) NOT NULL,
   `id_user` tinyint(4) NOT NULL,
   `id_properti` int(11) DEFAULT NULL
@@ -579,13 +596,14 @@ CREATE TABLE `rab_properti` (
 -- Dumping data for table `rab_properti`
 --
 
-INSERT INTO `rab_properti` (`id_rab`, `nama_rab`, `type`, `tgl_buat`, `total_anggaran`, `id_user`, `id_properti`) VALUES
-(1, 'SUFAH PERMAI', 'properti', '2019-04-11', 200000000, 1, 1),
-(2, 'Rumah Sufah Permai', 'unit', '2019-04-11', 57600000, 1, 1),
-(4, 'Perumahan Coba', 'properti', '2019-05-26', 1500000, 14, 12),
-(5, 'RAB RUmah (Perumahan Coba)', 'unit', '2019-05-26', 6060000, 14, 12),
-(6, 'RAB RUmah (Perumahan Coba)', 'properti', '2019-05-29', 0, 14, 13),
-(7, 'kamprte', 'properti', '2019-05-29', 0, 14, 9);
+INSERT INTO `rab_properti` (`id_rab`, `nama_rab`, `type`, `tgl_buat`, `tanah_effective`, `sarana`, `total_anggaran`, `id_user`, `id_properti`) VALUES
+(1, 'SUFAH PERMAI', 'properti', '2019-04-11', '25 m2', '20 m2', 200000000, 1, 1),
+(2, 'SUFAH PERMAI', 'unit', '2019-04-11', '25 m2', '20 m2', 57600000, 1, 1),
+(4, 'Perumahan Coba', 'properti', '2019-05-26', '', '', 1500000, 14, 12),
+(5, 'RAB RUmah (Perumahan Coba)', 'unit', '2019-05-26', '', '', 6060000, 14, 12),
+(6, 'RAB RUmah (Perumahan Coba)', 'properti', '2019-05-29', '', '', 0, 14, 13),
+(7, 'kamprte', 'properti', '2019-05-29', '', '', 2630000, 14, 9),
+(8, 'rab percobaan', 'properti', '2019-06-24', '', '', 0, 14, 11);
 
 -- --------------------------------------------------------
 
@@ -685,13 +703,6 @@ CREATE TABLE `surat_surat` (
 -- (See below for the actual view)
 --
 CREATE TABLE `tbl_follow` (
-`id_follow` int(11)
-,`id_konsumen` mediumint(9)
-,`tgl_follow` date
-,`media` varchar(50)
-,`keterangan` text
-,`hasil_follow` varchar(20)
-,`id_user` tinyint(4)
 );
 
 -- --------------------------------------------------------
@@ -824,7 +835,7 @@ CREATE TABLE `tbl_pengeluaran` (
 CREATE TABLE `tbl_persyaratan` (
 `id_sasaran` tinyint(3)
 ,`nama_persyaratan` text
-,`poin_penting` varchar(5)
+,`poin_penting` enum('tp','s','p','ps')
 ,`keterangan` text
 ,`id_kategori_persyaratan` tinyint(3)
 ,`nama_kategori` varchar(100)
@@ -1051,19 +1062,20 @@ CREATE TABLE `transaksi_unit` (
   `tempo_bayar` date NOT NULL,
   `total_tambahan` int(11) NOT NULL,
   `total_akhir` int(11) NOT NULL,
-  `update_at` date NOT NULL
+  `update_at` date NOT NULL,
+  `sp3k` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaksi_unit`
 --
 
-INSERT INTO `transaksi_unit` (`id_transaksi`, `no_ppjb`, `id_konsumen`, `id_unit`, `tgl_transaksi`, `total_kesepakatan`, `total_transaksi`, `tanda_jadi`, `uang_muka`, `periode_uang_muka`, `id_type_bayar`, `bayar_periode`, `pembayaran`, `kunci`, `id_user`, `status_transaksi`, `status_tj`, `status_um`, `status_cicilan`, `tempo_tanda_jadi`, `tempo_uang_muka`, `tempo_bayar`, `total_tambahan`, `total_akhir`, `update_at`) VALUES
-(10, '200927-38974-56', 1, 2, '2019-05-14', 500000000, 501200000, 5000000, 30000000, 3, 2, 1, 127, 'lock', 15, 'progress', '', 'belum lunas', 'belum lunas', '2019-05-09', '2019-05-15', '2019-05-16', 1200000, 436200000, '0000-00-00'),
-(11, '200927-38974-76', 1, 3, '2019-05-14', 500000000, 500000000, 5000000, 30000000, 3, 2, 1, 435000000, 'lock', 15, 'progress', '', 'lunas', 'lunas', '2019-05-19', '2019-05-20', '2019-05-21', 0, 435000000, '0000-00-00'),
-(15, '200927-38974-23', 1, 7, '2019-05-29', 500000000, 500000000, 2000000, 2, 2, 3, 2, 248999997, 'default', 15, 'sementara', 'lunas', '', '', '2019-05-17', '2019-05-22', '2019-05-23', 0, 497999995, '0000-00-00'),
-(16, '200927-38974-23', 2, 6, '2019-05-29', 500000000, 503000000, 2000000, 100000000, 2, 3, 2, 175500000, 'default', 15, 'sementara', 'lunas', '', '', '2019-05-09', '2019-05-01', '2019-05-13', 3000000, 351000000, '0000-00-00'),
-(17, '200927-38974-76', 7, 7, '2019-05-29', 500000000, 500000000, 5000000, 10000000, 1, 3, 2, 227500000, 'unlock', 15, 'progress', 'lunas', 'lunas', 'lunas', '2019-05-15', '2019-05-14', '2019-05-07', 0, 465000000, '0000-00-00');
+INSERT INTO `transaksi_unit` (`id_transaksi`, `no_ppjb`, `id_konsumen`, `id_unit`, `tgl_transaksi`, `total_kesepakatan`, `total_transaksi`, `tanda_jadi`, `uang_muka`, `periode_uang_muka`, `id_type_bayar`, `bayar_periode`, `pembayaran`, `kunci`, `id_user`, `status_transaksi`, `status_tj`, `status_um`, `status_cicilan`, `tempo_tanda_jadi`, `tempo_uang_muka`, `tempo_bayar`, `total_tambahan`, `total_akhir`, `update_at`, `sp3k`) VALUES
+(10, '200927-38974-56', 1, 2, '2019-05-14', 500000000, 501200000, 5000000, 30000000, 3, 2, 1, 127, 'lock', 15, 'progress', '', 'belum lunas', 'belum lunas', '2019-05-09', '2019-05-15', '2019-05-16', 1200000, 436200000, '0000-00-00', ''),
+(11, '200927-38974-76', 1, 3, '2019-05-14', 500000000, 500000000, 5000000, 30000000, 3, 2, 1, 435000000, 'lock', 15, 'progress', '', 'lunas', 'lunas', '2019-05-19', '2019-05-20', '2019-05-21', 0, 435000000, '0000-00-00', ''),
+(15, '200927-38974-23', 1, 7, '2019-05-29', 500000000, 500000000, 2000000, 2, 2, 3, 2, 248999997, 'default', 15, 'sementara', 'lunas', '', '', '2019-05-17', '2019-05-22', '2019-05-23', 0, 497999995, '0000-00-00', ''),
+(16, '200927-38974-23', 2, 6, '2019-05-29', 500000000, 503000000, 2000000, 100000000, 2, 3, 2, 175500000, 'default', 15, 'sementara', 'lunas', '', '', '2019-05-09', '2019-05-01', '2019-05-13', 3000000, 351000000, '0000-00-00', ''),
+(17, '200927-38974-76', 7, 7, '2019-05-29', 500000000, 500000000, 5000000, 10000000, 1, 3, 2, 227500000, 'unlock', 15, 'progress', 'lunas', 'lunas', 'lunas', '2019-05-15', '2019-05-14', '2019-05-07', 0, 465000000, '0000-00-00', '5c530c55beef0e4ad402dd8492a34b3d.png');
 
 -- --------------------------------------------------------
 
@@ -1136,8 +1148,14 @@ INSERT INTO `unit_properti` (`id_unit`, `nama_unit`, `id_properti`, `type`, `lua
 (3, 'SF02', 1, '36/60', '36', '60', 130000000, 'cf51fef7bb3a3bfdfd4b2e768fbba0b9.png', 'Lokasi proyek cukup strategis di bandingkan dengan proyek-proyek perumahan lain di sekitarnya karena posisinya hanya _+ 100m dari jalan raya propinsi dan berdekatan dengan pabrik , klinik kesehatan, pasar hewan, terminal bus, kantor pemerintahan, bank, minimarket, dealer motor, area terminal truk, sarana pendidikan.', '2019-04-10', 'booking', 14, 'Pondasi \r\nBatu kali\r\nDinding\r\nBatu bata merah di plester\r\nAtap\r\nBaja ringan \r\nPlafon\r\nEnternit\r\nLantai\r\nKramik\r\nKusain\r\nKayu\r\nPintu\r\nKayu\r\nJendela\r\nKayu dan kaca\r\nSanitasi\r\nClosed jongkok, bak mandi \r\nAir bersih\r\nPDAM \r\nListrik \r\n900 watt'),
 (5, 'A21', 1, '36/34', '32 M2', '32', 500000000, '6c75c9c80b2334e85bcc733034c60667.png', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', '0000-00-00', 'belum terjual', 19, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'),
 (6, '312', 1, '312', '312', '312', 500000000, 'b89ddd7227c93dfd50ac070423ef6024.png', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, ad. Accusantium, inventore. Earum repellat numquam cupiditate, ad, nostrum commodi minima itaque magni iure nobis fuga accusamus molestias eligendi minus est.', '2019-05-08', 'booking', 14, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, ad. Accusantium, inventore. Earum repellat numquam cupiditate, ad, nostrum commodi minima itaque magni iure nobis fuga accusamus molestias eligendi minus est.'),
-(7, 'perumahan tegal', 1, '36x60', '34', '56', 450000, '0502e66814d972d2f2c8cf7368bb76c6.jpg', 'lumajang', '2019-05-29', 'booking', 19, 'perumahan'),
-(9, 'perumahan', 15, '36/34', '45', '34', 210000, 'b4c1940d866b3079fd5211fede59c4e4.png', 'jember', '2019-05-29', 'belum terjual', 19, 'ada kamar mandi');
+(7, 'A20', 1, '36x60', '34', '56', 450000, '0502e66814d972d2f2c8cf7368bb76c6.jpg', 'lumajang', '2019-05-29', 'booking', 19, 'perumahan'),
+(9, 'A30', 15, '36/34', '45', '34', 210000, 'b4c1940d866b3079fd5211fede59c4e4.png', 'jember', '2019-05-29', 'belum terjual', 19, 'ada kamar mandi'),
+(10, 'AFD1', 9, '36x60', '60 M2', '30 M2', 120000000, 'default.jpg', 'Jl. Pakuniran Paiton', '2019-06-30', 'belum terjual', 19, 'Air Bersih'),
+(11, 'AFD2', 9, '36x60', '60 M2', '30 M2', 120000000, 'default.jpg', 'Jl. Pakuniran Paiton', '2019-06-30', 'belum terjual', 19, 'Air Bersih'),
+(12, 'AFD3', 9, '36x60', '60 M2', '30 M2', 120000000, 'default.jpg', 'Jl. Pakuniran Paiton', '2019-06-30', 'belum terjual', 19, 'Air Bersih'),
+(13, 'DSB1', 9, '36x60', '60 M2', '30', 130000000, 'default.jpg', 'Jl.Bondowoso Jmber', '2019-06-30', 'belum terjual', 19, 'Tidak Ada'),
+(17, 'BCT3', 1, '36x60', '60 M2', '30 M2', 120000000, 'default.jpg', 'Jl Terserah', '2019-06-30', 'belum terjual', 19, 'Anda dah'),
+(18, 'BCT4', 1, '36x60', '60 M2', '30 M2', 120000000, 'default.jpg', 'Jl Terserah', '2019-06-30', 'belum terjual', 19, 'Anda dah');
 
 -- --------------------------------------------------------
 
@@ -1166,11 +1184,11 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `nama_lengkap`, `jenis_kelamin`, `alamat`, `Email`, `no_hp`, `username`, `password`, `id_akses`, `foto_user`, `tanggal_buat`, `status_user`) VALUES
 (3, 'Mika Tambayong', 'perempuan', 'Jl. Jawa No.74, Gumuk Kerang, Sumbersari, Kabupaten Jember, Jawa Timur 68121', 'mikarid1@gmail.com', '089775338764', 'mikain', 'password123s', 3, 'foto211', '2019-04-12', 'nonaktif'),
-(14, 'Salman Al Farisi', 'laki-laki', 'Jl.Pakuniran hehe', 'farisdev@gmail.com', '082334676890', 'Salman', '$2y$10$uvAUUpZ6F5A4wavpyMvBXenOLZnemCig8uCR1vo.CC3JES7xqDHf.', 1, '', '2019-05-04', 'aktif'),
+(14, 'Salman Al Farisi', 'laki-laki', 'Jl.Pakuniran Kec Paiton Kab Probolinggo', 'farisdev@gmail.com', '082334676890', 'Salman', '$2y$10$uvAUUpZ6F5A4wavpyMvBXenOLZnemCig8uCR1vo.CC3JES7xqDHf.', 1, 'hai.jpg', '2019-05-04', 'aktif'),
 (15, 'Marketing', 'laki-laki', 'sd', 'fasss@gmail.com', '085344873008', 'Marketing', '$2y$10$TZJzVZme756tsRk3whlohOtjshh8sPVfSphXLGSlHKPtOBs8qo5NC', 4, '5b42cb47c2b1ee3cde6f2c314af06431.png', '2019-05-06', 'aktif'),
 (16, 'terserah', 'laki-laki', 'terserah', 'farisdevs@gmail.com', '0876752323', 'terserah', '$2y$10$YSuAJWcBX5NNmwegyjviJelyPO/dMn1.yNRO295CO1g5uEQiJoTA2', 5, '380f714943698ce55dcb378e4f5148b4.png', '2019-05-08', 'aktif'),
-(19, 'elsa manora', 'perempuan', 'jember', 'elsa@gmail.com', '0876544567890', 'elsa', '$2y$10$68a.jkptklAX5HT35d5SsurawAbA3lxBD.X9L87g5/p3AjUH/VVI2', 2, 'f0f03c08e781828fe15d13f2c01e0d13.png', '2019-05-29', 'aktif'),
-(20, 'Bendahara', 'perempuan', 'Jl Pakuniran', 'bendahara@gmail.com', '082334678997', 'bendahara', '$2y$10$ee7rSHX4Mpqg8.yQ4vD/6u47QQYbhOmOw0lhp1kUDpR.7Dr3uYwqm', 5, '9268ded5e1507a0a9c06b53d3c014fe9.jpg', '2019-06-07', 'aktif'),
+(19, 'elsa manora', 'perempuan', 'jember', 'elsa@gmail.com', '0876544567890', 'elsa', '$2y$10$nX0NmhZHQCklgMNzX/F8NuRStVu1TSgVdwjxsErkNhtvfPZa9wtPO', 2, 'f0f03c08e781828fe15d13f2c01e0d13.png', '2019-05-29', 'aktif'),
+(20, 'Bendahara', 'perempuan', 'Jl Pakuniran', 'bendahara@gmail.com', '082334678997', 'bendahara', '$2y$10$BWhuSnRwiS/xw9Bgz6yhSeb5sS6vM3S1hGf5ipET9lMP/FY2Z1w8e', 5, 'f7cca9cb4679a057b49895607e96fe37.png', '2019-06-07', 'aktif'),
 (21, 'sekretaris', 'perempuan', 'slafjldskf', 'sekretaris@gmail.com', '082213034543', 'sekretaris', '$2y$10$12tMASJqt/OoMZd.KtnMt.ZMbUhU/bAXqP6wNAu2T6/SI0mhS09wS', 3, '7edea68ba17267c9b56179bc61f95f25.png', '2019-06-13', 'aktif');
 
 -- --------------------------------------------------------
@@ -1220,7 +1238,8 @@ INSERT INTO `user_assign_properti` (`id_assign`, `id_properti`, `id_user`) VALUE
 (53, 13, 21),
 (54, 14, 21),
 (55, 15, 21),
-(56, 1, 19);
+(57, 1, 19),
+(58, 9, 19);
 
 -- --------------------------------------------------------
 
@@ -1265,7 +1284,17 @@ INSERT INTO `user_controller` (`id`, `id_akses`, `controller`) VALUES
 (24, 3, 'laporankonsumen'),
 (25, 5, 'laporanpengeluaran'),
 (26, 5, 'pemasukan'),
-(27, 5, 'laporanpemasukan');
+(27, 5, 'laporanpemasukan'),
+(28, 1, 'profileuser'),
+(29, 2, 'profileuser'),
+(30, 3, 'profileuser'),
+(32, 4, 'profileuser'),
+(33, 5, 'profileuser'),
+(34, 1, 'laporanpemasukan'),
+(35, 1, 'laporanpengeluaran'),
+(36, 4, 'followcalonkonsumen'),
+(37, 1, 'persyaratankonsumen'),
+(38, 1, 'persyaratanunit');
 
 -- --------------------------------------------------------
 
@@ -1286,24 +1315,24 @@ CREATE TABLE `user_menu` (
 --
 
 INSERT INTO `user_menu` (`id_menu`, `menu`, `url`, `icon`, `javascript`) VALUES
-(1, 'Dashboard', 'dashboard/owner', 'menu-icon mdi mdi-television', 'dashboard'),
-(2, 'Setting Data Master', '#setting', 'menu-icon mdi mdi-briefcase-check', NULL),
-(4, 'Data Master', '#master', 'menu-icon mdi mdi-briefcase-check', NULL),
+(1, 'Dashboard', 'dashboard/owner', 'menu-icon mdi mdi-cast-connected', 'dashboard'),
+(2, 'Data Master', '#setting', 'menu-icon mdi mdi-fridge', NULL),
+(4, 'Data Master', '#master', 'menu-icon mdi mdi-fridge', NULL),
 (5, 'Transaksi', 'transaksi', 'menu-icon mdi mdi-cart-outline', 'custom_transaksi'),
-(6, 'Pembayaran', '#pembayaran', 'menu-icon mdi mdi-briefcase-check', NULL),
-(7, 'Approve', '#approve', 'menu-icon mdi mdi-television', NULL),
-(8, 'Data Konsumen', '#konsumen', 'menu-icon mdi mdi-account-switch', NULL),
+(6, 'Pembayaran', '#pembayaran', 'menu-icon mdi mdi-credit-card', NULL),
+(7, 'Approve', '#approve', 'menu-icon mdi mdi-approval', NULL),
+(8, 'Data Konsumen', '#konsumen', 'menu-icon mdi mdi-account-card-details', NULL),
 (10, 'Dashboard', 'dashboard/marketing', 'menu-icon mdi mdi-television', 'dashboard'),
 (11, 'Dashboard', 'dashboard/manager', 'menu-icon mdi mdi-television', 'dashboard'),
 (12, 'Dashboard', 'dashboard/sekretaris', 'menu-icon mdi mdi-television', 'dashboard'),
 (13, 'Laporan', '#laporan', 'menu-icon mdi mdi-chart-areaspline', NULL),
 (14, 'Dashboard', 'dashboard/bendahara', 'menu-icon mdi mdi-television', 'dashboard'),
-(15, 'Laporan Konsumen', '#laporan_kons', 'menu-icon mdi mdi-chart-areaspline', NULL),
+(15, 'Laporan Konsumen', '#laporan_kons', 'menu-icon mdi mdi-folder-account', NULL),
 (16, 'Data Master', '#master_item', 'menu-icon mdi mdi-briefcase-check', NULL),
 (17, 'Laporan Properti', '#laporan_kontrol', 'menu-icon mdi mdi-briefcase-check', NULL),
-(18, 'Laporan Transaksi', '#laporan_transaksi', 'menu-icon mdi mdi-briefcase-check', NULL),
-(19, 'Approve', '#approve_list', 'menu-icon mdi mdi-briefcase-check', NULL),
-(20, 'Laporan Keuangan', '#laporan_pengeluaran', 'menu-icon mdi mdi-briefcase-check', NULL);
+(18, 'Laporan Transaksi', '#laporan_transaksi', 'menu-icon mdi mdi-folder-star', NULL),
+(19, 'Approve', '#approve_list', 'menu-icon mdi mdi-approval', NULL),
+(20, 'Laporan Keuangan', '#laporan_pengeluaran', 'menu-icon mdi mdi-folder-lock-open', NULL);
 
 -- --------------------------------------------------------
 
@@ -1366,7 +1395,9 @@ INSERT INTO `user_role_menu` (`id_menu_role`, `id_menu`, `id_akses`) VALUES
 (25, 13, 3),
 (27, 17, 5),
 (28, 15, 3),
-(29, 20, 5);
+(29, 20, 5),
+(30, 20, 1),
+(31, 17, 3);
 
 -- --------------------------------------------------------
 
@@ -1399,7 +1430,7 @@ INSERT INTO `user_sub_menu` (`id_sub`, `nama_sub`, `sub_url`, `javascript`, `id_
 (13, 'Calon Konsumen', 'konsumen/calonkonsumen', 'custom_konsumen', 8),
 (14, 'Konsumen', 'konsumen/datakonsumen', 'custom_konsumen', 8),
 (15, 'Kelompok Item', 'item', 'custom_pengeluaran', 2),
-(16, '', '', 'custom_rab', 2),
+(16, '', '', 'custom_rab', 0),
 (17, 'List Unit', 'laporanunit', 'custom_laporan', 13),
 (18, 'List Konsumen', 'laporankonsumen/konsumen', 'custom_laporan', 15),
 (19, 'List Calon', 'laporankonsumen/calon', 'custom_laporan', 15),
@@ -1410,7 +1441,10 @@ INSERT INTO `user_sub_menu` (`id_sub`, `nama_sub`, `sub_url`, `javascript`, `id_
 (24, 'List Unit', 'laporanunit', 'custom_laporan', 17),
 (25, 'Laporan Pengeluaran', 'laporanpengeluaran', 'custom_laporan', 20),
 (26, 'Data Pemasukan', 'pemasukan', 'custom_pemasukan', 16),
-(27, 'Laporan Pemasukan', 'laporanpemasukan', 'custom_laporan', 20);
+(27, 'Laporan Pemasukan', 'laporanpemasukan', 'custom_laporan', 20),
+(28, 'Persyaratan Konsumen', 'persyaratankonsumen', 'custom_persyaratan', 2),
+(29, 'Persyaratan Unit', 'persyaratanunit', 'custom_persyaratan', 2),
+(30, 'Follow Up Calon', 'followcalonkonsumen', 'custom_konsumen', 8);
 
 -- --------------------------------------------------------
 
@@ -1589,9 +1623,9 @@ ALTER TABLE `detail_transaksi`
   ADD KEY `kd_transaksi` (`id_transaksi`);
 
 --
--- Indexes for table `follow_calon_konsumen`
+-- Indexes for table `follow_up`
 --
-ALTER TABLE `follow_calon_konsumen`
+ALTER TABLE `follow_up`
   ADD PRIMARY KEY (`id_follow`),
   ADD KEY `id_user` (`id_user`),
   ADD KEY `id_konsumen` (`id_konsumen`);
@@ -1838,7 +1872,7 @@ ALTER TABLE `data_perusahaan`
 -- AUTO_INCREMENT for table `detail_rab`
 --
 ALTER TABLE `detail_rab`
-  MODIFY `id_detail` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_detail` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `detail_transaksi`
@@ -1847,10 +1881,10 @@ ALTER TABLE `detail_transaksi`
   MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `follow_calon_konsumen`
+-- AUTO_INCREMENT for table `follow_up`
 --
-ALTER TABLE `follow_calon_konsumen`
-  MODIFY `id_follow` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `follow_up`
+  MODIFY `id_follow` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `jenis_pembayaran`
@@ -1880,7 +1914,7 @@ ALTER TABLE `kerja_sama_bank`
 -- AUTO_INCREMENT for table `konsumen`
 --
 ALTER TABLE `konsumen`
-  MODIFY `id_konsumen` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_konsumen` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `pemasukan`
@@ -1916,7 +1950,7 @@ ALTER TABLE `persyaratan_kelompok_sasaran`
 -- AUTO_INCREMENT for table `persyaratan_sasaran`
 --
 ALTER TABLE `persyaratan_sasaran`
-  MODIFY `id_sasaran` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_sasaran` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `persyaratan_unit`
@@ -1928,13 +1962,13 @@ ALTER TABLE `persyaratan_unit`
 -- AUTO_INCREMENT for table `properti`
 --
 ALTER TABLE `properti`
-  MODIFY `id_properti` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_properti` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `rab_properti`
 --
 ALTER TABLE `rab_properti`
-  MODIFY `id_rab` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_rab` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `rekening_properti`
@@ -1982,7 +2016,7 @@ ALTER TABLE `type_id_card`
 -- AUTO_INCREMENT for table `unit_properti`
 --
 ALTER TABLE `unit_properti`
-  MODIFY `id_unit` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_unit` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -2000,13 +2034,13 @@ ALTER TABLE `user_activity`
 -- AUTO_INCREMENT for table `user_assign_properti`
 --
 ALTER TABLE `user_assign_properti`
-  MODIFY `id_assign` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id_assign` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `user_controller`
 --
 ALTER TABLE `user_controller`
-  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `user_menu`
@@ -2024,13 +2058,13 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `user_role_menu`
 --
 ALTER TABLE `user_role_menu`
-  MODIFY `id_menu_role` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id_menu_role` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
-  MODIFY `id_sub` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_sub` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
