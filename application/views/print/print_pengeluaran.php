@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/custom/css/custom_css.css">
     <title>Document</title>
 </head>
+<?php var_dump($pengeluaran) ?>
 <body>
     <div class="container">
         <h2 class="txt-center">Laporan Semua Pengeluaran</h2>        

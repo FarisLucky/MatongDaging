@@ -26,7 +26,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-12">
-                                <form id="form_perusahaan" action="<?= base_url() ?>profil_perusahaan/update" method="post" enctype="multipart/form-data">
+                                <form id="form_perusahaan" action="<?= base_url() ?>profilperusahaan/update" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="txt_id" value="<?php $id = $perusahaan[0]['id_perusahaan']; echo $this->encryption->encrypt($id); ?>">
                                     <div class="row">
                                         <div class="col-sm-12">

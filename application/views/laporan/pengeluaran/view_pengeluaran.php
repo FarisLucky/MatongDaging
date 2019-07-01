@@ -9,6 +9,7 @@
                     </div>
                 </div>
                 <hr>
+                <form action="" method="post">
                 <div class="row">
                     <div class="col-sm-9">
                         <div class="row">
@@ -39,9 +40,10 @@
                     </div>
                     <div class="col-sm-3 pt-4 px-0 mx-0">
                         <button type="submit" class="btn btn-primary" id="search_kontrol"><i class="fa fa-search"></i>Search</button>
-                        <a href="<?= base_url('laporanpengeluaran/printall') ?>" class="btn btn-warning"><i class="fa fa-print"></i>Print</a>
+                        <button type="submit" formaction="<?php echo base_url('laporanpemasukan/printall') ?>" class="btn btn-warning"><i class="fa fa-print"></i>Print</button>
                     </div>
                 </div>
+                </form>
                 <hr>
                 <div class="row my-2">
                     <div class="col-sm-12">
