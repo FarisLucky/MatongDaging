@@ -81,14 +81,14 @@ class LaporanPengeluaran extends CI_Controller {
         }
         return $this->output->set_output(json_encode($data));
     }
-    // public function printAll()
-    // {
-    //     $this->load->library('Pdf');
-    //     $data["pengeluaran"] = $this->whereData();
-    //     // $data['pengeluaran'] = $this->Mlaporan->getDataWhere("*","tbl_pengeluaran",$where)->result();
-    //     $this->load->view("print/print_pengeluaran",$data);
-    //     // $this->pdf->load_view('Semua Pengeluaran','print/print_pengeluaran',$data);
-    // }
+    public function printAll()
+    {
+        $this->load->library('Pdf');
+        $where = $this->whereData();
+        $data['pengeluaran'] = $this->Mlaporan->getDataWhere("*","tbl_pengeluaran",$where)->result();
+        // $this->load->view("print/print_pengeluaran",$where);
+        $this->pdf->load_view('Semua Pengeluaran','print/print_pengeluaran',$data);
+    }
     public function printSpesific($id_pengeluaran)
     {
         $this->load->library('Pdf');

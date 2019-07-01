@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-sm-3 pt-4 px-0 mx-0">
                         <button type="submit" class="btn btn-primary" id="search_kontrol"><i class="fa fa-search"></i>Search</button>
-                        <button type="submit" formaction="<?php echo base_url('laporanpemasukan/printall') ?>" class="btn btn-warning"><i class="fa fa-print"></i>Print</button>
+                        <button type="submit" formaction="<?php echo base_url('laporanpengeluaran/printall') ?>" class="btn btn-warning"><i class="fa fa-print"></i>Print</button>
                     </div>
                 </div>
                 </form>
