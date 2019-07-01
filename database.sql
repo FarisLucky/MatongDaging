@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2019 at 07:38 PM
+-- Generation Time: Jul 01, 2019 at 07:49 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -695,15 +695,6 @@ CREATE TABLE `surat_surat` (
   `hal` varchar(255) NOT NULL,
   `isi_surat` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `tbl_follow`
--- (See below for the actual view)
---
-CREATE TABLE `tbl_follow` (
-);
 
 -- --------------------------------------------------------
 
@@ -1445,15 +1436,6 @@ INSERT INTO `user_sub_menu` (`id_sub`, `nama_sub`, `sub_url`, `javascript`, `id_
 (28, 'Persyaratan Konsumen', 'persyaratankonsumen', 'custom_persyaratan', 2),
 (29, 'Persyaratan Unit', 'persyaratanunit', 'custom_persyaratan', 2),
 (30, 'Follow Up Calon', 'followcalonkonsumen', 'custom_konsumen', 8);
-
--- --------------------------------------------------------
-
---
--- Structure for view `tbl_follow`
---
-DROP TABLE IF EXISTS `tbl_follow`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `tbl_follow`  AS  select `follow_calon_konsumen`.`id_follow` AS `id_follow`,`follow_calon_konsumen`.`id_konsumen` AS `id_konsumen`,`follow_calon_konsumen`.`tgl_follow` AS `tgl_follow`,`follow_calon_konsumen`.`media` AS `media`,`follow_calon_konsumen`.`keterangan` AS `keterangan`,`follow_calon_konsumen`.`hasil_follow` AS `hasil_follow`,`users`.`id_user` AS `id_user` from ((`follow_calon_konsumen` join `tbl_konsumen` on((`tbl_konsumen`.`id_konsumen` = `follow_calon_konsumen`.`id_konsumen`))) join `user` `users` on((`users`.`id_user` = `follow_calon_konsumen`.`id_konsumen`))) ;
 
 -- --------------------------------------------------------
 
