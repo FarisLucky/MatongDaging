@@ -138,6 +138,7 @@ class Transaksi extends CI_Controller {
             $angsuran = $this->input->post('txt_angsuran',true);
             $tanda_jadi = $this->input->post('txt_tanda_jadi',true);
             $type = $this->input->post('txt_type_pembayaran',true);
+            $nama_type = $this->Mtransaksi->getDataWhere("type_bayar","type_bayar",["id_type_bayar"=>$type])->row();
             if ($input['type_pembayaran'] == 2) {
                 $input['periode_bayar'] = 1;
                 $input['total_bayar_periode'] = str_replace('.','',$this->input->post('txt_ttl_akhir'));
@@ -206,7 +207,7 @@ class Transaksi extends CI_Controller {
 
                 //  Periode pembayaran
                 if (!empty($type)) {
-                    if ($type == 1 || $type == 3) {
+                    if ($type == 1) {
                         $data_pembayaran = [];
                         $periode = $this->input->post('periode_bayar');
                         $total_bayar = str_replace(".","",$this->input->post('total_bayar_periode'));
@@ -234,7 +235,7 @@ class Transaksi extends CI_Controller {
                         $total_bayar = str_replace(".","",$this->input->post('txt_ttl_akhir'));
                         for($i = 1; $i <= $periode; $i++) {
                             $data_pembayaran['id_transaksi'] = $id_insert;
-                            $data_pembayaran['nama_pembayaran'] = 'Tunai ';
+                            $data_pembayaran['nama_pembayaran'] = $nama_type->type_bayar;
                             $data_pembayaran['total_tagihan'] = $total_bayar;
                             $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $this->input->post('tgl_pembayaran');
@@ -270,6 +271,7 @@ class Transaksi extends CI_Controller {
             $angsuran = $this->input->post('txt_angsuran',true);
             $tanda_jadi = $this->input->post('txt_tanda_jadi',true);
             $type = $this->input->post('txt_type_pembayaran',true);
+            $nama_type = $this->Mtransaksi->getDataWhere("type_bayar","type_bayar",["id_type_bayar"=>$type])->row();
             if ($input['type_pembayaran'] == 2) {
                 $input['periode_bayar'] = 1;
                 $input['total_bayar_periode'] = str_replace('.','',$this->input->post('txt_ttl_akhir'));
@@ -342,7 +344,7 @@ class Transaksi extends CI_Controller {
                 //  Periode pembayaran
                 if (!empty($type)) {
                     $type = $this->input->post('txt_type_pembayaran');
-                    if ($type == 1 || $type == 3) {
+                    if ($type == 1) {
                         $data_pembayaran = [];
                         $periode = $this->input->post('periode_bayar');
                         $total_bayar = str_replace(".","",$this->input->post('total_bayar_periode'));
@@ -370,7 +372,7 @@ class Transaksi extends CI_Controller {
                         $total_bayar = str_replace(".","",$this->input->post('total_bayar_periode'));
                         for($i = 1; $i <= $periode; $i++) {
                             $data_pembayaran['id_transaksi'] = $id;
-                            $data_pembayaran['nama_pembayaran'] = 'Tunai ';
+                            $data_pembayaran['nama_pembayaran'] = $nama_type->type_bayar;
                             $data_pembayaran['total_tagihan'] = $total_bayar;
                             $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $this->input->post('tgl_pembayaran');
@@ -417,6 +419,21 @@ class Transaksi extends CI_Controller {
         }
         return $this->output->set_output(json_encode($data));
         
+    }
+    public function printSpr()
+    {
+        $this->load->library('Pdf');
+        $id = $this->uri->segment(3);
+        if (!empty($id)) {
+            $session = $this->session->userdata('id_properti');
+            $where = ['id_transaksi'=>$id];
+            $getData = $this->Mtransaksi->getDataWhere("id_konsumen,id_unit","tbl_transaksi",$where)->row();
+            $data["konsumen"] = $this->Mtransaksi->getDataWhere("*","tbl_konsumen",["id_konsumen"=>$getData->id_konsumen])->row();
+            $data["unit"] = $this->Mtransaksi->getDataWhere("*","tbl_unit_properti",["id_unit"=>$getData->id_unit])->row();
+            $data['spr'] = $this->Mtransaksi->getDataWhere("setting_spr","tbl_properti",['id_properti'=>$session])->row();
+            // $this->load->view('print/print_spr',$data);
+            $this->pdf->load_view('Surat SPR','print/print_spr',$data);
+        }
     }
       // This function is private. so , anyone cannot to access this function from web based
     private function pages($core_page,$data){

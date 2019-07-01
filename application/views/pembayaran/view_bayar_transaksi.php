@@ -96,7 +96,7 @@
                                                     $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_cicilan" data-id="'.$value->id_pembayaran.'"><i class="fa fa-money"></i> Bayar</button>';
                                                 }else if (($value->status == "belum bayar") && ($value->total_bayar != 0)) {
                                                     $badge = "badge-danger";
-                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_cicilan" data-id="'.$value->id_pembayaran.'"><i class="fa fa-money"></i>Bayar</button><a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'">Cetak</a>';
+                                                    $button = '<button type="button" class="btn btn-sm btn-danger mr-1 bayar_cicilan" data-id="'.$value->id_pembayaran.'"><i class="fa fa-money"></i>Bayar</button><a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1" >Cetak</a>';
                                                 }
                                                 else if($value->status == "sementara"){
                                                     $badge = "badge-warning";
@@ -108,7 +108,7 @@
                                                 }
                                                 else{
                                                     $badge = "badge-success";
-                                                    $button = '<button type="button" class="btn btn-sm btn-success mr-1 bayar_tj" data-id="'.$value->id_pembayaran.'"><i class="fa fa-print"></i>Cetak</button>';
+                                                    $button = '<a href="'.base_url('pembayaran/printdata/'.$value->id_pembayaran).'" class="btn btn-sm btn-success mr-1" >Cetak</a>';
                                                 }?>
                                             <tr>
                                                 <td><?= $no ?></td>
@@ -146,7 +146,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" class="form_cicilan" action="<?= base_url() ?>pembayaran/transaksi/submitbayar" enctype="multipart/formdata">
+      <form method="post" class="form_cicilan" action="<?= base_url() ?>pembayaran/transaksi/submitbayar" enctype="multipart/form-data">
       <input type="hidden" name="input_hidden">
         <div class="modal-body">
             <div class="row">

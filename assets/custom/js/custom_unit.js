@@ -21,6 +21,7 @@ function readURL(input,selector) {
     }
 }
 $(document).ready(function () {
+    $(".overlay").remove();
     // Datatable Unit
     const unit = $('#tbl_unit').DataTable ({
         "processing": true,
@@ -116,7 +117,11 @@ $(document).ready(function () {
                     swallSuccess("Berhasil", "Berhasil Diubah", "success", function () {
                         location.reload();
                     })
-                } else {
+                }else if((response.success == false) && (response.error)){
+                    toastr.remove();
+                    toastr.error(response.error);
+                } 
+                else {
                     $.each(response.msg, function (key, val) {
                         let el = $('#' + key)
                         el.removeClass('is-invalid')
@@ -151,9 +156,10 @@ $(document).ready(function () {
                     },
                     dataType: "JSON",
                     success: function (success) {
-                        if (success.success == "false") {
+                        if (success.success == false) {
                             swallSuccess("Gagal", "Gagal dihapus", "error", null);
-                        } else {
+                        }
+                        else {
                             swallSuccess("Berhasil", "Berhasil Dihapus", "success", function () {
                                 unit.ajax.reload();
                             });
@@ -163,5 +169,55 @@ $(document).ready(function () {
             }
         })
     });
-
+    $("#form_multi_tambah input[name='txt_jumlah_blok']").on("change",function (e) { 
+        e.preventDefault();
+        let jumlah = $(this).val();
+        let base = $("body").attr("data-base");
+        $.ajax({
+            type: "POST",
+            url: "getjumlahdata",
+            data: {jumlah},
+            dataType: "JSON",
+            success: function (response) {
+                $("#form_multi_tambah #error_jumlah").remove();
+                if ((response.success == true) && (response.jumlah == "f2")) {
+                    $("#form_multi_tambah #txt_jumlah_blok").val("");
+                    $("#form_multi_tambah #txt_jumlah_blok").after("<small class='form-text text-danger' id='error_jumlah'>Jumlah Melampaui Batas</small>")
+                }else if ((response.success == true) && (response.jumlah == "f1")) {
+                    $("#form_multi_tambah #txt_jumlah_blok").val("");
+                    $("#form_multi_tambah #txt_jumlah_blok").after("<small class='form-text text-danger' id='error_jumlah'>Tidak bisa menambahakan, Unit melampaui batas</small>")
+                }
+            }
+        });
+    });
+    $("#form_multi_tambah").on("submit",function (e) {
+        e.preventDefault();
+        let datas = $(this).serialize();
+        $.ajax({
+            type: "POST",
+            url: "coremultitambah",
+            data: datas,
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success == true) {
+                    $('input.form-group').removeClass('is-invalid').removeClass('is-valid')
+                        .next().remove();
+                    swallSuccess("Sukses", response.text, "success", function () {
+                        window.location.href = response.url;
+                    })
+                } else if ((response.success == false) && (response.error)) {
+                    toastr.error(response.error);
+                } else {
+                    $.each(response.msg, function (key, val) {
+                        let el = $('#' + key)
+                        el.removeClass('is-invalid')
+                            .addClass(val.length > 0 ? 'is-invalid' : 'is-valid')
+                            .next('.invalid-feedback').remove();
+                        el.after(val);
+                        return;
+                    });
+                }
+            }
+        });
+    });
 });

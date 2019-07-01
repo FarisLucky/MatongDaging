@@ -56,6 +56,7 @@ function dataTables(selector,url,datas) {
         }
     }
 $(document).ready(function () {
+    $(".overlay").remove();
     const tanda_jadi = dataTables("#tbl_tanda_jadi","datatj","");
     const uang_muka = dataTables("#tbl_uang_muka","dataum","");
     const transaksi = dataTables("#tbl_transaksi","datatransaksi","");
@@ -66,7 +67,7 @@ $(document).ready(function () {
     $("#modal_tanda_jadi input[name='upload']").change(function () {
         readURL(this,"#modal_tanda_jadi img");
     });
-    $("#view_surat_kpr input[name='upload_sp3k']").change(function () {
+    $("#view_surat_kpr input[name='upload']").change(function () {
         readURL(this,"#view_surat_kpr #foto_sp3k");
     });
     $("#modal_uang_muka input[name='upload']").change(function () {

@@ -28,14 +28,7 @@ function formatRupiah(angka, prefix){
     return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
 }
 $(document).ready(function () {
-    // const konsumen = $('#select_konsumen').select2({
-    //     placeholder: 'Pilih Konsumen',
-    //     theme: "bootstrap"
-    // });
-    // const unit = $('#select_unit').select2({
-    //     placeholder: 'Pilih Unit',
-    //     theme: "bootstrap"
-    // });
+    $(".overlay").remove();
     $("#tbl_list_transaksi,#tbl_list_unlock").DataTable({
         "responsive" :true
     });

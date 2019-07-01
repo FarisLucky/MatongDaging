@@ -74,7 +74,7 @@
                                         </div>
                                         <div class="col-md-4 text-center">
                                             <small class="txt-normal mb-2">Foto Profil</small>
-                                            <img src="<?= base_url()."assets/uploads/images/profil/user/".$users->foto_user ?> " width="100%" class="img-thumbnail">
+                                            <img src="<?= base_url()."assets/uploads/images/profil/user/".$users->foto_user ?> " width="85%" class="img-thumbnail">
                                         </div>
                                     </div>
                                 </form>                                  
@@ -89,13 +89,12 @@
                         <form id="form_user_properti" action="<?= base_url() ?>kelolausers/userproperti" method="post" >
                         <input type="hidden" name="txt_id" id="hidden_user" value="<?= $users->id_user ?>">
                         <div class="row">
-                        <!-- <?php var_dump($user_properti) ?> -->
                             <?php foreach ($properti as $key => $prop) : 
                                     $id = $prop->id_properti;
                                     $check = getProperti($id,$users->id_user);
                                 ?>
-                                <div class="col-sm-3">
-                                    <img src="<?= base_url() ?>assets/uploads/images/properti/<?= $prop->foto_properti ?>" alt="" class="img-rounded img-properti">
+                                <div class="col-sm-3 mt-3">
+                                    <img src="<?= base_url() ?>assets/uploads/images/properti/<?= $prop->foto_properti ?>" width="120px" class="img-rounded text-center">
                                     <div class="form-group">
                                         <div class="col-sm-12">
                                             <div class="form-check form-check-flat">

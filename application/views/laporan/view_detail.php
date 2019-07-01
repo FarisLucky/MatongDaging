@@ -56,8 +56,7 @@
                                 <div class="form-group">
                                     <div class="form-label-group">
                                         <label for="input_nama">Nama Lengkap</label>
-                                        <input type="text" class="form-control" id="input_nama" name="detail_nama" value="<?= $konsumen[0]['nama_lengkap'] ?>" placeholder="Masukan Nama Lengkap" required ><br>
-                                        <!--$konsumen diatas itu harus sama kayak yang di controller, di $data yang di deklarasikan, lalu ['nama_lengkap'] itu merupakan field yang ada pada database, supaya dia bisa dapat datanya dari field nama_lengkap -->
+                                        <input type="text" class="form-control" id="input_nama" name="detail_nama" value="<?= $konsumen[0]['nama_lengkap'] ?>" placeholder="Masukan Nama Lengkap" required >
                                     </div>
                                 </div>
                             </div>

@@ -178,7 +178,7 @@ class Rab extends CI_Controller
 		$data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere('kelompok_item',['id_kategori'=> 1,"status"=>"aktif"])->result();
 		$this->pages('kelola_rab/view_edit_rab_unit',$data);
 	}
-	function update(){
+	public function update(){
 		$id_detail = $this->input->post('id_detail',true);
 		$nama_detail = $this->input->post('nama_detail',true);
 		$volume = $this->input->post('volume',true);
@@ -209,7 +209,7 @@ class Rab extends CI_Controller
 		$properti = $this->M_kelola_rab->getDataWhere("rab_properti",['id_rab'=>$id_rab])->row();
 		redirect('rab/properti/'.$properti->id_properti);
 	}
-	function core_update_unit(){
+	public function core_update_unit(){
 		$id_detail = $this->input->post('id_detail',true);
 		$nama_detail = $this->input->post('nama_detail',true);
 		$volume = $this->input->post('volume',true);
@@ -242,6 +242,57 @@ class Rab extends CI_Controller
 		redirect('rab/unit/'.$properti->id_properti);
 	}
 	
+	public function printRab()
+	{ 
+		$id = $this->uri->segment(3);
+        $this->load->library('Pdf');
+        $this->load->helper('date');
+        $data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere("kelompok_item", ["id_kategori"=>4])->result_array();
+		$data["rab"] = $this->M_kelola_rab->getDataWhere("rab_properti",["id_rab"=>$id])->row();
+		$data["logo"] = $this->M_kelola_rab->getDataWhere("properti",["id_properti"=>$data["rab"]->id_properti])->row_array();
+		$data["pembuat"] = $this->M_kelola_rab->getDataWhere("user",["id_user"=>$_SESSION["id_user"]])->row_array();
+        // $this->load->view('print/print_rab_properti', $data);
+        $this->pdf->load_view('RAB Properti', 'print/print_rab_properti', $data);
+	}
+	public function printRabUnit()
+	{ 
+		$id = $this->uri->segment(3);
+        $this->load->library('Pdf');
+        $this->load->helper('date');
+        $data['kelompok_rab'] = $this->M_kelola_rab->getDataWhere("kelompok_item", ["id_kategori"=>1])->result_array();
+		$data["rab"] = $this->M_kelola_rab->getDataWhere("rab_properti",["id_rab"=>$id])->row();
+		$data["logo"] = $this->M_kelola_rab->getDataWhere("properti",["id_properti"=>$data["rab"]->id_properti])->row_array();
+		$data["pembuat"] = $this->M_kelola_rab->getDataWhere("user",["id_user"=>$_SESSION["id_user"]])->row_array();
+        // $this->load->view('print/print_rab_properti', $data);
+        $this->pdf->load_view('RAB Properti', 'print/print_rab_properti', $data);
+	}
+	public function ubahRab()
+	{
+		$data = ["success"=>false];
+		$this->form_validation->set_rules('nama_rab', 'Nama', 'trim|required|min_length[3]|max_length[25]');
+		$this->form_validation->set_rules('tanah_efektif', 'Tanah Efektif', 'trim|required|min_length[3]|max_length[25]');
+		$this->form_validation->set_rules('sarana', 'Sarana Prasarana', 'trim|required|min_length[3]|max_length[25]');
+		if ($this->form_validation->run() == FALSE) {
+			foreach ($_POST as $key => $value) {
+                $data['msg'][$key] = form_error($key);
+            }
+		} else {
+			$id = $this->input->post('input_hidden',true);
+			$input = [
+				"nama_rab"=>$this->input->post('nama_rab',true),
+				"tanah_effective"=>$this->input->post('tanah_efektif',true),
+				"sarana"=>$this->input->post('sarana',true)
+			];
+			$query = $this->M_kelola_rab->update_data("rab_properti",$input,["id_properti"=>$id]);
+			if ($query) {
+				$data["success"] = true;
+			}
+			else{
+				$data["error"] = "hello";
+			}
+		}
+		return $this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
 	private function pages($page,$data)
 	{
         $this->load->view('partials/part_navbar',$data);

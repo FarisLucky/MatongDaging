@@ -29,6 +29,7 @@ function swallSuccess(titles, texts, types, success) {
     })
 }
 $(document).ready(function () {
+    $(".overlay").remove();
     const approve = $("#tbl_approve_pembayaran,#tbl_approve_transaksi,#tbl_app_detail,#tbl_approve_manager,#tbl_list_approve").DataTable({
         "responsive":true
     }); 

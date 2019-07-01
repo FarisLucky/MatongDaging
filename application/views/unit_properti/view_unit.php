@@ -45,7 +45,8 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block"><i class="fa fa-m"></i>Data Unit</h5>
-                                <a href="<?= base_url() ?>unitproperti/tambah" class="btn btn-info btn-sm float-right mr-2">Tambah Unit</a>
+                                <a href="<?= base_url() ?>unitproperti/multitambah" class="btn btn-warning btn-sm float-right"><i class="fa fa-plus"></i>Tambah Banyak</a>
+                                <a href="<?= base_url() ?>unitproperti/tambah" class="btn btn-primary btn-sm float-right mx-2"><i class="fa fa-plus"></i>Tambah</a>
                             </div>
                         </div>
                         <hr>

@@ -7,15 +7,14 @@ class Model_kelola_user extends CI_Model {
 
     private $table="user_assign_properti";
 
-    public function getWhere($select,$tbl,$where,$order=null,$order_by=null)
+    public function getDataWhere($select,$tbl,$where,$column_order = null,$type_order = null)
     {
         $this->db->select($select);
         $this->db->where($where);
-        $this->db->from($tbl);
-        if ($order != null) {
-            $this->db->order_by($order, $order_by);
+        if (($column_order != null) && ($type_order != null)) {
+            $this->db->order_by($column_order, $type_order);
         }
-        return $this->db->get();
+        return $this->db->get($tbl);
     }
     public function updateData($data,$tbl,$where)
     {

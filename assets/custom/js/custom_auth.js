@@ -18,6 +18,7 @@ function inputPaste(selector){
     })
 }
 $(document).ready(function () {
+    $(".overlay").remove();
     $("#form_login").submit(function (e) {
         e.preventDefault();
         let datas = $(this).serialize();

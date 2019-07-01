@@ -5,7 +5,7 @@
       <div class="card-body p-4">
         <div class="row">
             <div class="col-sm-12">
-              <h4 class="d-inline-block mt-2">Tambah RAB Bangunan</h4>
+              <h4 class="d-inline-block mt-2">Tambah RAB Properti</h4>
               <a href="<?= base_url().'rab/properti/'.$kembali ?>" class="float-right" id="kembali"><i class="fa fa-arrow-left text-primary mt-2" ></i> Kembali</a>
             </div>
         </div>

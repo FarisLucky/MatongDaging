@@ -50,3 +50,16 @@ function getController() {
     return $controller_uri;
 
 }
+function getDataWhere($select,$tbl,$where,$order = null,$order_by = null) {
+
+    $CI =& get_instance();
+    $CI->db->select($select);
+    $CI->db->from($tbl);
+    $CI->db->where($where);
+    if ($order != null) {
+        $CI->db->order_by($order, $order_by);
+    }
+    $query = $CI->db->get();
+    return $query;
+
+}

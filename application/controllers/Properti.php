@@ -31,8 +31,8 @@ class Properti extends CI_Controller {
         $data = array();
         $no = 1;
         foreach ($fetch_values as $value) {
-            $properti = $this->Model_properti->getDataWhere('rab_properti',['id_properti'=>$value->id_properti,'type'=>'Properti']);
-            $unit = $this->Model_properti->getDataWhere('rab_properti',['id_properti'=>$value->id_properti,'type'=>'unit']);
+            $properti = $this->Model_properti->getDataWhere('*','rab_properti',['id_properti'=>$value->id_properti,'type'=>'Properti']);
+            $unit = $this->Model_properti->getDataWhere('*','rab_properti',['id_properti'=>$value->id_properti,'type'=>'unit']);
             if ($value->status != 'publish') {
                 $this->status = '<a href="'.base_url().'properti/detailproperti/'.$value->id_properti.'" class="btn btn-sm btn-primary mr-1" id="detail_data_properti">Detail</a><button type="button" class="btn btn-sm btn-danger mr-1" id="hapus_data_properti" data-id="'.$value->id_properti.'">Hapus</button><button type="button" class="btn btn-sm btn-warning" id="publish_data_properti" data-id="'.$value->id_properti.'">Publish</button>';
             }else{
@@ -90,65 +90,46 @@ class Properti extends CI_Controller {
             }
         }
         else{
-            $config['upload_path'] = './assets/uploads/images/properti/';
-            $config['allowed_types'] = 'gif|jpg|png';
-            $config['encrypt_name'] = true;
-            $config['max_size']  = '2048';
-            $config['max_width']  = '1024';
-            $config['max_height']  = '768';
+            $id = $this->input->post('txt_id',true);
+            $config = $this->uploadImg();
+            $input = $this->input();
             $this->load->library('upload', $config);
             $img = $this->reArrayFoto($_FILES['img']);
-            if (isset($_FILES['img'])) {
+            if ((!empty($img["foto"]["name"])) || (!empty($img["logo"]["name"]))) {
                 foreach ($img as $key => $value) {
                     $_FILES[$key] = $value;
                     if ($this->upload->do_upload($key)){
-                        $link = $this->Model_properti->getImage($this->input->post('txt_id',true));
+                        $link = $this->Model_properti->getDataWhere("logo_properti,foto_properti","tbl_properti",["id_properti"=>$id])->row();
                         if ($key == "logo") {
-                            $coba = $this->unlinkImg($link->logo_properti);
+                            if ($link->logo_properti != "default2.jpg") {
+                                $coba = $this->unlinkImg($link->logo_properti);
+                            }
                             $upload = $this->upload->data();
                             $logo = $upload['file_name'];
+                            $input += ["logo_properti"=>$logo];
                         }
                         else if($key == "foto"){
-                            $coba = $this->unlinkImg($link->foto_properti);
+                            if ($link->foto_properti != "default.jpg") {
+                                $coba = $this->unlinkImg($link->foto_properti);
+                            }
                             $upload = $this->upload->data();
                             $foto = $upload['file_name'];
-                        }else{
-                            $no_data ="Foto Tidak Tersedia";
+                            $input += ["foto_properti"=>$foto];
+                        }
+                        $db = $this->Model_properti->updateData($input,"properti",["id_properti"=>$id]);
+                        if ($db) {
+                            $data["success"] = true;
                         }
                     }
                     else{
-                        if ($key == "logo") {
-                            $logo = "";
-                        }
-                        else if($key == "foto"){
-                            $foto = "";
-                        }else{
-                            $logo = "";
-                            $foto = "";
-                        }
+                        $data["error"] = $this->upload->display_errors();
                     }
-                }
-                $input = $this->input($logo,$foto);
-                $db = $this->Model_properti->updateDataProperti($input);
-                if ($db) {
-                    $data['success'] = true;
-                    $data['gambar'] = "Berhasil diubah";
-                }else{
-                    $data['success'] = false;
-                    $data['error'] = "Gagal Menambahkan";
-                    $data['gambar'] = "gagal Diubah";
                 }
             }
             else{
-                $input = $this->input();
-                $db = $this->Model_properti->updateDataProperti($input);
+                $db = $this->Model_properti->updateData($input,"properti",["id_properti"=>$id]);
                 if ($db) {
                     $data['success'] = true;
-                    $data['gambar'] = "Tidak diubah input data berhasil";
-                }else{
-                    $data['success'] = false;
-                    $data['error'] = "Gagal Menambahkan";
-                    $data['gambar'] = "Tidak Diubah input data gagal";
                 }
             }
         }
@@ -177,52 +158,40 @@ class Properti extends CI_Controller {
             }
         }
         else{
-            $config['upload_path'] = './assets/uploads/images/properti/';
-            $config['allowed_types'] = 'gif|jpg|png';
-            $config['encrypt_name'] = true;
-            $config['max_size']  = '2048';
-            $config['max_width']  = '1024';
-            $config['max_height']  = '768';
+            $id = $this->input->post('txt_id',true);
+            $config = $this->uploadImg();
+            $input = $this->input();
+            $input += ["id_user"=>$this->session->userdata("id_user")];
             $this->load->library('upload', $config);
             $img = $this->reArrayFoto($_FILES['foto']);
-            if (isset($_FILES['foto'])) {
+            if ((!empty($img["foto"]["name"])) || (!empty($img["logo"]["name"]))) {
                 foreach ($img as $key => $value) {
                     $_FILES[$key] = $value;
                     if ($this->upload->do_upload($key)){
                         if ($key == "logo") {
                             $upload = $this->upload->data();
-                            $logo = $upload['file_name'];
+                            $logo = $upload["file_name"];
+                            $input += ["logo_properti"=>$logo];
                         }
                         else if($key == "foto"){
                             $upload = $this->upload->data();
-                            $foto = $upload['file_name'];
-                        }else{
-                            $no_data ="Foto Tidak Tersedia";
+                            $foto = $upload["file_name"];
+                            $input += ["foto_properti"=>$foto];
                         }
-                    }
-                    else{
-                        if ($key == "logo") {
-                            $logo = "";
+                        $db = $this->Model_properti->insertData($input,"properti");
+                        if ($db) {
+                            $data['success'] = true;
                         }
-                        else if($key == "foto"){
-                            $foto = "";
-                        }else{
-                            $logo = "";
-                            $foto = "";
-                        }
+                    }else{
+                        $data["error"] = $this->upload->display_errors();
                     }
                 }
-            }
-            $input = $this->input($logo,$foto);
-            $db = $this->Model_properti->insertDataProperti($input);
-            if ($db) {
-                $data['success'] = true;
-                $data['gambar'] = "Berhasil diubah";
-                // $data['redirect'] = redirect('properti');
             }else{
-                $data['success'] = false;
-                $data['error'] = "Gagal Menambahkan";
-                $data['gambar'] = "gagal Diubah";
+                $input += ["logo_properti"=>"default2.jpg","foto_properti"=>"default.jpg"];
+                $db = $this->Model_properti->insertData($input,"properti");
+                if ($db) {
+                    $data['success'] = true;
+                }
             }
         }
         return $this->output->set_output(json_encode($data));
@@ -311,22 +280,19 @@ class Properti extends CI_Controller {
         $this->form_validation->set_rules('txt_rekening','Rekening','trim|required');
         $this->form_validation->set_rules('txt_status','Status','trim|required');
         $this->form_validation->set_rules('txt_alamat','Alamat','trim|required');
-        $this->form_validation->set_rules('txt_spr','SPR','trim|required');
         $this->form_validation->set_error_delimiters('<div class="invalid-feedback">','</div>');
     }
-    private function input($logo = null,$foto=null)
+    private function input()
     {
         $data = [
-            'id'=>$this->input->post('txt_id',true),
-            'nama'=>$this->input->post('txt_nama',true),
+            'nama_properti'=>$this->input->post('txt_nama',true),
             'alamat'=>$this->input->post('txt_alamat',true),
-            'luas'=>$this->input->post('txt_luas',true),
-            'jumlah'=>$this->input->post('txt_jumlah',true),
+            'luas_tanah'=>$this->input->post('txt_luas',true),
+            'jumlah_unit'=>$this->input->post('txt_jumlah',true),
             'rekening'=>$this->input->post('txt_rekening',true),
             'status'=>$this->input->post('txt_status',true),
-            'spr'=>$this->input->post('txt_spr',true),
-            'logo'=>$logo,
-            'foto'=>$foto
+            'setting_spr'=>$this->input->post('txt_spr'),
+            'tgl_buat'=>date('Y-m-d')
         ];
         return $data;
     }
@@ -354,6 +320,15 @@ class Properti extends CI_Controller {
         $this->load->view('partials/part_sidebar',$data);
         $this->load->view($core_page,$data);
         $this->load->view('partials/part_footer',$data);
+    }
+    private function uploadImg(){
+        $config['upload_path'] = './assets/uploads/images/properti/';
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['encrypt_name'] = true;
+        $config['max_size']  = '2048';
+        $config['max_width']  = '1024';
+        $config['max_height']  = '768';
+        return $config;
     }
 }
 

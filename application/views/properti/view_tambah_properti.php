@@ -21,6 +21,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h5 class="d-inline-block">Tambah Properti</h5>
+                                <a href="<?= base_url() ?>properti" class="btn btn-dark mr-2 float-right"><i class="fa fa-arrow-circle-left"></i>Kembali</a>
                             </div>
                         </div>
                         <hr>
@@ -58,11 +59,15 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="txt_logo" class="d-flex">logo Properti</label><input type="file" name="foto[logo]" multiple id="txt_logo" class="form-control col-sm-4">
+                                                <label for="txt_logo" class="d-flex">logo Properti</label>
+                                                <img id="logo_properti" width="180px" alt="" >
+                                                <input type="file" name="foto[logo]" multiple id="txt_logo" class="form-control col-sm-4">
                                                 
                                             </div>
                                             <div class="form-group">
-                                                <label for="txt_foto" class="d-flex">Foto Properti</label><input type="file" name="foto[foto]" multiple id="txt_foto" class="form-control col-sm-4">
+                                                <label for="txt_foto" class="d-flex">Foto Properti</label>
+                                                <img id="foto_properti" style="max-width:100%;max-height:350px" >
+                                                <input type="file" name="foto[foto]" multiple id="txt_foto" class="form-control col-sm-4">
                                             </div>
                                         </div>
                                     </div>                                
@@ -73,7 +78,7 @@
                             <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="txt_foto" class="font-weight-light">SPR</label>
-                                <textarea class="form-control" name="txt_spr" id="txt_spr" rows="10" ></textarea>
+                                <textarea class="form-control" name="txt_spr" id="txt_spr" rows="5" ></textarea>
                             </div>
                             </div>
                         </div>

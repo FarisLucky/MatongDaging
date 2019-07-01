@@ -81,6 +81,7 @@ function inputPaste(selector){
     })
 }
 $(document).ready(function () {
+    $(".overlay").remove();
     const user = $('#tbl_users').DataTable({
         "processing": true,
         "responsive": true,

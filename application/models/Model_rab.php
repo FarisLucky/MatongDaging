@@ -26,6 +26,8 @@ class Model_rab extends CI_Model{
 	{
 	$this->db->where($where);
 	$this->db->update($table,$data);
+	return $this->db->affected_rows();
+	
 	}
 	public function getTotalSum($select,$where,$table)
 	{
