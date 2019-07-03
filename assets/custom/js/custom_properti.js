@@ -61,9 +61,19 @@ function notifToastr(types, text) {
         "hideMethod": "fadeOut"
     };
 }
-
+function CKupdate(){
+    for ( instance in CKEDITOR.instances )
+        CKEDITOR.instances[instance].updateElement();
+}
 $(document).ready(function () {
-    $(".overlay").remove();
+    let view = $("#tambah_property");
+    let view_detail = $("#detail_property");
+    if (view.length != 0) {
+        CKEDITOR.replace("txt_spr");
+    }
+    if (view_detail.length != 0) {
+        CKEDITOR.replace("txt_spr");
+    }
     const properti = $('#tbl_properti').DataTable({
         "processing": true,
         "responsive": true,
@@ -117,6 +127,7 @@ $(document).ready(function () {
         let form = new FormData($(this)[0]);
         let base = $("body").attr("data-base");
         let url = base+"properti/update";
+        $(".overlay").show();
         $.ajax({
             type: "post",
             url: url,
@@ -143,6 +154,9 @@ $(document).ready(function () {
                         return;
                     });
                 }
+            },
+            complete: function(){
+                $('.overlay').hide();
             }
         });
     });
@@ -151,6 +165,7 @@ $(document).ready(function () {
         let form = new FormData($(this)[0]);
         let url = $(this).attr('action');
         // console.log(form);
+        $(".overlay").show();
         $.ajax({
             type: "post",
             url: "core_tambah",
@@ -159,7 +174,6 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (success) {
-                // console.log(success);
                 if (success.success === true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid')
                         .next().remove();
@@ -178,6 +192,9 @@ $(document).ready(function () {
                         return;
                     });
                 }
+            },
+            complete: function(){
+                $('.overlay').hide();
             }
         });
     });
@@ -194,6 +211,7 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.value) {
                 let id = $(this).attr('data-id');
+                $(".overlay").show();
                 $.ajax({
                     type: "post",
                     url: "properti/hapus",
@@ -209,6 +227,9 @@ $(document).ready(function () {
                                 properti.ajax.reload();
                             });
                         }
+                    },
+                    complete: function(){
+                        $('.overlay').hide();
                     }
                 });
             }
@@ -292,12 +313,5 @@ $(document).ready(function () {
             }
         });
     })
-    let view = $("#tambah_property");
-    let view_detail = $("#detail_property");
-    if (view.length != 0) {
-        CKEDITOR.replace("txt_spr");
-    }
-    if (view_detail.length != 0) {
-        CKEDITOR.replace("txt_edit_spr");
-    }
+   
 });

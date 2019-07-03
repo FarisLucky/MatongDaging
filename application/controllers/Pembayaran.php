@@ -80,13 +80,13 @@ class Pembayaran extends CI_Controller {
             $sub[] = $value->nama_lengkap;
             $sub[] = $value->nama_unit;
             $sub[] = '<span class="badge '.$badge.'">'.$value->status.'</span>';
+            $sub[] = $value->pembuat;
             $sub[] = "Rp. ".number_format($value->total_tagihan,2,',','.');
+            $sub[] = "Rp. ".number_format($value->jumlah_bayar,2,',','.');
             $sub[] = "Rp. ".number_format($value->total_bayar,2,',','.');
             $sub[] = "Rp. ".number_format($value->hutang,2,',','.');
             $sub[] =  "<img src='".base_url('assets/uploads/images/pembayaran/tanda_jadi/'.$value->bukti_bayar)."'>";
-            $sub[] = $value->tgl_jatuh_tempo;
             $sub[] = $value->tgl_bayar;
-            $sub[] = $value->pembuat;
             $sub[] = $button;
             $data[] = $sub;
             $no++;

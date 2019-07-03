@@ -61,6 +61,17 @@ class KelolaUsers extends CI_Controller
             }
         } else {
             $password = password_hash($this->input->post('txt_password_user', true), PASSWORD_DEFAULT);
+            $input = [
+                'nama_lengkap' => $this->input->post('txt_nama_user', true),
+                'alamat' => $this->input->post('txt_alamat_user', true),
+                'id_akses' => $this->input->post('txt_akses_user', true),
+                'email' => $this->input->post('txt_email_user', true),
+                'no_hp' => $this->input->post('txt_telp_user', true),
+                'jenis_kelamin' => $this->input->post('radio_jk', true),
+                'username' => $this->input->post('txt_username_user', true),
+                'status_user' => $this->input->post('txt_status_user', true),
+                'password' => $password
+            ];
             $config['upload_path'] = './assets/uploads/images/profil/user/';
             $config['allowed_types'] = 'jpg|jpeg|png';
             $config['encrypt_name'] = true;
@@ -71,38 +82,16 @@ class KelolaUsers extends CI_Controller
             if ($_FILES['txt_foto_user']['name'] != "") {
                 if ($this->upload->do_upload('txt_foto_user')) {
                     $img = $this->upload->data();
-                    $input = [
-                        'nama' => $this->input->post('txt_nama_user', true),
-                        'alamat' => $this->input->post('txt_alamat_user', true),
-                        'akses' => $this->input->post('txt_akses_user', true),
-                        'email' => $this->input->post('txt_email_user', true),
-                        'telp' => $this->input->post('txt_telp_user', true),
-                        'jk' => $this->input->post('radio_jk', true),
-                        'username' => $this->input->post('txt_username_user', true),
-                        'status' => $this->input->post('txt_status_user', true),
-                        'password' => $password,
-                        'img' => $img['file_name']
-                    ];
-                    $this->Muser->insertUser($input);
+                    $input += ["foto_user"=>$img["file_name"]];
+                    $this->Muser->insertData($input,"user");
                     $data['success'] = true;
                 } else {
                     $data['error'] = $this->upload->display_errors();
                     $data['success'] = false;
                 }
             } else {
-                $input = [
-                    'nama' => $this->input->post('txt_nama_user', true),
-                    'alamat' => $this->input->post('txt_alamat_user', true),
-                    'akses' => $this->input->post('txt_akses_user', true),
-                    'email' => $this->input->post('txt_email_user', true),
-                    'telp' => $this->input->post('txt_telp_user', true),
-                    'jk' => $this->input->post('radio_jk', true),
-                    'username' => $this->input->post('txt_username_user', true),
-                    'status' => $this->input->post('txt_status_user', true),
-                    'password' => $password,
-                    'img' => ""
-                ];
-                $act = $this->Muser->insertUser($input);
+                $input += ["foto_user"=>"default.jpg"];
+                $act = $this->Muser->insertData($input,"user");
                 if ($act) {
                     $data['success'] = true;
                     $data['act'] = $act;
@@ -207,10 +196,17 @@ class KelolaUsers extends CI_Controller
             $query1 = $this->Muser->deleteAssignProperti($id);
             $send['success'] = true;
         }
-        $this->output->set_output(json_encode($send));
+        return $this->output->set_output(json_encode($send));
     }
     public function hapus($id) //Menghapus User
     {
+        $foto = $this->Muser->getDataWhere("foto_user","user",["id_user"=>$id])->row_array();
+        if ($foto["foto_user"] != "default.jpg") {
+            $path = "./assets/uploads/images/profil/user/".$foto["foto_user"];
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
         $hapus = $this->Muser->hapus($id);
         if ($hapus) {
             $data['success'] = true;

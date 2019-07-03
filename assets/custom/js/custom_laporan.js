@@ -1,5 +1,6 @@
 function setAjax(ajaxAttr, data, ajaxSuccess) {
     // Get data with async
+    $(".overlay").show();
     $.ajax({
         type: ajaxAttr[0],
         url: ajaxAttr[1],
@@ -9,7 +10,10 @@ function setAjax(ajaxAttr, data, ajaxSuccess) {
             if (typeof ajaxSuccess == 'function') {
                 ajaxSuccess(getKategori);
             }
-        }
+        },
+            complete: function(){
+                $('.overlay').hide();
+            }
     });
 }
 function swallQuestion(titles, texts, types, confirm, success) {

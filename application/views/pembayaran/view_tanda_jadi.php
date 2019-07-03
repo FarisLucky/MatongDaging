@@ -26,13 +26,13 @@
                                         <th>Konsumen</th>
                                         <th>Nama Unit</th>
                                         <th>Status</th>
+                                        <th>Pembuat</th>
                                         <th>Tagihan</th>
+                                        <th>Jumlah Bayar</th>
                                         <th>Total Bayar</th>
                                         <th>Hutang</th>
                                         <th>Bukti</th>
-                                        <th>Tanggal Tempo</th>
                                         <th>Tanggal Bayar</th>
-                                        <th>Pembuat</th>
                                         <th>Aksi</th>
                                     </thead>
                                 </table>                                 

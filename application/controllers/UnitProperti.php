@@ -281,6 +281,8 @@ class UnitProperti extends CI_Controller {
         $query = $this->Munit->deleteData("unit_properti",["id_unit"=>$input]);
         if ($query) {
             $data["success"] = true;
+        }else{
+            $data["error"] = true;
         }
         $this->output->set_output(json_encode($data));
     }

@@ -28,7 +28,6 @@ function formatRupiah(angka, prefix){
     return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
 }
 $(document).ready(function () {
-    $(".overlay").remove();
     $("#tbl_list_transaksi,#tbl_list_unlock").DataTable({
         "responsive" :true
     });
@@ -62,6 +61,7 @@ $(document).ready(function () {
             $("#txt_email").val("");
             $("#txt_alamat").val("");
         }else{
+            $(".overlay").show();
             $.ajax({
                 type: "post",
                 url: "datakonsumen",
@@ -76,6 +76,9 @@ $(document).ready(function () {
                         $("#txt_email").val(response.obj.email);
                         $("#txt_alamat").val(response.obj.alamat);
                     }
+                },
+                complete: function(){
+                    $('.overlay').hide();
                 }
             });
         }
@@ -90,6 +93,7 @@ $(document).ready(function () {
             $("#txt_bangunan").val("");
             $("#txt_harga").val("");
         }else{
+            $(".overlay").show();
             $.ajax({
                 type: "post",
                 url: "dataunit",
@@ -103,6 +107,9 @@ $(document).ready(function () {
                     $("#txt_tanah").val(response.obj.luas_tanah);
                     $("#txt_bangunan").val(response.obj.luas_bangunan);
                     $("#txt_harga").val(response.harga);
+                },
+                complete: function(){
+                    $('.overlay').hide();
                 }
             });
         }
@@ -125,7 +132,7 @@ $(document).ready(function () {
         let form="";
         // let form = '<div class="row">';
         if ((id == "1") || (id == "3")) {
-            form += '<div class="col-sm-3 val_periode"><div class="form-group"><label for="periode_bayar">Periode Bayar(Bulan)</label><input type="number" name="periode_bayar" class="form-control" id="periode_bayar" required></div></div><div class="col-sm-3 val_periode"><div class="form-group"><label for="total_bayar_periode">Cicilan</label><input type="text" name="total_bayar_periode" class="form-control" id="total_bayar_periode" Readonly required></div></div>';
+            form += '<div class="col-sm-3 val_periode"><div class="form-group"><label for="periode_bayar">Periode Bayar(Bulan)</label><input type="number" name="periode_bayar" class="form-control" id="periode_bayar" required></div></div><div class="col-sm-3 val_periode"></div>';
         }
         // form += '</div>';
         $(".bayar").after(form);
@@ -148,66 +155,69 @@ $(document).ready(function () {
 			tanda_jadi.value = formatRupiah(this.value, 'Rp. ');
         });
     }
-    $("#txt_kesepakatan").focusout(function (e) { 
+    $("#lock_kesepakatan").on("click",function (e) { 
         e.preventDefault();
         let harga;
-        let kesepakatans = String($(this).val());
-        if (($("#select_unit").val() == "") || ($("#select_konsumen").val() == "")) {
-            swallSuccess("Error", "Isi data diatas","error","")
-            $(this).val("");
+        let kesepakatans = String($("#txt_kesepakatan").val());
+        if ($("#txt_kesepakatan").val() == "") {
+            toastr.remove()
+            toastr.warning("masukkan Kesepakatan");
+            $("#txt_kesepakatan").val("");
+            return;
+        }else if (($("#select_unit").val() == "") || ($("#select_konsumen").val() == "")) {
+            toastr.warning("Isi Data diatas");
             return;
         }
-        $("#txt_ttl_transaksi,#txt_ttl_akhir").val(kesepakatans)
+        $("#txt_ttl_transaksi,#txt_ttl_akhir").val(kesepakatans);
+        $("#txt_kesepakatan").attr("readonly",true);
+        $(this).addClass("locked");
+        $(this).attr("disabled",true);
     });
-    $(".btn-check").on("change",function (e) {
-        e.preventDefault();
-        let radio = $(this).val();
-        let tanda_jadi = $("#txt_tanda_jadi").val();
-        let parseTanda = parseInt(tanda_jadi.split('.').join(''));
-        let hasil;
-        let ttl_sementara = parseInt ($("#txt_ttl_transaksi").val().split('.').join(''));
-        if (radio == "tidak_masuk_harga_jual") {
-            hasil = ttl_sementara;
-            $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
-            return;
-        }
-        else {
-            hasil = parseInt(ttl_sementara - parseTanda);
-            $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
-            return;
-        }
-    })
-    // let angsuran = document.getElementById("form_transaksi");
-    // let hello = $("input[name='txt_angsuran[]']").map(function() {
-    //     return $(this).attr('id');
-    // }).get()
-    // console.log(hello);
-    $("#txt_tanda_jadi").change(function (e) { 
+    $("#lock_tanda_jadi").on("click",function (e) { 
         e.preventDefault();
         let radio = $("input[name='radio_tj']:checked");
+        let tanda_jadi = $("#txt_tanda_jadi").val();
+        if ($("button.locked").length < 1) {
+            toastr.remove()
+            toastr.error("Kesepakatan belum di kunci");
+            return false;
+        }else if (tanda_jadi == "") {
+            toastr.remove()
+            toastr.warning("Masukkan Tanda Jadi");
+            return false;
+        }else if (radio.length < 1) {
+            toastr.remove()
+            toastr.warning("Pilih Tanda Jadi");
+            return false;
+        }
         let hasil;
-        let tanda_jadi = $(this).val();
         let parseTanda = parseInt(tanda_jadi.split('.').join(''));
         let ttl_sementara = parseInt ($("#txt_ttl_transaksi").val().split('.').join(''));
-        if (radio.length > 0 ) {
-            if (radio.val() == "masuk_harga_jual") {
-                hasil = parseInt(ttl_sementara - parseTanda);
-                $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
-                return;
-            }
-            else {
-                hasil = ttl_sementara;
-                $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
-                return;
-            }
-        }else{
+        if (radio.val() == "masuk_harga_jual") {
+            hasil = parseInt(ttl_sementara - parseTanda);
+            $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
+        }
+        else {
             hasil = ttl_sementara;
             $("#txt_ttl_akhir").val(formatRupiah(String(hasil), 'Rp. '));
         }
+        $(this).attr("disabled",true);
+        $(this).addClass("locked_tanda_jadi");
+        $("#txt_tanda_jadi").attr("readonly",true);
+        $("input[name='radio_tj']").attr("disabled",true);
     });
-    $(document).on("focusout","input[name='txt_angsuran[]']",function () { 
+    $("#lock_uang_muka").on("click",function () { 
         let total = 0;
-        // let value = 
+        if (($("button.locked").length < 1) || ($("button.locked_tanda_jadi").length < 1)) {
+            toastr.remove()
+            toastr.error("Kesepakatan atau Tanda Jadi Belum di kunci");
+            return false;
+        }
+        else if ($("input[name='txt_angsuran[]']").val() == "") {
+            toastr.remove()
+            toastr.warning("Masukkan Uang Muka");
+            return false;
+        }
         $("input[name='txt_angsuran[]']").each(function() {
             total += Number($(this).val()); 
         })
@@ -215,14 +225,39 @@ $(document).ready(function () {
         let ttl = $("#txt_ttl_akhir").val().split('.').join('');
         let value = ttl - total;
         $("#txt_ttl_akhir").val(formatRupiah(String(value), 'Rp. '));
+        $("input[name='txt_angsuran[]']").attr("readonly",true);
+        $(this).attr("disabled",true);
+        $(this).addClass("locked_uang_muka");
     });
-    $(document).on("change","#periode_bayar",function (e) { 
+    $("#lock_type_bayar").on("click",function (e) { 
         e.preventDefault();
         let ttl_akhir = parseInt($("#txt_ttl_akhir").val().split('.').join(''));
         let cicilan; 
-        let value = parseInt($(this).val());
-        cicilan = parseInt(ttl_akhir/value);
+        let value = parseInt($("#periode_bayar").val());
+        let type = $("#txt_type_pembayaran").val();
+        if ($("button.locked_tanda_jadi").length < 1) {
+            toastr.remove()
+            toastr.error("Tanda Jadi belum di kunci");
+            return false;
+        }
+        else if (type == "") {
+            toastr.remove()
+            toastr.warning("Pilih Type");
+            return false;
+        }
+        if (type == "1" || type == "3") {
+            cicilan = parseInt(ttl_akhir/value);
+        }else if(type == "2"){
+            cicilan = ttl_akhir;
+        }
         $("#total_bayar_periode").val(formatRupiah(String(cicilan), 'Rp. '))
+        $(this).attr("disabled",true);
+        if ($(".locked_uang_muka").length < 1) {
+            $("#lock_uang_muka").attr("disabled",true);
+        }
+        $(this).addClass("locked_type_bayar");
+        $("#txt_type_pembayaran").attr("readonly",true);
+
 
     });
     $(document).on("keyup","input[name='txt_harga_tambah[]']",function(e) {
@@ -251,6 +286,7 @@ $(document).ready(function () {
     $("#form_transaksi").on("submit",function (e) { 
         e.preventDefault();
         let form = $(this).serialize();
+        $(".overlay").show();
         $.ajax({
             type: "post",
             url: "inserttransaksi",
@@ -275,6 +311,9 @@ $(document).ready(function () {
                         el.after(val);
                     });
                 }
+            },
+            complete: function(){
+                $('.overlay').hide();
             }
         });
     });
@@ -283,6 +322,7 @@ $(document).ready(function () {
         e.preventDefault();
         let form = $(this).serialize();
         let url = $(this).attr("action");
+        $(".overlay").show();
         $.ajax({
             type: "post",
             url: url+"/core_ubah_transaksi",
@@ -291,7 +331,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success == true) {
                     $('input.form-group').removeClass('is-invalid').removeClass('is-valid');
-                    swallSuccess("Sukses", "Berhasil ditambahkan", "success", function () {
+                    swallSuccess("Sukses", "Berhasil diubah", "success", function () {
                         location.reload();
                     })
                 } else if ((response.success == false) && (response.error)) {
@@ -307,6 +347,9 @@ $(document).ready(function () {
                         el.after(val);
                     });
                 }
+            },
+            complete: function(){
+                $('.overlay').hide();
             }
         });
     });
@@ -325,6 +368,7 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.value) {
                 let id = $(this).attr('data-id');
+                $(".overlay").show();
                 $.ajax({
                     type: "post",
                     url: "transaksi/lock",
@@ -340,6 +384,9 @@ $(document).ready(function () {
                                 location.reload();
                             });
                         }
+                    },
+                    complete: function(){
+                        $('.overlay').hide();
                     }
                 });
             }
@@ -358,6 +405,7 @@ $(document).ready(function () {
             confirmButtonText: 'Hapus !'
         }).then((result) => {
             if (result.value) {
+                $(".overlay").show();
                 $.ajax({
                     type: "post",
                     url: href,
@@ -370,6 +418,9 @@ $(document).ready(function () {
                                 location.reload();
                             });
                         }
+                    },
+                    complete: function(){
+                        $('.overlay').hide();
                     }
                 });
             }

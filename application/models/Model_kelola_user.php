@@ -80,6 +80,11 @@ class Model_kelola_user extends CI_Model {
         return $this->db->affected_rows();
         
     }
+    public function insertData($data,$tbl)
+    {
+        $this->db->insert($tbl, $data);
+        return $this->db->affected_rows();
+    }
 }
 
 /* End of file Model_kelola_user.php */

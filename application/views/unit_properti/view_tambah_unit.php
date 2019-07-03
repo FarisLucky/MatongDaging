@@ -36,11 +36,11 @@
                                     <input type="text" name="txt_type" class="form-control" id="txt_type">
                                 </div>
                                 <div class="form-group">
-                                    <label for="txt_tanah">Luas Tanah</label>
+                                    <label for="txt_tanah">Luas Tanah <small class="text-danger">(Ex 60 M2)</small></label>
                                     <input type="text" name="txt_tanah" class="form-control" id="txt_tanah">
                                 </div>
                                 <div class="form-group">
-                                    <label for="txt_bangunan">Luas Bangunan</label>
+                                    <label for="txt_bangunan">Luas Bangunan <small class="text-danger">(Ex 60 M2)</small></label>
                                     <input type="text" name="txt_bangunan" class="form-control" id="txt_bangunan">
                                 </div>
                                 <div class="form-group">

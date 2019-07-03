@@ -43,4 +43,12 @@ class M_follow_calon_konsumen extends CI_Model
         $this->db->where('id_follow', $this->input->post('edit_id_follow'));
         $this->db->update('follow_calon_konsumen', $data);
     }
+    public function getDataJoin($select,$tbl,$join,$join_value,$like_column,$like_value)
+    {
+        $this->db->select($select);
+        $this->db->from($tbl);
+        $this->db->join($join, $join_value);
+        $this->db->like($like_column,$like_value);
+        return $this->db->get();
+    }
 }

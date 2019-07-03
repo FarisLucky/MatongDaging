@@ -140,6 +140,11 @@
                                     </div>
                                 </div> 
                             </div>
+                            <div class="col-sm-1 pr-0">
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-info " id="lock_kesepakatan"><i class="fa fa-lock"></i></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -227,8 +232,6 @@
                         </div>
                         <hr>
                         <div class="row justify-content-end">
-                            <!-- <div class="col-sm-2"> -->    
-                            <!-- </div> -->
                             <div class="col-sm-4">
                                 <div class="row">
                                     <div class="col-sm-2 pt-4">
@@ -258,27 +261,37 @@
                         </div>
                         <hr>
                         <div class="row mt-2 periode_row">
+                            <div class="col-sm-3 border-right border-info">
+                                <div class="form-group">
+                                    <label for="txt_ttl_transaksi">Total Transaksi</label>
+                                    <input type="text" name="txt_ttl_transaksi" class="form-control" id="txt_ttl_transaksi" value="<?= $transaksi->total_transaksi ?>" Readonly >
+                                </div> 
+                            </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="txt_tanda_jadi">Tanda Jadi</label>
                                     <input type="text" name="txt_tanda_jadi" class="form-control" id="txt_tanda_jadi" value="<?= $transaksi->tanda_jadi ?>">
                                 </div>
-                                <div class="form-radio form-radio-flat">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input btn-check" name="radio_tj" id="radio2" value="tidak_masuk_harga_jual">Tidak masuk harga jual
-                                    </label>
+                                <div class="form-group">
+                                    <div class="form-radio form-radio-flat">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input btn-check" name="radio_tj" id="radio2" value="tidak_masuk_harga_jual">Tidak masuk harga jual
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="form-radio form-radio-flat">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input btn-check" name="radio_tj" id="radio1" value="masuk_harga_jual">Masuk harga jual
-                                    </label>
+                                <div class="form-group">
+                                    <div class="form-radio form-radio-flat">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input btn-check" name="radio_tj" id="radio1" value="masuk_harga_jual">Masuk harga jual
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-1 border-right border-info">
                                 <div class="form-group">
-                                    <label for="txt_ttl_transaksi">Total Transaksi</label>
-                                    <input type="text" name="txt_ttl_transaksi" class="form-control" id="txt_ttl_transaksi" value="<?= $transaksi->total_transaksi ?>" Readonly>
-                                </div> 
+                                    <label>Lock</label>
+                                    <button class="btn btn-sm btn-info" id="lock_tanda_jadi"><i class="fa fa-lock"></i></button>
+                                </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
@@ -291,6 +304,12 @@
                                         <?php endfor; ?>
                                     </select>
                                 </div> 
+                            </div>
+                            <div class="col-sm-1 pr-0">
+                                <div class="form-group">
+                                    <label>Lock</label>
+                                    <button class="btn btn-sm btn-info" id="lock_uang_muka"><i class="fa fa-lock"></i></button>
+                                </div>
                             </div>
                         </div>
                         <hr>
@@ -328,6 +347,12 @@
                         </div>
                         <hr>
                         <div class="row">
+                            <div class="col-sm-1 pr-0 text-center">
+                                <div class="form-group">
+                                    <label>Lock</label>
+                                    <button class="btn btn-sm btn-info" id="lock_type_bayar"><i class="fa fa-lock"></i></button>
+                                </div>
+                            </div>
                             <div class="col-sm-3 bayar">
                                 <div class="form-group">
                                     <label for="txt_type_pembayaran">Type Pembayaran</label>
@@ -340,6 +365,7 @@
                                     </select>
                                 </div> 
                             </div>
+
                             <?php if ($transaksi->id_type_bayar != 2) { ?>
                             <div class="col-sm-3 val_periode">
                                 <div class="form-group">
@@ -348,11 +374,16 @@
                                 </div>
                             </div>
                             <?php } ?>
-                            <div class="col-sm-3 val_periode">
-                                <div class="form-group">
-                                    <label for="total_bayar_periode">Cicilan</label>
-                                    <input type="text" name="total_bayar_periode" class="form-control" id="total_bayar_periode" value="<?= $transaksi->pembayaran ?>" Readonly required>
-                                </div>
+                        </div>
+                        <hr>
+                        <div class="row justify-content-end">
+                            <div class="col-sm-5">
+                                <div class="form-group row">
+                                    <label class="col-sm-7 col-form-label f-29 border-left border-dark">Pembayaran Per Periode</label>
+                                    <div class="col-sm-5">
+                                    <input type="text" name="total_bayar_periode" class="form-control" id="total_bayar_periode" value="<?= $transaksi->pembayaran ?>" Readonly>
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                         <hr>

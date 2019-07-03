@@ -30,6 +30,7 @@
                                         <th>Tanggal Tempo</th>
                                         <th>Tanggal Bayar</th>
                                         <th>Total Tagihan</th>
+                                        <th>Jumlah Bayar</th>
                                         <th>Total Bayar</th>
                                         <th>Hutang</th>
                                         <th>Bukti</th>
@@ -54,6 +55,7 @@
                                             <td><?= $value->tgl_bayar ?></td>
                                             <td> <?= number_format($value->total_tagihan,2,',','.') ?></td>
                                             <td> <?= number_format($value->jumlah_bayar,2,',','.') ?></td>
+                                            <td> <?= number_format($value->total_bayar,2,',','.') ?></td>
                                             <td><?= $value->hutang ?></td>
                                             <td><img src="<?php echo base_url($href.$value->bukti_bayar) ?>"></td>
                                             <td><button type="button" class="btn btn-sm btn-success ml-2 btn_accept" data-id="<?= $value->id_pembayaran ?>"><i class="fa fa-check"></i>Accept</button><button type="button" class="btn btn-sm btn-danger ml-2 btn_reject" data-id="<?= $value->id_pembayaran ?>"><i class="fa fa-ban"></i>Reject</button></td>

@@ -31,21 +31,23 @@ class Approve extends CI_Controller {
         $getData = $this->MApprove->getDataWhere("hutang,jumlah_bayar,total_bayar,id_jenis,id_transaksi","pembayaran_transaksi",["id_pembayaran"=>$confirm])->row();
         if ($getData->hutang == 0) {
             $status = "selesai";
+            $status_tj = "lunas";
         }else{
             $status = "belum bayar";
+            $status_tj = "belum lunas";
         }
-        $total = (int) ($getData->Jumlah_bayar + $getData->total_bayar);
+        $total = (int) ($getData->jumlah_bayar + $getData->total_bayar);
         $updatePembayaran = $this->MApprove->updateData(["status"=>$status,"total_bayar"=>$total,"jumlah_bayar"=>0],"pembayaran_transaksi",["id_pembayaran"=>$confirm]);
         if ($getData->id_jenis == 1) {
-            $updateTransaksi = $this->MApprove->updateData(["status_tj"=>"lunas"],"transaksi_unit",["id_transaksi"=>$getData->id_transaksi]);
-            if ($updateTransaksi) {
-                $dataTransaksi = $this->MApprove->getDataWhere("id_konsumen,id_unit","tbl_transaksi",["id_transaksi"=>$getData->id_transaksi])->row();
+            $updateTransaksi = $this->MApprove->updateData(["status_tj"=>$status_tj],"transaksi_unit",["id_transaksi"=>$getData->id_transaksi]);
+            $dataTransaksi = $this->MApprove->getDataWhere("id_konsumen,id_unit,status_tj","tbl_transaksi",["id_transaksi"=>$getData->id_transaksi])->row();
+            if ($dataTransaksi->status_tj == "lunas") {
                 $updateKonsumen = $this->MApprove->updateData(["status_konsumen"=>"konsumen"],"konsumen",["id_konsumen"=>$dataTransaksi->id_konsumen]);
                 $updateunit = $this->MApprove->updateData(["status_unit"=>"booking"],"unit_properti",["id_unit"=>$dataTransaksi->id_unit]);
-                $data['confirm'] = true;
-                $data['success'] = true;
             }
-        }else {
+            $data['confirm'] = true;
+            $data['success'] = true;
+            }else {
             $status_result = $this->MApprove->getDataWhere("COUNT(id_pembayaran) as result","tbl_pembayaran",["id_transaksi"=>$getData->id_transaksi,"id_jenis"=>$getData->id_jenis,"status"=>"selesai"])->row_array();
             $result_all = $this->MApprove->getDataWhere("COUNT(id_pembayaran) as result","tbl_pembayaran",["id_transaksi"=>$getData->id_transaksi,"id_jenis"=>$getData->id_jenis])->row_array();
             if ($status_result["result"] == $result_all["result"]) {

@@ -23,7 +23,7 @@
                                 <h5 class="d-inline-block">Tambah Transaksi</h5>
                             </div>
                             <div class="col-sm-6 text-right">
-                                <a href="<?= base_url() ?>transaksi/tambah" class="btn btn-sm ml-4"><i class="fa fa-plus"> Tambah</i></a>
+                                <a href="<?= base_url() ?>transaksi/tambah" class="btn btn-sm btn-primary ml-4"><i class="fa fa-plus"> Tambah</i></a>
                             </div>
                         </div>
                         <hr>

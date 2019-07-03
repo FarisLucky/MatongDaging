@@ -30,7 +30,6 @@ function swallSuccess(titles, texts, types, success) {
     })
 }
 $(document).ready(function () {
-    $(".overlay").remove();
     const base = $('body').attr('data-base'); 
     $("#tbl_rab_properti,#tbl_rab_unit").DataTable({
         "responsive":true
@@ -39,6 +38,7 @@ $(document).ready(function () {
         e.preventDefault();
         let id = $(this).attr("data-id");
         swallQuestion("Yakin ?", "Apakah ingin di Hapus ?", "question", 'Hapus', function () {
+            $(".overlay").show();
             $.ajax({
                 type: "post",
                 url: base+"rab/hapus/"+id,
@@ -50,6 +50,9 @@ $(document).ready(function () {
                             location.reload();
                         })
                     }
+                },
+                complete: function(){
+                    $('.overlay').hide();
                 }
             });
         })
@@ -58,6 +61,7 @@ $(document).ready(function () {
         e.preventDefault();
         let id = $(this).attr("data-id");
         swallQuestion("Yakin ?", "Apakah ingin di Hapus ?", "question", 'Hapus', function () {
+            $(".overlay").show();
             $.ajax({
                 type: "post",
                 url: base+"rab/hapusunit/"+id,
@@ -69,6 +73,9 @@ $(document).ready(function () {
                             location.reload();
                         });
                     }
+                },
+                complete: function(){
+                    $('.overlay').hide();
                 }
             });
         })
@@ -77,6 +84,7 @@ $(document).ready(function () {
         e.preventDefault();
         let form = $(this).serialize();
         let base = $("body").attr("data-base");
+        $(".overlay").show();
         $.ajax({
             type: "post",
             url: base+"rab/ubahrab",
@@ -96,6 +104,9 @@ $(document).ready(function () {
                         el.after(val);
                     });
                 }
+            },
+            complete: function(){
+                $('.overlay').hide();
             }
         })
     })

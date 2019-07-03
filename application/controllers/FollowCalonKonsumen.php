@@ -120,4 +120,10 @@ class FollowCalonKonsumen extends CI_Controller
             redirect('followcalonkonsumen');
         }
     }
+    public function getCalon()
+    {
+        $nama = $this->input->post("nama",true);
+        $query = $this->M_follow_calon_konsumen->getDataJoin("*","follow_up","konsumen","konsumen.id_konsumen = follow_up.id_konsumen","nama_lengkap",$nama)->result();
+        return $this->output->set_content_type('application/json')->set_output(json_encode($query));
+    }
 }

@@ -134,16 +134,16 @@ class Transaksi extends CI_Controller {
                 $data['msg'][$key] = form_error($key);
             }
         }else{
-            $input = $this->input();
+            $input = $this->inputData();
             $angsuran = $this->input->post('txt_angsuran',true);
             $tanda_jadi = $this->input->post('txt_tanda_jadi',true);
             $type = $this->input->post('txt_type_pembayaran',true);
             $nama_type = $this->Mtransaksi->getDataWhere("type_bayar","type_bayar",["id_type_bayar"=>$type])->row();
-            if ($input['type_pembayaran'] == 2) {
-                $input['periode_bayar'] = 1;
-                $input['total_bayar_periode'] = str_replace('.','',$this->input->post('txt_ttl_akhir'));
+            if ($input['id_type_bayar'] == 2) {
+                $input['bayar_periode'] = 1;
+                $input['pembayaran'] = str_replace('.','',$this->input->post('txt_ttl_akhir'));
             }
-            $query = $this->Mtransaksi->tambahTransaksi($input);
+            $query = $this->Mtransaksi->insertData($input,"transaksi_unit");
             if ($query) {
                 $id_insert = $this->db->insert_id();
                 $detail = [$this->input->post('txt_nama_tambah'),$this->input->post('txt_volume_tambah'),$this->input->post('txt_satuan_tambah'),$this->input->post('txt_harga_tambah')];
@@ -156,14 +156,12 @@ class Transaksi extends CI_Controller {
                             $detail_transaksi['penambahan'] = $value[0]; 
                             $detail_transaksi['volume'] = $value[1]; 
                             $detail_transaksi['satuan'] = $value[2]; 
-                            $detail_transaksi['harga'] = $value[3]; 
+                            $detail_transaksi['total'] = $value[3]; 
                             $detail_transaksi['transaksi'] = $id_insert; 
-                            $detail_transaksi["total"] = $value[1] * $id_insert;
                             $this->Mtransaksi->insertDetail($detail_transaksi);
                         }
                     }
                     $data['success'] = true;
-                    $data['hello'] = "tidak masuk";
                 }
                 // Uang Muka Angsuran 
                 if (!empty($angsuran)) {
@@ -194,10 +192,10 @@ class Transaksi extends CI_Controller {
                     $nama_unit = $unit->nama_unit;
                     $data_tj['id_transaksi'] = $id_insert;
                     $data_tj['nama_pembayaran'] = 'Tanda Jadi Unit '.$nama_unit;
-                    $data_tj['total_tagihan'] = $t_jd;
+                    $data_tj['total_tagihan'] = $input["tanda_jadi"];
                     $data_tj['total_bayar'] = 0;
                     $data_tj['tgl_jatuh_tempo'] = $this->input->post('tgl_tanda_jadi');
-                    $data_tj['hutang'] = $t_jd;
+                    $data_tj['hutang'] = $input["tanda_jadi"];
                     $data_tj['status'] = 'belum bayar';
                     $data_tj['id_user'] = $this->session->userdata('id_user');
                     $data_tj['id_jenis'] = 1;
@@ -209,7 +207,7 @@ class Transaksi extends CI_Controller {
                 if (!empty($type)) {
                     if ($type == 1) {
                         $data_pembayaran = [];
-                        $periode = $this->input->post('periode_bayar');
+                        $periode = $input["bayar_periode"];
                         $total_bayar = str_replace(".","",$this->input->post('total_bayar_periode'));
                         $no= 1;
                         for($i = 1; $i <= $periode; $i++) {
@@ -217,13 +215,13 @@ class Transaksi extends CI_Controller {
                             addmonths($date,$i);
                             $data_pembayaran['id_transaksi'] = $id_insert;
                             $data_pembayaran['nama_pembayaran'] = 'Cicilan '.$no;
-                            $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['total_tagihan'] = $input["pembayaran"];
                             $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $date->format("Y-m-d");
-                            $data_pembayaran['hutang'] = $total_bayar;
+                            $data_pembayaran['hutang'] = $input["pembayaran"];
                             $data_pembayaran['status'] = 'belum bayar';
                             $data_pembayaran['id_user'] = $this->session->userdata('id_user');
-                            $data_pembayaran['id_type_bayar'] = $this->input->post('txt_type_pembayaran');
+                            $data_pembayaran['id_type_bayar'] = $input["id_type_bayar"];
                             $data_pembayaran['id_jenis'] = 3;
                             $this->Mtransaksi->insertPembayaranTransaksi($data_pembayaran);
                             $no++;
@@ -236,10 +234,10 @@ class Transaksi extends CI_Controller {
                         for($i = 1; $i <= $periode; $i++) {
                             $data_pembayaran['id_transaksi'] = $id_insert;
                             $data_pembayaran['nama_pembayaran'] = $nama_type->type_bayar;
-                            $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['total_tagihan'] = $input["total_akhir"];
                             $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $this->input->post('tgl_pembayaran');
-                            $data_pembayaran['hutang'] = $total_bayar;
+                            $data_pembayaran['hutang'] = $input["total_akhir"];
                             $data_pembayaran['status'] = 'belum bayar';
                             $data_pembayaran['id_user'] = $this->session->userdata('id_user');
                             $data_pembayaran['id_type_bayar'] = $this->input->post('txt_type_pembayaran');
@@ -267,17 +265,17 @@ class Transaksi extends CI_Controller {
                 $data['msg'][$key] = form_error($key);
             }
         }else{
-            $input = $this->input();
+            $id = $this->input->post('transaksi_id',true);
+            $input = $this->inputData();
             $angsuran = $this->input->post('txt_angsuran',true);
             $tanda_jadi = $this->input->post('txt_tanda_jadi',true);
             $type = $this->input->post('txt_type_pembayaran',true);
             $nama_type = $this->Mtransaksi->getDataWhere("type_bayar","type_bayar",["id_type_bayar"=>$type])->row();
-            if ($input['type_pembayaran'] == 2) {
-                $input['periode_bayar'] = 1;
-                $input['total_bayar_periode'] = str_replace('.','',$this->input->post('txt_ttl_akhir'));
+            if ($input['id_type_bayar'] == 2) {
+                $input['bayar_periode'] = 1;
+                $input['pembayaran'] = str_replace('.','',$this->input->post('txt_ttl_akhir'));
             }
-            $id = $this->input->post('transaksi_id',true);
-            $query = $this->Mtransaksi->ubahTransaksi($input,$id);
+            $query = $this->Mtransaksi->updateData($input,"transaksi_unit",["id_transaksi"=>$id]);
             if ($query) {
                 $detail = [$this->input->post('txt_nama_tambah',true),$this->input->post('txt_volume_tambah',true),$this->input->post('txt_satuan_tambah',true),$this->input->post('txt_harga_tambah',true)];
                 $data['detail'] = $this->reArray($detail);
@@ -291,9 +289,7 @@ class Transaksi extends CI_Controller {
                             $detail_transaksi['penambahan'] = $value[0]; 
                             $detail_transaksi['volume'] = $value[1]; 
                             $detail_transaksi['satuan'] = $value[2]; 
-                            $detail_transaksi['harga'] = $value[3]; 
-                            $detail_transaksi['transaksi'] = $id; 
-                            $detail_transaksi["total"] = $value[1] * $id_insert;
+                            $detail_transaksi['total'] = $value[3]; 
                             $this->Mtransaksi->insertDetail($detail_transaksi);
                         }
                     }
@@ -324,16 +320,15 @@ class Transaksi extends CI_Controller {
 
                 // Uang Tanda Jadi 
                 if (!empty($tanda_jadi)) {
-                    $t_jd = $this->input->post('txt_tanda_jadi');
                     $data_tj = [];
                     $unit = $this->Mtransaksi->getNameUnit($this->input->post('select_unit'));
                     $nama_unit = $unit->nama_unit;
                     $data_tj['id_transaksi'] = $id;
                     $data_tj['nama_pembayaran'] = 'Tanda Jadi Unit '.$nama_unit;
-                    $data_tj['total_tagihan'] = $t_jd;
+                    $data_tj['total_tagihan'] = $input["tanda_jadi"];
                     $data_tj['total_bayar'] = 0;
                     $data_tj['tgl_jatuh_tempo'] = $this->input->post('tgl_tanda_jadi');
-                    $data_tj['hutang'] = $t_jd;
+                    $data_tj['hutang'] = $input["tanda_jadi"];
                     $data_tj['status'] = 'belum bayar';
                     $data_tj['id_user'] = $this->session->userdata('id_user');
                     $data_tj['id_jenis'] = 1;
@@ -346,18 +341,17 @@ class Transaksi extends CI_Controller {
                     $type = $this->input->post('txt_type_pembayaran');
                     if ($type == 1) {
                         $data_pembayaran = [];
-                        $periode = $this->input->post('periode_bayar');
-                        $total_bayar = str_replace(".","",$this->input->post('total_bayar_periode'));
+                        $periode = $input["bayar_periode"];
                         $no= 1;
                         for($i = 1; $i <= $periode; $i++) {
                             $date = new DateTime( $this->input->post('tgl_pembayaran'));
                             addmonths($date,$i);
                             $data_pembayaran['id_transaksi'] = $id;
                             $data_pembayaran['nama_pembayaran'] = 'Cicilan '.$no;
-                            $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['total_tagihan'] = $input["pembayaran"];
                             $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $date->format("Y-m-d");
-                            $data_pembayaran['hutang'] = $total_bayar;
+                            $data_pembayaran['hutang'] = $input["pembayaran"];
                             $data_pembayaran['status'] = 'belum bayar';
                             $data_pembayaran['id_user'] = $this->session->userdata('id_user');
                             $data_pembayaran['id_type_bayar'] = $this->input->post('txt_type_pembayaran');
@@ -369,20 +363,18 @@ class Transaksi extends CI_Controller {
                     else{
                         $data_pembayaran = [];
                         $periode = 1;
-                        $total_bayar = str_replace(".","",$this->input->post('total_bayar_periode'));
                         for($i = 1; $i <= $periode; $i++) {
                             $data_pembayaran['id_transaksi'] = $id;
                             $data_pembayaran['nama_pembayaran'] = $nama_type->type_bayar;
-                            $data_pembayaran['total_tagihan'] = $total_bayar;
+                            $data_pembayaran['total_tagihan'] = $input["total_akhir"];
                             $data_pembayaran['total_bayar'] = 0;
                             $data_pembayaran['tgl_jatuh_tempo'] = $this->input->post('tgl_pembayaran');
-                            $data_pembayaran['hutang'] = $total_bayar;
+                            $data_pembayaran['hutang'] = $input["total_akhir"];
                             $data_pembayaran['status'] = 'belum bayar';
                             $data_pembayaran['id_user'] = $this->session->userdata('id_user');
-                            $data_pembayaran['id_type_bayar'] = $this->input->post('txt_type_pembayaran');
+                            $data_pembayaran['id_type_bayar'] = $input["id_type_bayar"];
                             $data_pembayaran['id_jenis'] = 3;
                             $this->Mtransaksi->insertPembayaranTransaksi($data_pembayaran);
-                            $no++;
                         }
                     }
                     $data['success'] = true;
@@ -395,8 +387,8 @@ class Transaksi extends CI_Controller {
     {
         $data = ["success"=>false];
         $id = $this->input->post('id_transaksi');
-        $status = $this->Mtransaksi->getDataWhere("status_transaksi","tbl_transaksi",["id_transaksi"=>$id])->row();
-        if ($status->status_transaksi == "sementara") {
+        $status = $this->Mtransaksi->getDataWhere("status_transaksi","tbl_transaksi",["id_transaksi"=>$id])->row_array();
+        if ($status["status_transaksi"] == "sementara") {
             $query = $this->Mtransaksi->updateData(["status_transaksi"=>"progress","kunci"=>"lock"],"transaksi_unit",["id_transaksi"=>$id]);       
             $data['success'] = true;
         }else{
@@ -455,25 +447,29 @@ class Transaksi extends CI_Controller {
         $this->form_validation->set_rules('tgl_pembayaran','Tanggal Pembayaran','trim|required');
         $this->form_validation->set_error_delimiters('<div class="invalid-feedback">','</div>');
     }
-    private function input()
+    private function inputData()
     {
         return [
-            "no_ppjb"=>$this->input->post('txt_ppjb',true),
-            "konsumen"=>$this->input->post('select_konsumen',true),
-            "unit"=>$this->input->post('select_unit',true),
-            "kesepakatan"=>str_replace('.','',$this->input->post('txt_kesepakatan',true)),
-            "total_tambahan"=>str_replace('.','',$this->input->post('txt_total_tambahan',true)),
-            "tanda_jadi"=>str_replace('.','',$this->input->post('txt_tanda_jadi',true)),
-            "total_transaksi"=>str_replace('.','',$this->input->post('txt_ttl_transaksi',true)),
-            "periode_uang_muka"=>$this->input->post('periode_Um',true),
-            "uang_muka"=>str_replace('.','',$this->input->post('txt_uang_muka',true)),
-            "total_akhir"=>str_replace('.','',$this->input->post('txt_ttl_akhir',true)),
-            "type_pembayaran"=>$this->input->post('txt_type_pembayaran',true),
-            "periode_bayar"=>$this->input->post('periode_bayar',true),
-            "total_bayar_periode"=>str_replace('.','',$this->input->post('total_bayar_periode',true)),
-            "tgl_tanda_jadi"=>$this->input->post('tgl_tanda_jadi',true),
-            "tgl_uang_muka"=>$this->input->post('tgl_uang_muka',true),
-            "tgl_pembayaran"=>$this->input->post('tgl_pembayaran',true),
+            'no_ppjb'=>$this->input->post('txt_ppjb',true),
+            'id_konsumen'=>$this->input->post('select_konsumen',true),
+            'id_unit'=>$this->input->post('select_unit',true),
+            'total_transaksi'=>str_replace('.','',$this->input->post('txt_ttl_transaksi',true)),
+            'total_kesepakatan'=>str_replace('.','',$this->input->post('txt_kesepakatan',true)),
+            'total_akhir'=>str_replace('.','',$this->input->post('txt_ttl_akhir',true)),
+            'tanda_jadi'=>str_replace('.','',$this->input->post('txt_tanda_jadi',true)),
+            'uang_muka'=>str_replace('.','',$this->input->post('txt_uang_muka',true)),
+            'periode_uang_muka'=>$this->input->post('periode_Um',true),
+            'id_type_bayar'=>$this->input->post('txt_type_pembayaran',true),
+            'bayar_periode'=>$this->input->post('periode_bayar',true),
+            'pembayaran'=>str_replace('.','',$this->input->post('total_bayar_periode',true)),
+            'status_transaksi'=>'sementara',
+            'kunci'=>'default',
+            'tempo_tanda_jadi'=>$this->input->post('tgl_tanda_jadi',true),
+            'tempo_uang_muka'=>$this->input->post('tgl_uang_muka',true),
+            'tempo_bayar'=>$this->input->post('tgl_pembayaran',true),
+            'total_tambahan'=>str_replace('.','',$this->input->post('txt_total_tambahan',true)),
+            'id_user'=>$this->session->userdata('id_user'),
+            "tgl_transaksi"=>date("Y-m-d")
         ];
     }
     private function reArray($data) {

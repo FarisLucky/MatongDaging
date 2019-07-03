@@ -29,7 +29,6 @@ class Properti extends CI_Controller {
         $search = ['nama_properti','status']; //search data
         $fetch_values = $this->ssd->makeDataTables($column,$tbl,$search,$order);
         $data = array();
-        $no = 1;
         foreach ($fetch_values as $value) {
             $properti = $this->Model_properti->getDataWhere('*','rab_properti',['id_properti'=>$value->id_properti,'type'=>'Properti']);
             $unit = $this->Model_properti->getDataWhere('*','rab_properti',['id_properti'=>$value->id_properti,'type'=>'unit']);
@@ -50,14 +49,12 @@ class Properti extends CI_Controller {
                 }
             }
             $sub = array();
-            $sub[] = strval($no);
             $sub[] = $value->nama_properti;
             $sub[] = $value->luas_tanah;
             $sub[] = $value->rekening;
             $sub[] = '<img id="foto_properti" width="70px" src="'.base_url().'assets/uploads/images/properti/'.$value->foto_properti.'" class="" alt="">';
             $sub[] = $this->status;
             $data[] = $sub;
-            $no++;
         }
         $output = array(
             'draw'=>intval($this->input->post('draw')),
@@ -95,42 +92,37 @@ class Properti extends CI_Controller {
             $input = $this->input();
             $this->load->library('upload', $config);
             $img = $this->reArrayFoto($_FILES['img']);
-            if ((!empty($img["foto"]["name"])) || (!empty($img["logo"]["name"]))) {
-                foreach ($img as $key => $value) {
-                    $_FILES[$key] = $value;
+            foreach ($img as $key => $value) {
+                $_FILES[$key] = $value;
+                if ($_FILES[$key]["name"] != null) {
                     if ($this->upload->do_upload($key)){
                         $link = $this->Model_properti->getDataWhere("logo_properti,foto_properti","tbl_properti",["id_properti"=>$id])->row();
                         if ($key == "logo") {
                             if ($link->logo_properti != "default2.jpg") {
                                 $coba = $this->unlinkImg($link->logo_properti);
                             }
-                            $upload = $this->upload->data();
-                            $logo = $upload['file_name'];
+                            $upload1 = $this->upload->data();
+                            $logo = $upload1['file_name'];
                             $input += ["logo_properti"=>$logo];
                         }
                         else if($key == "foto"){
                             if ($link->foto_properti != "default.jpg") {
                                 $coba = $this->unlinkImg($link->foto_properti);
                             }
-                            $upload = $this->upload->data();
-                            $foto = $upload['file_name'];
+                            $upload2 = $this->upload->data();
+                            $foto = $upload2['file_name'];
                             $input += ["foto_properti"=>$foto];
-                        }
-                        $db = $this->Model_properti->updateData($input,"properti",["id_properti"=>$id]);
-                        if ($db) {
-                            $data["success"] = true;
                         }
                     }
                     else{
                         $data["error"] = $this->upload->display_errors();
+                        return $this->output->set_output(json_encode($data));
                     }
                 }
             }
-            else{
-                $db = $this->Model_properti->updateData($input,"properti",["id_properti"=>$id]);
-                if ($db) {
-                    $data['success'] = true;
-                }
+            $db = $this->Model_properti->updateData($input,"properti",["id_properti"=>$id]);
+            if ($db) {
+                $data["success"] = true;
             }
         }
         return $this->output->set_output(json_encode($data));
@@ -173,18 +165,18 @@ class Properti extends CI_Controller {
                             $logo = $upload["file_name"];
                             $input += ["logo_properti"=>$logo];
                         }
-                        else if($key == "foto"){
-                            $upload = $this->upload->data();
-                            $foto = $upload["file_name"];
+                        elseif($key == "foto"){
+                            $upload1 = $this->upload->data();
+                            $foto = $upload1["file_name"];
                             $input += ["foto_properti"=>$foto];
-                        }
-                        $db = $this->Model_properti->insertData($input,"properti");
-                        if ($db) {
-                            $data['success'] = true;
                         }
                     }else{
                         $data["error"] = $this->upload->display_errors();
                     }
+                }
+                $db = $this->Model_properti->insertData($input,"properti");
+                if ($db) {
+                    $data['success'] = true;
                 }
             }else{
                 $input += ["logo_properti"=>"default2.jpg","foto_properti"=>"default.jpg"];
@@ -202,19 +194,26 @@ class Properti extends CI_Controller {
         $data = [
             "success" => false,
         ];
-        $input = $this->input->post('id_properti');
+        $input = $this->input->post('id_properti',true);
         $link = $this->Model_properti->getImage($input);
         $logo = $link->logo_properti;
         $foto = $link->foto_properti;
-        $query = $this->Model_properti->hapusData($input);
-        if ($query) {
-            unlink("./assets/uploads/images/properti/".$logo);
-            unlink("./assets/uploads/images/properti/".$foto);
-            $data['success'] = true;
-        }else{
-            $data['success'] = false;
+        if (($logo != "default2.jpg") || ($foto != "default.jpg")) {
+            $path = "./assets/uploads/images/properti/".$logo;
+            $path2 = "./assets/uploads/images/properti/".$foto;
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            if (file_exists($path2)) {
+                unlink($path2);
+            }
         }
-        $this->output->set_output(json_encode($data));
+        $query = $this->Model_properti->hapusData($input);
+        $query = true;
+        if ($query) {
+            $data['success'] = true;
+        }
+        return $this->output->set_output(json_encode($data));
     }
 
     public function publish()

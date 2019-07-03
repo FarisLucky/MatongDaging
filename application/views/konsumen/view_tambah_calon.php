@@ -155,14 +155,14 @@
                     <!-- foto -->
                     <div class="form-group">
                         <label for="name">Foto Ktp</label>
-                        <input class="form-control-file <?php echo form_error('price') ? 'is-invalid' : '' ?>" type="file" name="val_foto" >
+                        <input class="form-control-file form-control <?php echo form_error('price') ? 'is-invalid' : '' ?>" type="file" name="val_foto">
                         <div class="invalid-feedback">
                             <?php echo form_error('image') ?>
                         </div>
                     </div>
                     <div class="form-row">
                         <button type="submit" class="btn btn-success mr-2">Submit</button>
-                        <a href="<?php echo base_url('konsumen/calonkonsumen') ?>" class="btn btn-light btn-fw"></i> Cancel</a>
+                        <a href="<?php echo base_url('konsumen/calonkonsumen') ?>" class="btn btn-dark btn-fw"></i> Cancel</a>
                     </div>
             </div>
             </form>

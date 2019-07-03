@@ -38,24 +38,9 @@ class Model_transaksi extends CI_Model {
         $query = $this->db->get_where('detail_transaksi',['id_transaksi'=>$id]);
         return $query;
     }
-    public function tambahtransaksi($params)
-    {
-        $data = $this->input($params);
-        $data['tgl_transaksi'] = date('Y-m-d');
-        $this->db->insert('transaksi_unit', $data);
-        return $this->db->affected_rows();
-    }
-    public function ubahTransaksi($params,$where)
-    {
-        $data = $this->input($params);
-        $key_where = ['id_transaksi'=>$where];
-        $this->db->where($key_where);
-        $this->db->update('transaksi_unit', $data);
-        return $this->db->affected_rows();
-    }
     public function insertDetail($params)
     {
-        $object = ['penambahan'=>$params['penambahan'],'volume'=>$params['volume'],'satuan'=>$params['satuan'],'harga'=>$params['harga'],'total_harga'=>$params["total"],'id_transaksi'=>$params['transaksi']];
+        $object = ['penambahan'=>$params['penambahan'],'volume'=>$params['volume'],'satuan'=>$params['satuan'],'total_harga'=>$params["total"],'id_transaksi'=>$params['transaksi']];
         $this->db->insert('detail_transaksi', $object);
         return $this->db->affected_rows();
     }
@@ -94,30 +79,6 @@ class Model_transaksi extends CI_Model {
         $query = $this->db->get_where('tbl_transaksi',['id_transaksi'=>$params]);
         return $query->row();
     }
-    private function input($params)
-    {
-        return [
-            'no_ppjb'=>$params['no_ppjb'],
-            'id_konsumen'=>$params['konsumen'],
-            'id_unit'=>$params['unit'],
-            'total_transaksi'=>$params['total_transaksi'],
-            'total_kesepakatan'=>$params['kesepakatan'],
-            'total_akhir'=>$params['total_akhir'],
-            'tanda_jadi'=>$params['tanda_jadi'],
-            'uang_muka'=>$params['uang_muka'],
-            'periode_uang_muka'=>$params['periode_uang_muka'],
-            'id_type_bayar'=>$params['type_pembayaran'],
-            'bayar_periode'=>$params['periode_bayar'],
-            'pembayaran'=>$params['total_bayar_periode'],
-            'status_transaksi'=>'sementara',
-            'kunci'=>'default',
-            'tempo_tanda_jadi'=>$params['tgl_tanda_jadi'],
-            'tempo_uang_muka'=>$params['tgl_uang_muka'],
-            'tempo_bayar'=>$params['tgl_pembayaran'],
-            'total_tambahan'=>$params['total_tambahan'],
-            'id_user'=>$this->session->userdata('id_user')
-        ];
-    }
     public function deleteData($table,$where)
     {
         return $this->db->delete($table,$where);
@@ -137,6 +98,11 @@ class Model_transaksi extends CI_Model {
             $this->db->order_by($column_order, $type_order);
         }
         return $this->db->get($tbl);
+    }
+    public function insertData($data,$tbl)
+    {
+        $this->db->insert($tbl, $data);
+        return $this->db->affected_rows();
     }
 }
 

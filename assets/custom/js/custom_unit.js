@@ -21,7 +21,6 @@ function readURL(input,selector) {
     }
 }
 $(document).ready(function () {
-    $(".overlay").remove();
     // Datatable Unit
     const unit = $('#tbl_unit').DataTable ({
         "processing": true,
@@ -68,6 +67,7 @@ $(document).ready(function () {
         let url = $(this).attr("action");
         let types = "post";
         let datas = new FormData($(this)[0]);
+        $(".overlay").show();
         $.ajax({
             type: types,
             url: urls,
@@ -94,6 +94,9 @@ $(document).ready(function () {
                         return;
                     });
                 }
+            },
+            complete: function(){
+                $('.overlay').hide();
             }
         });
     });
@@ -104,6 +107,7 @@ $(document).ready(function () {
         let urls = $(this).attr("action");
         let types = "post";
         let datas = new FormData($(this)[0]);
+        $(".overlay").show();
         $.ajax({
             type: types,
             url: urls,
@@ -131,6 +135,9 @@ $(document).ready(function () {
                         return;
                     });
                 }
+            },
+            complete: function(){
+                $('.overlay').hide();
             }
         });
     });
@@ -157,6 +164,8 @@ $(document).ready(function () {
                     dataType: "JSON",
                     success: function (success) {
                         if (success.success == false) {
+                            swallSuccess("Gagal", "Gagal dihapus", "error", null);
+                        }else if ((success.success == false) && (success.error)) {
                             swallSuccess("Gagal", "Gagal dihapus", "error", null);
                         }
                         else {

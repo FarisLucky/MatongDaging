@@ -30,15 +30,14 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Pilih Nama Calon Konsumen</label>
-                                                <input type="text" name="val_nama_konsumen" id="input_calon_konsumen" class="form-control" placeholder="Pilih Konsumen ">
-                                                <!-- <select name="val_nama_konsumen" id="input_calon_konsumen" class="form-control <?= form_error('val_nama_konsumen') ? 'is-invalid' : '' ?>">
+                                                <select name="val_nama_konsumen" id="input_calon_konsumen" class="form-control <?= form_error('val_nama_konsumen') ? 'is-invalid' : '' ?>">
                                                     <option value="">-- Pilih --</option>
                                                     <?php
                                                     foreach ($id_konsumen as  $value) {
                                                         ?>
                                                         <option value="<?= $value['id_konsumen'] ?>"><?= $value['nama_lengkap'] ?></option>
                                                     <?php } ?>
-                                                </select> -->
+                                                </select>
                                                 <div class="invalid-feedback">
                                                     <?php echo form_error('val_nama_konsumen') ?>
                                                 </div>
@@ -88,50 +87,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal_follow_konsumen" aria-hidden="true">
-    <div class="modal-dialog" >
-    <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" >Pilih Konsumen</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-            <div class="row justify-content-end">
-                <div class="col-sm-5">
-                    <label class="modal-title">Cari Nama</label>
-                    <input type="text" class="form-control" name="cari_nama">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <td>Nama Calon</td>
-                                <td>npwp</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($id_konsumen as $key => $value) { ?>
-                                <tr>
-                                    <td><?= $value["nama_lengkap"] ?></td>
-                                    <td><?= $value["npwp"] ?></td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-    </div>
     </div>
 </div>

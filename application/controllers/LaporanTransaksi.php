@@ -110,9 +110,9 @@ class LaporanTransaksi extends CI_Controller {
             }
         }
         if ($params4 == "un") {
-            $data["link"] = '<a href="'.base_url("laporantransaksi/listunlock") .'" class="btn mr-2 float-right d-block text-info"><i class="fa fa-arrow-left"></i>Kembali</a>';
+            $data["link"] = '<a href="'.base_url("laporantransaksi/listunlock") .'" class="btn btn-dark mr-2 float-right d-block"><i class="fa fa-arrow-left"></i>Kembali</a>';
         }else{
-            $data["link"] = '<a href="'.base_url("laporantransaksi") .'" class="btn mr-2 float-right d-block text-info"><i class="fa fa-arrow-left"></i>Kembali</a>';
+            $data["link"] = '<a href="'.base_url("laporantransaksi") .'" class="btn btn-dark mr-2 float-right d-block"><i class="fa fa-arrow-left"></i>Kembali</a>';
         }
         $this->pages("laporan/transaksi/view_detail",$data);
     }

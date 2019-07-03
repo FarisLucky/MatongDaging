@@ -34,19 +34,15 @@
                                         <input type="text" name="txt_nama" class="form-control" id="txt_nama" value="<?php echo $properti->nama_properti;?>" disabled>
                                     </div>
                                     <div class="form-group">
-                                        <label for="txt_alamat">Alamat</label>
-                                        <textarea class="form-control" name="txt_alamat" id="txt_alamat" rows="3" disabled><?= $properti->alamat;?></textarea>
-                                    </div> 
-                                    <div class="form-group">
-                                        <label for="txt_luas">Luas Tanah</label>
+                                        <label for="txt_luas">Luas Tanah <small class="text-danger">(Ex. 12 M2)</small></label>
                                         <input type="text" name="txt_luas" class="form-control" id="txt_luas" value="<?= $properti->luas_tanah;?>" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="txt_jumlah">Jumlah</label>
-                                        <input type="text" name='txt_jumlah' class="form-control" id="txt_jumlah" value="<?= $properti->jumlah_unit;?>"disabled>
+                                        <input type="number" name='txt_jumlah' class="form-control" id="txt_jumlah" value="<?= $properti->jumlah_unit;?>"disabled>
                                     </div>
                                     <div class="form-group">
-                                        <label for="txt_rekening">Rekening</label>
+                                        <label for="txt_rekening">Rekening <small class="text-danger">(Ex Bank No rekening Pemilik)</small></label>
                                         <input type="text" name='txt_rekening' class="form-control" id="txt_rekening" value="<?= $properti->rekening;?>"disabled>
                                     </div>
                                     <div class="form-group">
@@ -57,6 +53,10 @@
                                             <option value="non-publish" <?php echo (($properti->status == "non-publish")?"selected":""); ?>>Non Publish</option>
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="txt_alamat">Alamat</label>
+                                        <textarea class="form-control" name="txt_alamat" id="txt_alamat" rows="3" disabled><?= $properti->alamat;?></textarea>
+                                    </div> 
                                     <div class="form-group">
                                         <label for="txt_logo" class="d-flex">logo Properti</label>
                                         <img id="logo_properti" width="180px" src="<?= base_url().'assets/uploads/images/properti/'.$properti->logo_properti ?>" alt="" >

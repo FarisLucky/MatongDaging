@@ -37,6 +37,11 @@
 <script src="<?= base_url() ?>assets/library/ckeditor/ckeditor.js"></script>
 <script src="<?= base_url() ?>assets/custom/select2/js/select2.full.min.js"></script>
 <!-- endinject -->
+<script>
+$(document).ready(function () {
+  $(".overlay").hide();
+});
+</script>
 <!-- End custom js for this page-->
 <script src="<?= base_url().'assets/custom/js/'.$js['javascript'].'.js' ?>"></script>
 

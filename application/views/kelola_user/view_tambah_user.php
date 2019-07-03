@@ -63,7 +63,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="txt_telp_user">Telp</label>
+                                                <label for="txt_telp_user">Telp * <small class="text-danger">Max 13 Digit </small></label>
                                                 <input type="number" name="txt_telp_user" class="form-control" id="txt_telp_user">
                                             </div>
                                             <div class="form-group">

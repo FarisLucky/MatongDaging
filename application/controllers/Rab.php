@@ -283,12 +283,12 @@ class Rab extends CI_Controller
 				"tanah_effective"=>$this->input->post('tanah_efektif',true),
 				"sarana"=>$this->input->post('sarana',true)
 			];
-			$query = $this->M_kelola_rab->update_data("rab_properti",$input,["id_properti"=>$id]);
+			$query = $this->M_kelola_rab->update_data("rab_properti",$input,["id_rab"=>$id]);
 			if ($query) {
 				$data["success"] = true;
 			}
 			else{
-				$data["error"] = "hello";
+				$data["error"] = $query;
 			}
 		}
 		return $this->output->set_content_type('application/json')->set_output(json_encode($data));

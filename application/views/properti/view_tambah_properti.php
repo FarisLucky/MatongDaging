@@ -35,19 +35,15 @@
                                                 <input type="text" name="txt_nama" class="form-control" id="txt_nama">
                                             </div>
                                             <div class="form-group">
-                                                <label for="txt_alamat">Alamat</label>
-                                                <textarea class="form-control" name="txt_alamat" id="txt_alamat" rows="3"></textarea>
-                                            </div> 
-                                            <div class="form-group">
-                                                <label for="txt_luas">Luas Tanah</label>
+                                                <label for="txt_luas">Luas Tanah (Ex. 12 M2)</label>
                                                 <input type="text" name="txt_luas" class="form-control" id="txt_luas">
                                             </div>
                                             <div class="form-group">
-                                                <label for="txt_jumlah">Jumlah</label>
-                                                <input type="text" name='txt_jumlah' class="form-control" id="txt_jumlah">
+                                                <label for="txt_jumlah">Jumlah Unit</label>
+                                                <input type="number" name='txt_jumlah' class="form-control" id="txt_jumlah">
                                             </div>
                                             <div class="form-group">
-                                                <label for="txt_rekening">Rekening</label>
+                                                <label for="txt_rekening">Rekening (Ex Bank No rekening Pemilik)</label>
                                                 <input type="text" name='txt_rekening' class="form-control" id="txt_rekening">
                                             </div>
                                             <div class="form-group">
@@ -58,6 +54,10 @@
                                                     <option value="non-publish">Non Publish</option>
                                                 </select>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="txt_alamat">Alamat</label>
+                                                <textarea class="form-control" name="txt_alamat" id="txt_alamat" rows="3"></textarea>
+                                            </div> 
                                             <div class="form-group">
                                                 <label for="txt_logo" class="d-flex">logo Properti</label>
                                                 <img id="logo_properti" width="180px" alt="" >
@@ -78,7 +78,7 @@
                             <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="txt_foto" class="font-weight-light">SPR</label>
-                                <textarea class="form-control" name="txt_spr" id="txt_spr" rows="5" ></textarea>
+                                <textarea class="form-control" name="txt_spr" id="txt_sprs" rows="5"></textarea>
                             </div>
                             </div>
                         </div>
