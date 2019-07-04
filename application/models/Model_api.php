@@ -28,6 +28,12 @@ class Model_api extends CI_Model {
         $this->db->insert($tbl,$data);
         return $this->db->affected_rows();
     }
+    public function delete($where,$tbl)
+    {
+        $this->db->where($where);
+        $this->db->delete($tbl);
+        return $this->db->affected_rows();
+    }
     
 }
 

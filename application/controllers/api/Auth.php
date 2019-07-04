@@ -47,6 +47,7 @@ class Auth extends REST_Controller
                 $this->set_response($decodedToken, REST_Controller::HTTP_OK);
                 return;
             }
+            $this->set_response($decodedToken, REST_Controller::HTTP_OK);
         }
 
         $this->set_response("Unauthorised", REST_Controller::HTTP_UNAUTHORIZED);

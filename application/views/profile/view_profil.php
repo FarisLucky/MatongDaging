@@ -54,7 +54,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="txt_email">Email</label>
-                                                <input type="text" name='txt_email' class="form-control" id="txt_email" value="<?= $user->Email ?>">
+                                                <input type="text" name='txt_email' class="form-control" id="txt_email" value="<?= $user->email ?>">
                                                 <small class="text-danger"><?php echo form_error('txt_email') ?></small>
                                             </div>
                                         </div>

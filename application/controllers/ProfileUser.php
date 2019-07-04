@@ -19,7 +19,7 @@ class ProfileUser extends CI_Controller {
         $data['title'] = 'Profile';
         $data['menus'] = $this->rolemenu->getMenus();
         $data['js'] = $this->rolemenu->getJavascript(4); //Jangan DIUbah !!
-        $data['user'] = $this->Muser->getWhere("*","user",["id_user"=>$_SESSION["id_user"]])->row();
+        $data['user'] = $this->Muser->getDataWhere("*","user",["id_user"=>$_SESSION["id_user"]])->row();
         $data["error"] = $error;
         $data['img'] = getCompanyLogo();
         $this->pages("profile/view_profil",$data);
@@ -42,7 +42,7 @@ class ProfileUser extends CI_Controller {
             if ($_FILES["upload"]["name"] != "") {
                 if ($this->upload->do_upload('upload'))
                 {
-                    $getData = $this->Muser->getWhere("foto_user","user",["id_user"=>$id])->row();
+                    $getData = $this->Muser->getDataWhere("foto_user","user",["id_user"=>$id])->row();
                     $path = base_url("assets/uploads/images/profil/user/".$getData->foto_user);
                     if (!is_dir($path)) {
                         if (file_exists($path)) {
@@ -105,7 +105,7 @@ class ProfileUser extends CI_Controller {
             $id_user = $this->session->userdata('id_user');
             $pass_lama = $this->input->post('pass_lama',true);
             $pass_baru = $this->input->post('pass_baru',true);
-            $getData = $this->Muser->getWhere("password","user",["id_user"=>$id_user]);
+            $getData = $this->Muser->getDataWhere("password","user",["id_user"=>$id_user]);
             if ($getData->num_rows() > 0) {
                 $result = $getData->row();
                 $confirm_pass_lama = password_verify($pass_lama,$result->password);

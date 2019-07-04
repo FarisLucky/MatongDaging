@@ -50,32 +50,37 @@ class ApiLogin extends REST_Controller
                             'id_akses'=> $rows->id_akses,
                             'token' => $encrypt
                         ];
-                        $this->set_response($dataUser, REST_Controller::HTTP_OK);
+                        $message = [
+                            'error' => FALSE,
+                            'data'=>$dataUser,
+                            'message' => "Data didapatkan"
+                        ];
+                        return $this->response($message, REST_Controller::HTTP_OK);
                     }else{
                         // Login Error
                         $message = [
-                            'status' => FALSE,
+                            'error' => TRUE,
                             'message' => "Akun sedang di nonAktifkan"
                         ];
-                        $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+                        return $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
                     }
                 }
                 else{
                     // Login Error
                     $message = [
-                        'status' => FALSE,
+                        'error' => TRUE,
                         'message' => "Password Tidak Cocok"
                     ];
-                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+                    return $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
                 }
             }
             else{
                 // Login Error
                 $message = [
-                    'status' => FALSE,
+                    'error' => TRUE,
                     'message' => "Username Tidak ditemukan"
                 ];
-                $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+                return $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
             }
         }
     }
