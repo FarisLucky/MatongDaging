@@ -87,7 +87,7 @@ class ApiLogin extends REST_Controller
             }else{
                 $response = [
                     "error"=>true,
-                    "message"=>"Data ditemukan"
+                    "message"=>"Data tidak ditemukan"
                 ];
                 return $this->set_response($response, REST_Controller::HTTP_NOT_FOUND);
             }
