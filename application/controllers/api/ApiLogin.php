@@ -10,66 +10,45 @@ class ApiLogin extends REST_Controller
         parent::__construct();
         header("Access-Control-Allow-Origin: *");
         // Load User Model
-        $this->load->model('Model_auth');
+        $this->load->model('Model_api');
     }
 
     public function login_post()
     {
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('username','Username','trim|required');
-        $this->form_validation->set_rules('password','Password','trim|required');
-        if ($this->form_validation->run() == false) {
-            $message = array(
-                'status' => false,
-                'error' => $this->form_validation->error_array(),
-                'message' => validation_errors()
-            );
-
-            $this->response($message, REST_Controller::HTTP_NOT_FOUND);
-        }
-        else{
-            $input = [
-                'username'=>$this->input->post('username',true),
-                'password'=>$this->input->post('password',true)    
-            ];
-            $user = $this->Model_auth->getUser($input);
-            if ($user->num_rows() >0 ) {
-                $rows = $user->row();
-                if (password_verify($input['password'],$rows->password)) {
-                    if ($rows->status_user === 'aktif') {
-                        $data['auth'] = "Berhasil Login";
-                        $data['success'] = true;
-                        $data['redirect'] = "dashboard";
-                        $token = [];
-                        $token["user"] = $rows->username;
-                        $token["id_akses"] = $rows->id_akses;
-                        $encrypt = AUTHORIZATION::generateToken($token);
-                        $dataUser=[
-                            'id_user'=> $rows->id_user,
-                            'username'=> $rows->username,
-                            'id_akses'=> $rows->id_akses,
-                            'token' => $encrypt
-                        ];
-                        $message = [
-                            'error' => FALSE,
-                            'data'=>$dataUser,
-                            'message' => "Data didapatkan"
-                        ];
-                        return $this->response($message, REST_Controller::HTTP_OK);
-                    }else{
-                        // Login Error
-                        $message = [
-                            'error' => TRUE,
-                            'message' => "Akun sedang di nonAktifkan"
-                        ];
-                        return $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
-                    }
-                }
-                else{
+        $_POST = $this->security->xss_clean($_POST);
+        $input = [
+            'username'=>$this->post('username'),
+            'password'=>$this->post('password')    
+        ];
+        $user = $this->Model_api->getData("*","user",["username"=>$input["username"]]);
+        if ($user->num_rows() > 0 ) {
+            $rows = $user->row();
+            if (password_verify($input['password'],$rows->password)) {
+                if ($rows->status_user === 'aktif') {
+                    $data['auth'] = "Berhasil Login";
+                    $data['success'] = true;
+                    $data['redirect'] = "dashboard";
+                    $token = [];
+                    $token["user"] = $rows->username;
+                    $token["id_akses"] = $rows->id_akses;
+                    $encrypt = AUTHORIZATION::generateToken($token);
+                    $dataUser=[
+                        'id_user'=> $rows->id_user,
+                        'username'=> $rows->username,
+                        'id_akses'=> $rows->id_akses,
+                        'token' => $encrypt
+                    ];
+                    $message = [
+                        'error' => FALSE,
+                        'data'=>$dataUser,
+                        'message' => "Data didapatkan"
+                    ];
+                    return $this->response($message, REST_Controller::HTTP_OK);
+                }else{
                     // Login Error
                     $message = [
                         'error' => TRUE,
-                        'message' => "Password Tidak Cocok"
+                        'message' => "Akun sedang di nonAktifkan"
                     ];
                     return $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
                 }
@@ -78,10 +57,18 @@ class ApiLogin extends REST_Controller
                 // Login Error
                 $message = [
                     'error' => TRUE,
-                    'message' => "Username Tidak ditemukan"
+                    'message' => "Password Tidak Cocok"
                 ];
                 return $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
             }
+        }
+        else{
+            // Login Error
+            $message = [
+                'error' => TRUE,
+                'message' => "Username Tidak ditemukan"
+            ];
+            return $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
         }
     }
 
