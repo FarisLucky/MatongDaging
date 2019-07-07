@@ -84,6 +84,35 @@ class ApiLogin extends REST_Controller
             }
         }
     }
+
+    public function dataUser_get()
+    {
+        $id = $this->get("id_user");
+        if (!empty($id)) {
+            $result = $this->Model_api->getData("*","user",["id_user"=>$id])->row();
+            if ($result) {
+                $response = [
+                    "error"=>false,
+                    "data"=>$result,
+                    "message"=>"Data ditemukan"
+                ];
+                return $this->set_response($response, REST_Controller::HTTP_OK);
+            }else{
+                $response = [
+                    "error"=>true,
+                    "message"=>"Data ditemukan"
+                ];
+                return $this->set_response($response, REST_Controller::HTTP_NOT_FOUND);
+            }
+        }else{
+            $response = [
+                "error"=>true,
+                "message"=>"Masukkan Id"
+            ];
+            return $this->set_response($response, REST_Controller::HTTP_NOT_FOUND);
+        }
+        // Users from a data store e.g. database
+    }
     /**
      * URL: http://localhost/CodeIgniter-JWT-Sample/auth/token
      * Method: POST
