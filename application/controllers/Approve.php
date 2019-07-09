@@ -44,10 +44,12 @@ class Approve extends CI_Controller {
             if ($dataTransaksi->status_tj == "lunas") {
                 $updateKonsumen = $this->MApprove->updateData(["status_konsumen"=>"konsumen"],"konsumen",["id_konsumen"=>$dataTransaksi->id_konsumen]);
                 $updateunit = $this->MApprove->updateData(["status_unit"=>"booking"],"unit_properti",["id_unit"=>$dataTransaksi->id_unit]);
+                $data['confirm'] = true;
+                $data['success'] = true;
             }
-            $data['confirm'] = true;
-            $data['success'] = true;
-            }else {
+            $data['confirm'] = false;
+            $data['success'] = false;
+        }else {
             $status_result = $this->MApprove->getDataWhere("COUNT(id_pembayaran) as result","tbl_pembayaran",["id_transaksi"=>$getData->id_transaksi,"id_jenis"=>$getData->id_jenis,"status"=>"selesai"])->row_array();
             $result_all = $this->MApprove->getDataWhere("COUNT(id_pembayaran) as result","tbl_pembayaran",["id_transaksi"=>$getData->id_transaksi,"id_jenis"=>$getData->id_jenis])->row_array();
             if ($status_result["result"] == $result_all["result"]) {

@@ -100,6 +100,34 @@ class ApiLogin extends REST_Controller
         }
         // Users from a data store e.g. database
     }
+    public function dataProperti_get()
+    {
+        $id = $this->get("id_user");
+        if (!empty($id)) {
+            $result = $this->Model_api->getData("*","tbl_user_assign_properti",["id_user"=>$id])->row();
+            if ($result) {
+                $response = [
+                    "error"=>false,
+                    "data"=>$result,
+                    "message"=>"Data ditemukan"
+                ];
+                return $this->set_response($response, REST_Controller::HTTP_OK);
+            }else{
+                $response = [
+                    "error"=>true,
+                    "message"=>"Data tidak ditemukan"
+                ];
+                return $this->set_response($response, REST_Controller::HTTP_NOT_FOUND);
+            }
+        }else{
+            $response = [
+                "error"=>true,
+                "message"=>"Masukkan Id"
+            ];
+            return $this->set_response($response, REST_Controller::HTTP_NOT_FOUND);
+        }
+        // Users from a data store e.g. database
+    }
     /**
      * URL: http://localhost/CodeIgniter-JWT-Sample/auth/token
      * Method: POST
@@ -120,18 +148,4 @@ class ApiLogin extends REST_Controller
 
         $this->set_response("Unauthorised", REST_Controller::HTTP_UNAUTHORIZED);
     }
-    // public function token_post()
-    // {
-    //     $headers = $this->input->request_headers();
-
-    //     if (array_key_exists('Authorization', $headers) && !empty($headers['Authorization'])) {
-    //         $decodedToken = AUTHORIZATION::validateToken($headers['Authorization']);
-    //         if ($decodedToken != false) {
-    //             $this->set_response($decodedToken, REST_Controller::HTTP_OK);
-    //             return;
-    //         }
-    //     }
-
-    //     $this->set_response("Unauthorised", REST_Controller::HTTP_UNAUTHORIZED);
-    // }
 }
